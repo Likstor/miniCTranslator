@@ -32,8 +32,11 @@ private:
     std::string subCache;
     std::unordered_map<std::string, std::string> keywords;
     std::ifstream stream;
+
     void read();
     void append();
+    void runCommand(std::string command, edge currentEdge);
+
     Token createToken(std::string lexem, std::string value);
 public:
     Lexer(std::string file, const std::unordered_map<ll, edgesMap> &graph, std::unordered_map<std::string, std::string> &keywordsList);

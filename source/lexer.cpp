@@ -1,10 +1,11 @@
+#pragma once
 #include <iostream>
 #include <string>
 #include <vector>
 #include <fstream>
-#include "miniCLexicalAnalyzer.h"
 #include <unordered_map>
 #include <ctype.h>
+#include <lexer.h>
 
 Lexer::Lexer(std::string file, 
             const std::unordered_map<ll, edgesMap> &graph, 
@@ -51,6 +52,29 @@ void Lexer::append()
     }
 }
 
+void Lexer::runCommand(std::string command, edge currentEdge)
+{
+    if (command == "clear")
+    {
+        buffer.clear();
+    }
+    else if (command == "debug")
+    {
+        std::cout << "\033[1;33m-----DEBUG-START-----\033[0m" << std::endl;
+        std::cout << "Current cache: " << cache << std::endl;
+        std::cout << "Current sub cache: " << subCache << std::endl;
+        std::cout << "Current state: " << currentState << std::endl;
+        std::cout << "Buffer: " << buffer << std::endl;
+        std::cout << "Save previous symbol: " << currentEdge.append << std::endl;
+        std::cout << "Read next symbol: " << currentEdge.read << std::endl;
+        if (!currentEdge.lexem.empty())
+        {
+            std::cout << "Lexem: " << currentEdge.lexem << std::endl;
+        }
+        std::cout << "\033[1;33m-----DEBUG-END-------\033[0m" << std::endl;
+    }
+}
+
 Token Lexer::createToken(std::string lexem, std::string value)
 {
     Token res = {lexem, value};
@@ -91,28 +115,8 @@ Token Lexer::getNextLexem()
         if (pos != std::string::npos)
         {
             std::string command = currentEdge.lexem.substr(0, pos);
-
-            if (command == "clear")
-            {
-                buffer.clear();
-            }
-            else if (command == "debug")
-            {
-                std::cout << "\033[1;33m-----DEBUG-START-----\033[0m" << std::endl;
-                std::cout << "Current cache: " << cache << std::endl;
-                std::cout << "Current sub cache: " << subCache << std::endl;
-                std::cout << "Current state: " << currentState << std::endl;
-                std::cout << "Buffer: " << buffer << std::endl;
-                std::cout << "Save previous symbol: " << currentEdge.append << std::endl;
-                std::cout << "Read next symbol: " << currentEdge.read << std::endl;
-                if (!currentEdge.lexem.empty())
-                {
-                    std::cout << "Lexem: " << currentEdge.lexem << std::endl;
-                }
-                std::cout << "\033[1;33m-----DEBUG-END-------\033[0m" << std::endl;
-            }
-
             currentEdge.lexem.erase(0, pos + 1);
+            runCommand(command, currentEdge);
         }
 
         if (currentEdge.lexem.empty()) // Проверка необходимости генерации лексемы
