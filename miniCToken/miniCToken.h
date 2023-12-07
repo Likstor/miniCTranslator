@@ -1,3 +1,4 @@
+#pragma once
 #include <string>
 
 enum class LexemTypes {
@@ -46,7 +47,7 @@ using ll = long long;
 class Token
 {
     private:
-        int _type;
+        int type;
         ll num;
         std::string str;
     public:

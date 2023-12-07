@@ -6,8 +6,6 @@
 #include <vector>
 #include "miniCLexicalAnalyzer.h"
 
-// TODO: доделать граф, обработки минуса (отрицательных чисел) и переченных/ключевых слов
-
 std::unordered_map<std::string, std::string> keywords {
     {"if", "kwif"},
     {"else", "kwelse"},
@@ -27,8 +25,8 @@ std::unordered_map<ll, edgesMap> lexicalGraph = {
     {0, {
         {" ", {0, true, false, ""}},
         {"\n", {0, true, false, ""}},
-        {"\'", {14, true, false, ""}},
-        {"\"", {18, true, false, ""}},
+        {"\'", {11, true, false, ""}},
+        {"\"", {13, true, false, ""}},
         {"<", {2, true, false, ""}},
         {"!", {3, true, false, ""}},
         {"=", {4, true, false, ""}},
@@ -90,54 +88,42 @@ std::unordered_map<ll, edgesMap> lexicalGraph = {
         {"digit", {10, true, true, ""}},
         {"default", {0, false, false, "id"}}
     }},
-    {14,{ // char
-        {"\'" ,{15, true, false, ""}},
-        {"default", {16, true, true, ""}}
+    {11,{ // char
+        {"\'" ,{-1, false, false, "error"}},
+        {"default", {12, true, true, ""}}
         }
     },
-    {15, {
+    {12, {
+        {"\'", {0, true, false, "chr"}}, 
         {"default", {-1, false, false, "error"}}
         }
     },
-    {16, {
-        {"\'", {17, false, false, ""}}, 
-        {"default", {-1, false, false, "error"}}
-        }
-    },
-    {17, {
-        {"default", {0, true, false, "chr"}}
-        }
-    },
-    {18, { // str
-        {"\"", {20, false, false, ""}},
-        {"eof", {19, false, false, ""}},
-        {"default", {18, true, true, ""}}
-    }},
-    {19, {
-        {"default", {-1, false, false, "error"}}
-    }},
-    {20, {
-        {"default", {0, true, false, "str"}},
+    {13, { // str
+        {"\"", {0, true, false, "str"}},
+        {"eof", {-1, false, false, "error"}},
+        {"default", {13, true, true, ""}}
     }}
     };
 
 int main(int argc, char *argv[])
 {
-    std::ifstream file;
-
     if (argc == 1)
     {
         std::cerr << "None file path";
         return -1;
     }
 
-    file.open(argv[1], std::ios::in);
+    Lexer lexer(argv[1], lexicalGraph, keywords);
 
-    if (!file.is_open())
+    for (int i = 0; i != -1; i++)
     {
-        std::cerr << "Incorrect file path";
-        return -1;
-    }
+        Token temp = lexer.getNextLexem();
 
-    Lexer lexer(file, lexicalGraph, keywords);
+        std::cout << "[" << temp.token << ", \"" << temp.value << "\"]" << std::endl;
+
+        if (temp.token == "error" || temp.token == "eof")
+        {
+            break;
+        }
+    }
 }

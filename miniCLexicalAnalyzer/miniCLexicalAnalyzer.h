@@ -1,8 +1,7 @@
 #pragma once
-#include <iostream>
+#include <fstream>
 #include <string>
 #include <vector>
-#include <fstream>
 #include <unordered_map>
 
 using ll = long long int;
@@ -32,8 +31,11 @@ private:
     ll currentState = 0;
     std::string subCache;
     std::unordered_map<std::string, std::string> keywords;
-
+    std::ifstream stream;
+    void read();
+    void append();
+    Token createToken(std::string lexem, std::string value);
 public:
-    Lexer(std::ifstream &stream, const std::unordered_map<ll, edgesMap> &graph, std::unordered_map<std::string, std::string> &keywordsList);
-    Token getNextLexem(std::ifstream &stream);
+    Lexer(std::string file, const std::unordered_map<ll, edgesMap> &graph, std::unordered_map<std::string, std::string> &keywordsList);
+    Token getNextLexem();
 };

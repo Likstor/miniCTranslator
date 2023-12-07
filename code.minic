@@ -1,4 +1,2 @@
-char str[] = "Hello, world!";
-int a = 5;
-char c = 'c';
-a = a + c;
+int main (int a,int b){
+int c = 123;if(a<=b){c=a;}else{c=2*b;}out c;}

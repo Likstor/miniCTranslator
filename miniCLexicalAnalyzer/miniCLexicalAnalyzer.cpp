@@ -6,11 +6,19 @@
 #include <unordered_map>
 #include <ctype.h>
 
-Lexer::Lexer(std::ifstream &stream, const std::unordered_map<ll, edgesMap> &graph, std::unordered_map<std::string, std::string> &keywordsList)
+Lexer::Lexer(std::string file, 
+            const std::unordered_map<ll, edgesMap> &graph, 
+            std::unordered_map<std::string, std::string> &keywordsList)
 {
     lexicalGraph = graph;
     keywords = keywordsList;
+    stream.open(file, std::ios::in);
 
+    read();
+}
+
+void Lexer::read()
+{
     if (stream.peek() == EOF)
     {
         cache = "eof";
@@ -29,21 +37,29 @@ Lexer::Lexer(std::ifstream &stream, const std::unordered_map<ll, edgesMap> &grap
     {
         cache = stream.get();
     }
+}
 
-    for (int i = 0; i != -1; i++)
+void Lexer::append()
+{
+    if (cache == "letter" || cache == "digit")
     {
-        Token temp = Lexer::getNextLexem(stream);
-
-        std::cout << "[" << temp.token << ", \"" << temp.value << "\"]" << std::endl;
-
-        if (temp.token == "error" || temp.token == "eof")
-        {
-            break;
-        }
+        buffer.append(subCache);
+    }
+    else
+    {
+        buffer.append(cache);
     }
 }
 
-Token Lexer::getNextLexem(std::ifstream &stream)
+Token Lexer::createToken(std::string lexem, std::string value)
+{
+    Token res = {lexem, value};
+    buffer.clear();
+
+    return res;
+}
+
+Token Lexer::getNextLexem()
 {
     while (true)
     {
@@ -62,36 +78,12 @@ Token Lexer::getNextLexem(std::ifstream &stream)
 
         if (currentEdge.append) // Проверка необходимости добавления в буффер
         {
-            if (cache == "letter" || cache == "digit")
-            {
-                buffer.append(subCache);
-            }
-            else
-            {
-                buffer.append(cache);
-            }
+            append();
         }
 
         if (currentEdge.read)
         {
-            if (stream.peek() == EOF)
-            {
-                cache = "eof";
-            }
-            else if (std::isalpha(stream.peek()))
-            {
-                subCache = stream.get();
-                cache = "letter";
-            }
-            else if (std::isdigit(stream.peek()))
-            {
-                subCache = stream.get();
-                cache = "digit";
-            }
-            else
-            {
-                cache = stream.get();
-            }
+            read();
         }
 
         // Обработка дополнительных команд "command|Token"
@@ -129,29 +121,20 @@ Token Lexer::getNextLexem(std::ifstream &stream)
         }
         else if (currentEdge.lexem == "id" && keywords.contains(buffer))
         {
-            Token temp = {keywords[buffer], ""};
-
-            buffer.clear();
-
-            return temp;
+            Token res = createToken(keywords[buffer], "");
+            return res;
         }
         else if (currentEdge.lexem != "error")
         {
             {
-                Token temp = {currentEdge.lexem, buffer};
-
-                buffer.clear();
-
-                return temp;
+                Token res = createToken(currentEdge.lexem, buffer);
+                return res;
             }
         }
         else
         {
-            Token temp = {currentEdge.lexem, ""};
-
-            buffer.clear();
-
-            return temp;
+            Token res = createToken(currentEdge.lexem, "");
+            return res;
         }
     }
 }
