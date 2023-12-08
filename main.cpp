@@ -36,7 +36,9 @@ int main(int argc, char *argv[])
         }
     }
 
-    Lexer lexer(argv[2], lexicalGraph, keywords);
+    std::ifstream stream(argv[2], std::ios::in);
+
+    Lexer lexer(stream, lexicalGraph, keywords);
 
     for (int i = 0; i != -1; i++)
     {
@@ -49,4 +51,8 @@ int main(int argc, char *argv[])
             break;
         }
     }
+
+    // forever
+    Token temp = lexer.getNextLexem();
+    std::cout << "[" << temp.token << ", \"" << temp.value << "\"]" << std::endl;
 }

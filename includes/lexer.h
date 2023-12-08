@@ -31,7 +31,7 @@ private:
     ll currentState = 0;
     std::string subCache;
     std::unordered_map<std::string, std::string> keywords;
-    std::ifstream stream;
+    std::istream& stream;
 
     void read();
     void append();
@@ -39,6 +39,6 @@ private:
 
     Token createToken(std::string lexem, std::string value);
 public:
-    Lexer(std::string file, const std::unordered_map<ll, edgesMap> &graph, std::unordered_map<std::string, std::string> &keywordsList);
+    Lexer(std::istream &stream, const std::unordered_map<ll, edgesMap> &graph, std::unordered_map<std::string, std::string> &keywordsList);
     Token getNextLexem();
 };

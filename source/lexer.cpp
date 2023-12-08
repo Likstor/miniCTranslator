@@ -7,14 +7,11 @@
 #include <ctype.h>
 #include <lexer.h>
 
-Lexer::Lexer(std::string file, 
+Lexer::Lexer(std::istream& stream, 
             const std::unordered_map<ll, edgesMap> &graph, 
-            std::unordered_map<std::string, std::string> &keywordsList)
+            std::unordered_map<std::string, std::string> &keywordsList
+            ) : lexicalGraph{graph}, keywords{keywordsList}, stream{stream}
 {
-    lexicalGraph = graph;
-    keywords = keywordsList;
-    stream.open(file, std::ios::in);
-
     read();
 }
 
