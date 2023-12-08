@@ -13,10 +13,13 @@ include(CPack)
 
 include_directories(
     includes/
+    libs/
 )
 
 file(
     GLOB SOURCES "source/*.cpp"
 )
+
+file(GLOB LIBS "libs/*.hpp")
 
 add_executable(miniCTranslator main.cpp ${SOURCES})
