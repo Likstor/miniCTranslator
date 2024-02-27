@@ -12,11 +12,27 @@ option(MINICTRANSLATOR_TESTING "Enable unit-tests" OFF)
 
 add_subdirectory(libs/miniCLexer)
 
-add_executable(miniCTranslator main.cpp ${SOURCES})
+file(
+    GLOB SOURCES "sources/*.cpp"
+    GLOB HEADERS "include/*.h"
+)
+
+target_include_directories(miniCLexer
+    PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/source
+        ${CMAKE_CURRENT_SOURCE_DIR}/libs
+    PUBLIC
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+        $<INSTALL_INTERFACE:include>
+)
+
+add_executable(miniCTranslator main.cpp ${SOURCES} ${HEADERS})
 
 target_link_libraries(miniCTranslator miniCLexer)
 
+
 if(MINICTRANSLATOR_TESTING)
+    add_compile_options("-DMINICLEXERE_TESTING=ON")
     enable_testing()
     add_subdirectory(tests)
 endif()

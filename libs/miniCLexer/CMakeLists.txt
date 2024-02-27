@@ -5,7 +5,7 @@ set(CMAKE_CXX_STANDARD 20)
 
 get_directory_property(IS_SUBPROJECT PARENT_DIRECTORY)
 
-option(MINICLEXER_TESTING "Enable unit-testing" OFF)
+option(MINICLEXER_TESTING "Enable unit-testing" ON)
 
 if(NOT CMAKE_CXX_EXTENSIONS)
     set(CMAKE_CXX_EXTENSIONS OFF)
