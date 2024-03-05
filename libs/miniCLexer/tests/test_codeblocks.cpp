@@ -31,15 +31,15 @@ TEST(CodeBlockTest, Code1)
         {"id", "result"},
         {"rpar", ""},
         {"rbrace", ""},
-        {"eof", ""}
-    };
+        {"eof", ""}};
 
     std::istringstream inputStream(code);
 
     miniCLexer::Lexer lexer{inputStream};
 
-    for (std::pair<std::string, std::string>& token : checkBox) {
-        miniCLexer::Token tmp = lexer.getNextLexem();
+    for (std::pair<std::string, std::string> &token : checkBox)
+    {
+        miniCLexer::Token tmp = lexer.getNextToken();
         ASSERT_TRUE(token.first == tmp.token && token.second == tmp.value);
     }
 }
@@ -92,8 +92,7 @@ TEST(CodeBlockTest, Code2)
         {"rbrace", ""},
         {"rbrace", ""},
         {"rbrace", ""},
-        {"eof", ""}
-    };
+        {"eof", ""}};
 
     std::istringstream inputStream(code);
 
@@ -101,7 +100,7 @@ TEST(CodeBlockTest, Code2)
 
     for (std::pair<std::string, std::string> &token : checkBox)
     {
-        miniCLexer::Token tmp = lexer.getNextLexem();
+        miniCLexer::Token tmp = lexer.getNextToken();
         ASSERT_TRUE(token.first == tmp.token && token.second == tmp.value);
     }
 }

@@ -8,7 +8,7 @@ set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
 include(CPack)
 
-option(MINICTRANSLATOR_TESTING "Enable unit-tests" OFF)
+option(MINICTRANSLATOR_TESTING "Enable unit-tests" ON)
 
 add_subdirectory(libs/miniCLexer)
 
@@ -32,7 +32,6 @@ target_link_libraries(miniCTranslator miniCLexer)
 
 
 if(MINICTRANSLATOR_TESTING)
-    add_compile_options("-DMINICLEXERE_TESTING=ON")
     enable_testing()
     add_subdirectory(tests)
 endif()

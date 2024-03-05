@@ -18,8 +18,8 @@ TEST(LexemeTest, lpar)
 
     miniCLexer::Lexer lexer{inputStream};
 
-    EXPECT_TRUE(CheckToken(miniCLexer::Token("lpar", ""), lexer.getNextLexem()));
-    EXPECT_TRUE(CheckToken(miniCLexer::Token("eof", ""), lexer.getNextLexem()));
+    EXPECT_TRUE(CheckToken(miniCLexer::Token("lpar", ""), lexer.getNextToken()));
+    EXPECT_TRUE(CheckToken(miniCLexer::Token("eof", ""), lexer.getNextToken()));
 }
 
 TEST(LexemeTest, rpar)
@@ -29,8 +29,8 @@ TEST(LexemeTest, rpar)
 
     miniCLexer::Lexer lexer{inputStream};
 
-    EXPECT_TRUE(CheckToken(miniCLexer::Token("rpar", ""), lexer.getNextLexem()));
-    EXPECT_TRUE(CheckToken(miniCLexer::Token("eof", ""), lexer.getNextLexem()));
+    EXPECT_TRUE(CheckToken(miniCLexer::Token("rpar", ""), lexer.getNextToken()));
+    EXPECT_TRUE(CheckToken(miniCLexer::Token("eof", ""), lexer.getNextToken()));
 }
 
 TEST(LexemeTest, lbrace)
@@ -40,8 +40,8 @@ TEST(LexemeTest, lbrace)
 
     miniCLexer::Lexer lexer{inputStream};
 
-    EXPECT_TRUE(CheckToken(miniCLexer::Token("lbrace", ""), lexer.getNextLexem()));
-    EXPECT_TRUE(CheckToken(miniCLexer::Token("eof", ""), lexer.getNextLexem()));
+    EXPECT_TRUE(CheckToken(miniCLexer::Token("lbrace", ""), lexer.getNextToken()));
+    EXPECT_TRUE(CheckToken(miniCLexer::Token("eof", ""), lexer.getNextToken()));
 }
 
 TEST(LexemeTest, rbrace)
@@ -51,8 +51,8 @@ TEST(LexemeTest, rbrace)
 
     miniCLexer::Lexer lexer{inputStream};
 
-    EXPECT_TRUE(CheckToken(miniCLexer::Token("rbrace", ""), lexer.getNextLexem()));
-    EXPECT_TRUE(CheckToken(miniCLexer::Token("eof", ""), lexer.getNextLexem()));
+    EXPECT_TRUE(CheckToken(miniCLexer::Token("rbrace", ""), lexer.getNextToken()));
+    EXPECT_TRUE(CheckToken(miniCLexer::Token("eof", ""), lexer.getNextToken()));
 }
 
 TEST(LexemeTest, lbracket)
@@ -62,8 +62,8 @@ TEST(LexemeTest, lbracket)
 
     miniCLexer::Lexer lexer{inputStream};
 
-    EXPECT_TRUE(CheckToken(miniCLexer::Token("lbracket", ""), lexer.getNextLexem()));
-    EXPECT_TRUE(CheckToken(miniCLexer::Token("eof", ""), lexer.getNextLexem()));
+    EXPECT_TRUE(CheckToken(miniCLexer::Token("lbracket", ""), lexer.getNextToken()));
+    EXPECT_TRUE(CheckToken(miniCLexer::Token("eof", ""), lexer.getNextToken()));
 }
 
 TEST(LexemeTest, rbracket)
@@ -73,8 +73,8 @@ TEST(LexemeTest, rbracket)
 
     miniCLexer::Lexer lexer{inputStream};
 
-    EXPECT_TRUE(CheckToken(miniCLexer::Token("rbracket", ""), lexer.getNextLexem()));
-    EXPECT_TRUE(CheckToken(miniCLexer::Token("eof", ""), lexer.getNextLexem()));
+    EXPECT_TRUE(CheckToken(miniCLexer::Token("rbracket", ""), lexer.getNextToken()));
+    EXPECT_TRUE(CheckToken(miniCLexer::Token("eof", ""), lexer.getNextToken()));
 }
 
 TEST(LexemeTest, semicolon)
@@ -84,8 +84,8 @@ TEST(LexemeTest, semicolon)
 
     miniCLexer::Lexer lexer{inputStream};
 
-    EXPECT_TRUE(CheckToken(miniCLexer::Token("semicolon", ""), lexer.getNextLexem()));
-    EXPECT_TRUE(CheckToken(miniCLexer::Token("eof", ""), lexer.getNextLexem()));
+    EXPECT_TRUE(CheckToken(miniCLexer::Token("semicolon", ""), lexer.getNextToken()));
+    EXPECT_TRUE(CheckToken(miniCLexer::Token("eof", ""), lexer.getNextToken()));
 }
 
 TEST(LexemeTest, comma)
@@ -95,8 +95,8 @@ TEST(LexemeTest, comma)
 
     miniCLexer::Lexer lexer{inputStream};
 
-    EXPECT_TRUE(CheckToken(miniCLexer::Token("comma", ""), lexer.getNextLexem()));
-    EXPECT_TRUE(CheckToken(miniCLexer::Token("eof", ""), lexer.getNextLexem()));
+    EXPECT_TRUE(CheckToken(miniCLexer::Token("comma", ""), lexer.getNextToken()));
+    EXPECT_TRUE(CheckToken(miniCLexer::Token("eof", ""), lexer.getNextToken()));
 }
 
 TEST(LexemeTest, colon)
@@ -106,8 +106,8 @@ TEST(LexemeTest, colon)
 
     miniCLexer::Lexer lexer{inputStream};
 
-    EXPECT_TRUE(CheckToken(miniCLexer::Token("colon", ""), lexer.getNextLexem()));
-    EXPECT_TRUE(CheckToken(miniCLexer::Token("eof", ""), lexer.getNextLexem()));
+    EXPECT_TRUE(CheckToken(miniCLexer::Token("colon", ""), lexer.getNextToken()));
+    EXPECT_TRUE(CheckToken(miniCLexer::Token("eof", ""), lexer.getNextToken()));
 }
 
 TEST(LexemeTest, opgt)
@@ -117,8 +117,8 @@ TEST(LexemeTest, opgt)
 
     miniCLexer::Lexer lexer{inputStream};
 
-    EXPECT_TRUE(CheckToken(miniCLexer::Token("opgt", ""), lexer.getNextLexem()));
-    EXPECT_TRUE(CheckToken(miniCLexer::Token("eof", ""), lexer.getNextLexem()));
+    EXPECT_TRUE(CheckToken(miniCLexer::Token("opgt", ""), lexer.getNextToken()));
+    EXPECT_TRUE(CheckToken(miniCLexer::Token("eof", ""), lexer.getNextToken()));
 }
 
 TEST(LexemeTest, opmul)
@@ -128,8 +128,8 @@ TEST(LexemeTest, opmul)
 
     miniCLexer::Lexer lexer{inputStream};
 
-    EXPECT_TRUE(CheckToken(miniCLexer::Token("opmul", ""), lexer.getNextLexem()));
-    EXPECT_TRUE(CheckToken(miniCLexer::Token("eof", ""), lexer.getNextLexem()));
+    EXPECT_TRUE(CheckToken(miniCLexer::Token("opmul", ""), lexer.getNextToken()));
+    EXPECT_TRUE(CheckToken(miniCLexer::Token("eof", ""), lexer.getNextToken()));
 }
 
 TEST(LexemeTest, eof)
@@ -139,7 +139,7 @@ TEST(LexemeTest, eof)
 
     miniCLexer::Lexer lexer{inputStream};
 
-    EXPECT_TRUE(CheckToken(miniCLexer::Token("eof", ""), lexer.getNextLexem()));
+    EXPECT_TRUE(CheckToken(miniCLexer::Token("eof", ""), lexer.getNextToken()));
 }
 
 TEST(LexemeTest, error)
@@ -149,8 +149,8 @@ TEST(LexemeTest, error)
 
     miniCLexer::Lexer lexer{inputStream};
 
-    EXPECT_TRUE(CheckToken(miniCLexer::Token("error", ""), lexer.getNextLexem()));
-    EXPECT_TRUE(CheckToken(miniCLexer::Token("eof", ""), lexer.getNextLexem()));
+    EXPECT_TRUE(CheckToken(miniCLexer::Token("error", ""), lexer.getNextToken()));
+    EXPECT_TRUE(CheckToken(miniCLexer::Token("eof", ""), lexer.getNextToken()));
 }
 
 TEST(LexemeTest, space)
@@ -160,7 +160,7 @@ TEST(LexemeTest, space)
 
     miniCLexer::Lexer lexer{inputStream};
 
-    EXPECT_TRUE(CheckToken(miniCLexer::Token("eof", ""), lexer.getNextLexem()));
+    EXPECT_TRUE(CheckToken(miniCLexer::Token("eof", ""), lexer.getNextToken()));
 }
 
 TEST(LexemeTest, ople)
@@ -170,8 +170,8 @@ TEST(LexemeTest, ople)
 
     miniCLexer::Lexer lexer{inputStream};
 
-    EXPECT_TRUE(CheckToken(miniCLexer::Token("ople", ""), lexer.getNextLexem()));
-    EXPECT_TRUE(CheckToken(miniCLexer::Token("eof", ""), lexer.getNextLexem()));
+    EXPECT_TRUE(CheckToken(miniCLexer::Token("ople", ""), lexer.getNextToken()));
+    EXPECT_TRUE(CheckToken(miniCLexer::Token("eof", ""), lexer.getNextToken()));
 }
 
 TEST(LexemeTest, oplt)
@@ -181,8 +181,8 @@ TEST(LexemeTest, oplt)
 
     miniCLexer::Lexer lexer{inputStream};
 
-    EXPECT_TRUE(CheckToken(miniCLexer::Token("oplt", ""), lexer.getNextLexem()));
-    EXPECT_TRUE(CheckToken(miniCLexer::Token("eof", ""), lexer.getNextLexem()));
+    EXPECT_TRUE(CheckToken(miniCLexer::Token("oplt", ""), lexer.getNextToken()));
+    EXPECT_TRUE(CheckToken(miniCLexer::Token("eof", ""), lexer.getNextToken()));
 }
 
 TEST(LexemeTest, opne)
@@ -192,8 +192,8 @@ TEST(LexemeTest, opne)
 
     miniCLexer::Lexer lexer{inputStream};
 
-    EXPECT_TRUE(CheckToken(miniCLexer::Token("opne", ""), lexer.getNextLexem()));
-    EXPECT_TRUE(CheckToken(miniCLexer::Token("eof", ""), lexer.getNextLexem()));
+    EXPECT_TRUE(CheckToken(miniCLexer::Token("opne", ""), lexer.getNextToken()));
+    EXPECT_TRUE(CheckToken(miniCLexer::Token("eof", ""), lexer.getNextToken()));
 }
 
 TEST(LexemeTest, opnot)
@@ -203,8 +203,8 @@ TEST(LexemeTest, opnot)
 
     miniCLexer::Lexer lexer{inputStream};
 
-    EXPECT_TRUE(CheckToken(miniCLexer::Token("opnot", ""), lexer.getNextLexem()));
-    EXPECT_TRUE(CheckToken(miniCLexer::Token("eof", ""), lexer.getNextLexem()));
+    EXPECT_TRUE(CheckToken(miniCLexer::Token("opnot", ""), lexer.getNextToken()));
+    EXPECT_TRUE(CheckToken(miniCLexer::Token("eof", ""), lexer.getNextToken()));
 }
 
 TEST(LexemeTest, opeq)
@@ -214,8 +214,8 @@ TEST(LexemeTest, opeq)
 
     miniCLexer::Lexer lexer{inputStream};
 
-    EXPECT_TRUE(CheckToken(miniCLexer::Token("opeq", ""), lexer.getNextLexem()));
-    EXPECT_TRUE(CheckToken(miniCLexer::Token("eof", ""), lexer.getNextLexem()));
+    EXPECT_TRUE(CheckToken(miniCLexer::Token("opeq", ""), lexer.getNextToken()));
+    EXPECT_TRUE(CheckToken(miniCLexer::Token("eof", ""), lexer.getNextToken()));
 }
 
 TEST(LexemeTest, opassign)
@@ -225,8 +225,8 @@ TEST(LexemeTest, opassign)
 
     miniCLexer::Lexer lexer{inputStream};
 
-    EXPECT_TRUE(CheckToken(miniCLexer::Token("opassign", ""), lexer.getNextLexem()));
-    EXPECT_TRUE(CheckToken(miniCLexer::Token("eof", ""), lexer.getNextLexem()));
+    EXPECT_TRUE(CheckToken(miniCLexer::Token("opassign", ""), lexer.getNextToken()));
+    EXPECT_TRUE(CheckToken(miniCLexer::Token("eof", ""), lexer.getNextToken()));
 }
 
 TEST(LexemeTest, opinc)
@@ -236,8 +236,8 @@ TEST(LexemeTest, opinc)
 
     miniCLexer::Lexer lexer{inputStream};
 
-    EXPECT_TRUE(CheckToken(miniCLexer::Token("opinc", ""), lexer.getNextLexem()));
-    EXPECT_TRUE(CheckToken(miniCLexer::Token("eof", ""), lexer.getNextLexem()));
+    EXPECT_TRUE(CheckToken(miniCLexer::Token("opinc", ""), lexer.getNextToken()));
+    EXPECT_TRUE(CheckToken(miniCLexer::Token("eof", ""), lexer.getNextToken()));
 }
 
 TEST(LexemeTest, opplus)
@@ -247,8 +247,8 @@ TEST(LexemeTest, opplus)
 
     miniCLexer::Lexer lexer{inputStream};
 
-    EXPECT_TRUE(CheckToken(miniCLexer::Token("opplus", ""), lexer.getNextLexem()));
-    EXPECT_TRUE(CheckToken(miniCLexer::Token("eof", ""), lexer.getNextLexem()));
+    EXPECT_TRUE(CheckToken(miniCLexer::Token("opplus", ""), lexer.getNextToken()));
+    EXPECT_TRUE(CheckToken(miniCLexer::Token("eof", ""), lexer.getNextToken()));
 }
 
 TEST(LexemeTest, opor)
@@ -258,8 +258,8 @@ TEST(LexemeTest, opor)
 
     miniCLexer::Lexer lexer{inputStream};
 
-    EXPECT_TRUE(CheckToken(miniCLexer::Token("opor", ""), lexer.getNextLexem()));
-    EXPECT_TRUE(CheckToken(miniCLexer::Token("eof", ""), lexer.getNextLexem()));
+    EXPECT_TRUE(CheckToken(miniCLexer::Token("opor", ""), lexer.getNextToken()));
+    EXPECT_TRUE(CheckToken(miniCLexer::Token("eof", ""), lexer.getNextToken()));
 }
 
 TEST(LexemeTest, oporError)
@@ -269,8 +269,8 @@ TEST(LexemeTest, oporError)
 
     miniCLexer::Lexer lexer{inputStream};
 
-    EXPECT_TRUE(CheckToken(miniCLexer::Token("error", ""), lexer.getNextLexem()));
-    EXPECT_TRUE(CheckToken(miniCLexer::Token("eof", ""), lexer.getNextLexem()));
+    EXPECT_TRUE(CheckToken(miniCLexer::Token("error", ""), lexer.getNextToken()));
+    EXPECT_TRUE(CheckToken(miniCLexer::Token("eof", ""), lexer.getNextToken()));
 }
 
 TEST(LexemeTest, opand)
@@ -280,8 +280,8 @@ TEST(LexemeTest, opand)
 
     miniCLexer::Lexer lexer{inputStream};
 
-    EXPECT_TRUE(CheckToken(miniCLexer::Token("opand", ""), lexer.getNextLexem()));
-    EXPECT_TRUE(CheckToken(miniCLexer::Token("eof", ""), lexer.getNextLexem()));
+    EXPECT_TRUE(CheckToken(miniCLexer::Token("opand", ""), lexer.getNextToken()));
+    EXPECT_TRUE(CheckToken(miniCLexer::Token("eof", ""), lexer.getNextToken()));
 }
 
 TEST(LexemeTest, opandError)
@@ -291,8 +291,8 @@ TEST(LexemeTest, opandError)
 
     miniCLexer::Lexer lexer{inputStream};
 
-    EXPECT_TRUE(CheckToken(miniCLexer::Token("error", ""), lexer.getNextLexem()));
-    EXPECT_TRUE(CheckToken(miniCLexer::Token("eof", ""), lexer.getNextLexem()));
+    EXPECT_TRUE(CheckToken(miniCLexer::Token("error", ""), lexer.getNextToken()));
+    EXPECT_TRUE(CheckToken(miniCLexer::Token("eof", ""), lexer.getNextToken()));
 }
 
 TEST(LexemeTest, num)
@@ -302,8 +302,8 @@ TEST(LexemeTest, num)
 
     miniCLexer::Lexer lexer{inputStream};
 
-    EXPECT_TRUE(CheckToken(miniCLexer::Token("num", "431441"), lexer.getNextLexem()));
-    EXPECT_TRUE(CheckToken(miniCLexer::Token("eof", ""), lexer.getNextLexem()));
+    EXPECT_TRUE(CheckToken(miniCLexer::Token("num", "431441"), lexer.getNextToken()));
+    EXPECT_TRUE(CheckToken(miniCLexer::Token("eof", ""), lexer.getNextToken()));
 }
 
 TEST(LexemeTest, id1)
@@ -313,8 +313,8 @@ TEST(LexemeTest, id1)
 
     miniCLexer::Lexer lexer{inputStream};
 
-    EXPECT_TRUE(CheckToken(miniCLexer::Token("id", "testId123_Test"), lexer.getNextLexem()));
-    EXPECT_TRUE(CheckToken(miniCLexer::Token("eof", ""), lexer.getNextLexem()));
+    EXPECT_TRUE(CheckToken(miniCLexer::Token("id", "testId123_Test"), lexer.getNextToken()));
+    EXPECT_TRUE(CheckToken(miniCLexer::Token("eof", ""), lexer.getNextToken()));
 }
 
 TEST(LexemeTest, id2)
@@ -324,8 +324,8 @@ TEST(LexemeTest, id2)
 
     miniCLexer::Lexer lexer{inputStream};
 
-    EXPECT_TRUE(CheckToken(miniCLexer::Token("id", "_Test"), lexer.getNextLexem()));
-    EXPECT_TRUE(CheckToken(miniCLexer::Token("eof", ""), lexer.getNextLexem()));
+    EXPECT_TRUE(CheckToken(miniCLexer::Token("id", "_Test"), lexer.getNextToken()));
+    EXPECT_TRUE(CheckToken(miniCLexer::Token("eof", ""), lexer.getNextToken()));
 }
 
 TEST(LexemeTest, chr)
@@ -335,8 +335,8 @@ TEST(LexemeTest, chr)
 
     miniCLexer::Lexer lexer{inputStream};
 
-    EXPECT_TRUE(CheckToken(miniCLexer::Token("chr", "a"), lexer.getNextLexem()));
-    EXPECT_TRUE(CheckToken(miniCLexer::Token("eof", ""), lexer.getNextLexem()));
+    EXPECT_TRUE(CheckToken(miniCLexer::Token("chr", "a"), lexer.getNextToken()));
+    EXPECT_TRUE(CheckToken(miniCLexer::Token("eof", ""), lexer.getNextToken()));
 }
 
 TEST(LexemeTest, chrError)
@@ -346,8 +346,8 @@ TEST(LexemeTest, chrError)
 
     miniCLexer::Lexer lexer{inputStream};
 
-    EXPECT_TRUE(CheckToken(miniCLexer::Token("error", ""), lexer.getNextLexem()));
-    EXPECT_TRUE(CheckToken(miniCLexer::Token("eof", ""), lexer.getNextLexem()));
+    EXPECT_TRUE(CheckToken(miniCLexer::Token("error", ""), lexer.getNextToken()));
+    EXPECT_TRUE(CheckToken(miniCLexer::Token("eof", ""), lexer.getNextToken()));
 }
 
 TEST(LexemeTest, str)
@@ -357,8 +357,8 @@ TEST(LexemeTest, str)
 
     miniCLexer::Lexer lexer{inputStream};
 
-    EXPECT_TRUE(CheckToken(miniCLexer::Token("str", "test text"), lexer.getNextLexem()));
-    EXPECT_TRUE(CheckToken(miniCLexer::Token("eof", ""), lexer.getNextLexem()));
+    EXPECT_TRUE(CheckToken(miniCLexer::Token("str", "test text"), lexer.getNextToken()));
+    EXPECT_TRUE(CheckToken(miniCLexer::Token("eof", ""), lexer.getNextToken()));
 }
 
 TEST(LexemeTest, strError)
@@ -368,8 +368,8 @@ TEST(LexemeTest, strError)
 
     miniCLexer::Lexer lexer{inputStream};
 
-    EXPECT_TRUE(CheckToken(miniCLexer::Token("error", ""), lexer.getNextLexem()));
-    EXPECT_TRUE(CheckToken(miniCLexer::Token("eof", ""), lexer.getNextLexem()));
+    EXPECT_TRUE(CheckToken(miniCLexer::Token("error", ""), lexer.getNextToken()));
+    EXPECT_TRUE(CheckToken(miniCLexer::Token("eof", ""), lexer.getNextToken()));
 }
 
 TEST(LexemeTest, kwif)
@@ -379,8 +379,8 @@ TEST(LexemeTest, kwif)
 
     miniCLexer::Lexer lexer{inputStream};
 
-    EXPECT_TRUE(CheckToken(miniCLexer::Token("kwif", ""), lexer.getNextLexem()));
-    EXPECT_TRUE(CheckToken(miniCLexer::Token("eof", ""), lexer.getNextLexem()));
+    EXPECT_TRUE(CheckToken(miniCLexer::Token("kwif", ""), lexer.getNextToken()));
+    EXPECT_TRUE(CheckToken(miniCLexer::Token("eof", ""), lexer.getNextToken()));
 }
 
 TEST(LexemeTest, kwelse)
@@ -390,8 +390,8 @@ TEST(LexemeTest, kwelse)
 
     miniCLexer::Lexer lexer{inputStream};
 
-    EXPECT_TRUE(CheckToken(miniCLexer::Token("kwelse", ""), lexer.getNextLexem()));
-    EXPECT_TRUE(CheckToken(miniCLexer::Token("eof", ""), lexer.getNextLexem()));
+    EXPECT_TRUE(CheckToken(miniCLexer::Token("kwelse", ""), lexer.getNextToken()));
+    EXPECT_TRUE(CheckToken(miniCLexer::Token("eof", ""), lexer.getNextToken()));
 }
 
 TEST(LexemeTest, kwswitch)
@@ -401,8 +401,8 @@ TEST(LexemeTest, kwswitch)
 
     miniCLexer::Lexer lexer{inputStream};
 
-    EXPECT_TRUE(CheckToken(miniCLexer::Token("kwswitch", ""), lexer.getNextLexem()));
-    EXPECT_TRUE(CheckToken(miniCLexer::Token("eof", ""), lexer.getNextLexem()));
+    EXPECT_TRUE(CheckToken(miniCLexer::Token("kwswitch", ""), lexer.getNextToken()));
+    EXPECT_TRUE(CheckToken(miniCLexer::Token("eof", ""), lexer.getNextToken()));
 }
 
 TEST(LexemeTest, kwcase)
@@ -412,8 +412,8 @@ TEST(LexemeTest, kwcase)
 
     miniCLexer::Lexer lexer{inputStream};
 
-    EXPECT_TRUE(CheckToken(miniCLexer::Token("kwcase", ""), lexer.getNextLexem()));
-    EXPECT_TRUE(CheckToken(miniCLexer::Token("eof", ""), lexer.getNextLexem()));
+    EXPECT_TRUE(CheckToken(miniCLexer::Token("kwcase", ""), lexer.getNextToken()));
+    EXPECT_TRUE(CheckToken(miniCLexer::Token("eof", ""), lexer.getNextToken()));
 }
 
 TEST(LexemeTest, kwwhile)
@@ -423,8 +423,8 @@ TEST(LexemeTest, kwwhile)
 
     miniCLexer::Lexer lexer{inputStream};
 
-    EXPECT_TRUE(CheckToken(miniCLexer::Token("kwwhile", ""), lexer.getNextLexem()));
-    EXPECT_TRUE(CheckToken(miniCLexer::Token("eof", ""), lexer.getNextLexem()));
+    EXPECT_TRUE(CheckToken(miniCLexer::Token("kwwhile", ""), lexer.getNextToken()));
+    EXPECT_TRUE(CheckToken(miniCLexer::Token("eof", ""), lexer.getNextToken()));
 }
 
 TEST(LexemeTest, kwfor)
@@ -434,8 +434,8 @@ TEST(LexemeTest, kwfor)
 
     miniCLexer::Lexer lexer{inputStream};
 
-    EXPECT_TRUE(CheckToken(miniCLexer::Token("kwfor", ""), lexer.getNextLexem()));
-    EXPECT_TRUE(CheckToken(miniCLexer::Token("eof", ""), lexer.getNextLexem()));
+    EXPECT_TRUE(CheckToken(miniCLexer::Token("kwfor", ""), lexer.getNextToken()));
+    EXPECT_TRUE(CheckToken(miniCLexer::Token("eof", ""), lexer.getNextToken()));
 }
 
 TEST(LexemeTest, kwreturn)
@@ -445,8 +445,8 @@ TEST(LexemeTest, kwreturn)
 
     miniCLexer::Lexer lexer{inputStream};
 
-    EXPECT_TRUE(CheckToken(miniCLexer::Token("kwreturn", ""), lexer.getNextLexem()));
-    EXPECT_TRUE(CheckToken(miniCLexer::Token("eof", ""), lexer.getNextLexem()));
+    EXPECT_TRUE(CheckToken(miniCLexer::Token("kwreturn", ""), lexer.getNextToken()));
+    EXPECT_TRUE(CheckToken(miniCLexer::Token("eof", ""), lexer.getNextToken()));
 }
 
 TEST(LexemeTest, kwin)
@@ -456,8 +456,8 @@ TEST(LexemeTest, kwin)
 
     miniCLexer::Lexer lexer{inputStream};
 
-    EXPECT_TRUE(CheckToken(miniCLexer::Token("kwin", ""), lexer.getNextLexem()));
-    EXPECT_TRUE(CheckToken(miniCLexer::Token("eof", ""), lexer.getNextLexem()));
+    EXPECT_TRUE(CheckToken(miniCLexer::Token("kwin", ""), lexer.getNextToken()));
+    EXPECT_TRUE(CheckToken(miniCLexer::Token("eof", ""), lexer.getNextToken()));
 }
 
 TEST(LexemeTest, kwout)
@@ -467,8 +467,8 @@ TEST(LexemeTest, kwout)
 
     miniCLexer::Lexer lexer{inputStream};
 
-    EXPECT_TRUE(CheckToken(miniCLexer::Token("kwout", ""), lexer.getNextLexem()));
-    EXPECT_TRUE(CheckToken(miniCLexer::Token("eof", ""), lexer.getNextLexem()));
+    EXPECT_TRUE(CheckToken(miniCLexer::Token("kwout", ""), lexer.getNextToken()));
+    EXPECT_TRUE(CheckToken(miniCLexer::Token("eof", ""), lexer.getNextToken()));
 }
 
 TEST(LexemeTest, kwint)
@@ -478,8 +478,8 @@ TEST(LexemeTest, kwint)
 
     miniCLexer::Lexer lexer{inputStream};
 
-    EXPECT_TRUE(CheckToken(miniCLexer::Token("kwint", ""), lexer.getNextLexem()));
-    EXPECT_TRUE(CheckToken(miniCLexer::Token("eof", ""), lexer.getNextLexem()));
+    EXPECT_TRUE(CheckToken(miniCLexer::Token("kwint", ""), lexer.getNextToken()));
+    EXPECT_TRUE(CheckToken(miniCLexer::Token("eof", ""), lexer.getNextToken()));
 }
 
 TEST(LexemeTest, kwchar)
@@ -489,6 +489,6 @@ TEST(LexemeTest, kwchar)
 
     miniCLexer::Lexer lexer{inputStream};
 
-    EXPECT_TRUE(CheckToken(miniCLexer::Token("kwchar", ""), lexer.getNextLexem()));
-    EXPECT_TRUE(CheckToken(miniCLexer::Token("eof", ""), lexer.getNextLexem()));
+    EXPECT_TRUE(CheckToken(miniCLexer::Token("kwchar", ""), lexer.getNextToken()));
+    EXPECT_TRUE(CheckToken(miniCLexer::Token("eof", ""), lexer.getNextToken()));
 }

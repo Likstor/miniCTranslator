@@ -7,10 +7,9 @@
 #include <ctype.h>
 #include <miniCLexer/lexer.h>
 
-
 namespace miniCLexer
 {
-    
+
     Lexer::Lexer(std::istream &stream) : stream{stream}
     {
         read();
@@ -81,7 +80,7 @@ namespace miniCLexer
         return res;
     }
 
-    Token Lexer::getNextLexem()
+    Token Lexer::getNextToken()
     {
         while (true)
         {

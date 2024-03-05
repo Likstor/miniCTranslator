@@ -117,18 +117,18 @@ namespace miniCLexer
                     {"default", {0, false, false, "id"}},
                 }},
             {10, {
-                    {"'", {-1, false, false, "error"}},
-                    {"default", {11, true, true, ""}},
-                }},
+                     {"'", {-1, false, false, "error"}},
+                     {"default", {11, true, true, ""}},
+                 }},
             {11, {
-                    {"'", {0, true, false, "chr"}},
-                    {"default", {-1, false, false, "error"}},
-                }},
+                     {"'", {0, true, false, "chr"}},
+                     {"default", {-1, false, false, "error"}},
+                 }},
             {12, {
-                    {"\"", {0, true, false, "str"}},
-                    {"eof", {-1, false, false, "error"}},
-                    {"default", {12, true, true, ""}},
-                }},
+                     {"\"", {0, true, false, "str"}},
+                     {"eof", {-1, false, false, "error"}},
+                     {"default", {12, true, true, ""}},
+                 }},
         };
 
         void read();
@@ -139,6 +139,6 @@ namespace miniCLexer
 
     public:
         Lexer(std::istream &stream);
-        Token getNextLexem();
+        Token getNextToken();
     };
 }

@@ -19,7 +19,7 @@ int main(int argc, char *argv[])
 
     while (true)
     {
-        miniCLexer::Token temp = lexer.getNextLexem();
+        miniCLexer::Token temp = lexer.getNextToken();
 
         std::cout << "[" << temp.token << ", \"" << temp.value << "\"]" << std::endl;
 
