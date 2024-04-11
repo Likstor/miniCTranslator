@@ -1,0 +1,384 @@
+{
+    "Rules": [
+        {
+            "leftPart": "E",
+            "rightPart": [
+                {
+                    "LexemeType": "E7",
+                    "Value": ""
+                }
+            ]
+        },
+        {
+            "leftPart": "E7",
+            "rightPart": [
+                {
+                    "LexemeType": "E6",
+                    "Value": ""
+                },
+                {
+                    "LexemeType": "E7'",
+                    "Value": ""
+                }
+            ]
+        },
+        {
+            "leftPart": "E7'",
+            "rightPart": [
+                {
+                    "LexemeType": "opor",
+                    "Value": ""
+                },
+                {
+                    "LexemeType": "E6",
+                    "Value": ""
+                },
+                {
+                    "LexemeType": "E7'",
+                    "Value": ""
+                }
+            ]
+        },
+        {
+            "leftPart": "E7'",
+            "rightPart": [
+                {
+                    "LexemeType": "epsilon",
+                    "Value": ""
+                }
+            ]
+        },
+        {
+            "leftPart": "E6",
+            "rightPart": [
+                {
+                    "LexemeType": "E5",
+                    "Value": ""
+                },
+                {
+                    "LexemeType": "E6'",
+                    "Value": ""
+                }
+            ]
+        },
+        {
+            "leftPart": "E6'",
+            "rightPart": [
+                {
+                    "LexemeType": "opand",
+                    "Value": ""
+                },
+                {
+                    "LexemeType": "E5",
+                    "Value": ""
+                },
+                {
+                    "LexemeType": "E6'",
+                    "Value": ""
+                }
+            ]
+        },
+        {
+            "leftPart": "E6'",
+            "rightPart": [
+                {
+                    "LexemeType": "epsilon",
+                    "Value": ""
+                }
+            ]
+        },
+        {
+            "leftPart": "E5",
+            "rightPart": [
+                {
+                    "LexemeType": "E4",
+                    "Value": ""
+                },
+                {
+                    "LexemeType": "E5'",
+                    "Value": ""
+                }
+            ]
+        },
+        {
+            "leftPart": "E5'",
+            "rightPart": [
+                {
+                    "LexemeType": "opeq",
+                    "Value": ""
+                },
+                {
+                    "LexemeType": "E4",
+                    "Value": ""
+                }
+            ]
+        },
+        {
+            "leftPart": "E5'",
+            "rightPart": [
+                {
+                    "LexemeType": "opne",
+                    "Value": ""
+                },
+                {
+                    "LexemeType": "E4",
+                    "Value": ""
+                }
+            ]
+        },
+        {
+            "leftPart": "E5'",
+            "rightPart": [
+                {
+                    "LexemeType": "lt",
+                    "Value": ""
+                },
+                {
+                    "LexemeType": "E4",
+                    "Value": ""
+                }
+            ]
+        },
+        {
+            "leftPart": "E5'",
+            "rightPart": [
+                {
+                    "LexemeType": "epsilon",
+                    "Value": ""
+                }
+            ]
+        },
+        {
+            "leftPart": "E4",
+            "rightPart": [
+                {
+                    "LexemeType": "E3",
+                    "Value": ""
+                },
+                {
+                    "LexemeType": "E4'",
+                    "Value": ""
+                }
+            ]
+        },
+        {
+            "leftPart": "E4'",
+            "rightPart": [
+                {
+                    "LexemeType": "opplus",
+                    "Value": ""
+                },
+                {
+                    "LexemeType": "E3",
+                    "Value": ""
+                },
+                {
+                    "LexemeType": "E4'",
+                    "Value": ""
+                }
+            ]
+        },
+        {
+            "leftPart": "E4'",
+            "rightPart": [
+                {
+                    "LexemeType": "opminus",
+                    "Value": ""
+                },
+                {
+                    "LexemeType": "E3",
+                    "Value": ""
+                },
+                {
+                    "LexemeType": "E4'",
+                    "Value": ""
+                }
+            ]
+        },
+        {
+            "leftPart": "E4'",
+            "rightPart": [
+                {
+                    "LexemeType": "epsilon",
+                    "Value": ""
+                }
+            ]
+        },
+        {
+            "leftPart": "E3",
+            "rightPart": [
+                {
+                    "LexemeType": "E2",
+                    "Value": ""
+                },
+                {
+                    "LexemeType": "E3'",
+                    "Value": ""
+                }
+            ]
+        },
+        {
+            "leftPart": "E3'",
+            "rightPart": [
+                {
+                    "LexemeType": "epsilon",
+                    "Value": ""
+                }
+            ]
+        },
+        {
+            "leftPart": "E3'",
+            "rightPart": [
+                {
+                    "LexemeType": "opmul",
+                    "Value": ""
+                },
+                {
+                    "LexemeType": "E2",
+                    "Value": ""
+                },
+                {
+                    "LexemeType": "E3'",
+                    "Value": ""
+                }
+            ]
+        },
+        {
+            "leftPart": "E2",
+            "rightPart": [
+                {
+                    "LexemeType": "opnot",
+                    "Value": ""
+                },
+                {
+                    "LexemeType": "E2",
+                    "Value": ""
+                }
+            ]
+        },
+        {
+            "leftPart": "E2",
+            "rightPart": [
+                {
+                    "LexemeType": "E1",
+                    "Value": ""
+                }
+            ]
+        },
+        {
+            "leftPart": "E1",
+            "rightPart": [
+                {
+                    "LexemeType": "id",
+                    "Value": ""
+                },
+                {
+                    "LexemeType": "E1'",
+                    "Value": ""
+                }
+            ]
+        },
+        {
+            "leftPart": "E1",
+            "rightPart": [
+                {
+                    "LexemeType": "num",
+                    "Value": ""
+                }
+            ]
+        },
+        {
+            "leftPart": "E1",
+            "rightPart": [
+                {
+                    "LexemeType": "lpar",
+                    "Value": ""
+                },
+                {
+                    "LexemeType": "E",
+                    "Value": ""
+                },
+                {
+                    "LexemeType": "rpar",
+                    "Value": ""
+                }
+            ]
+        },
+        {
+            "leftPart": "E1",
+            "rightPart": [
+                {
+                    "LexemeType": "opinc",
+                    "Value": ""
+                },
+                {
+                    "LexemeType": "opinc",
+                    "Value": ""
+                },
+                {
+                    "LexemeType": "id",
+                    "Value": ""
+                }
+            ]
+        },
+        {
+            "leftPart": "E1'",
+            "rightPart": [
+                {
+                    "LexemeType": "epsilon",
+                    "Value": ""
+                }
+            ]
+        },
+        {
+            "leftPart": "E1'",
+            "rightPart": [
+                {
+                    "LexemeType": "opinc",
+                    "Value": ""
+                },
+                {
+                    "LexemeType": "opinc",
+                    "Value": ""
+                }
+            ]
+        }
+    ],
+    "Terminals": [
+        "eof",
+        "lpar",
+        "rpar",
+        "id",
+        "num",
+        "opinc",
+        "opnot",
+        "opmul",
+        "opdiv",
+        "opminus",
+        "opplus",
+        "ople",
+        "oplt",
+        "opgt",
+        "opne",
+        "opeq",
+        "opand",
+        "opor",
+        "epsilon"
+    ],
+    "Nonterminals": [
+        "E",
+        "E7",
+        "E7'",
+        "E6",
+        "E6'",
+        "E5",
+        "E5'",
+        "E4",
+        "E4'",
+        "E3",
+        "E3'",
+        "E2",
+        "E1",
+        "E1'"
+    ]
+}

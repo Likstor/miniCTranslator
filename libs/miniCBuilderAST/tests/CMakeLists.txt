@@ -1,9 +1,9 @@
 cmake_minimum_required(VERSION 3.27)
-project(miniCLexer-unit-tests)
+project(miniCBuilderAST-unit-tests)
 
 if(${PROJECT_IS_TOP_LEVEL})
     enable_testing()
-    find_package(miniCLexer REQUIRED)
+    find_package(miniCBuilderAST REQUIRED)
 endif()
 
 include(FetchContent)
@@ -21,11 +21,11 @@ file(
 
 enable_testing()
 
-add_executable(miniCLexer-unit-tests ${sources} ${headers})
+add_executable(miniCBuilderAST-unit-tests ${sources} ${headers})
 
-target_link_libraries(miniCLexer-unit-tests
-    miniCLexer::miniCLexer
+target_link_libraries(miniCBuilderAST-unit-tests
+    miniCBuilderAST::miniCBuilderAST
     GTest::gtest_main)
 
 include(GoogleTest)
-gtest_discover_tests(miniCLexer-unit-tests)
+gtest_discover_tests(miniCBuilderAST-unit-tests)

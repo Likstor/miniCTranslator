@@ -72,9 +72,9 @@ namespace miniCLexer
         }
     }
 
-    Token Lexer::createToken(std::string lexem, std::string value)
+    Token Lexer::createToken(std::string lexem, std::string Value)
     {
-        Token res = {lexem, value};
+        Token res = {lexem, Value};
         buffer.clear();
 
         return res;

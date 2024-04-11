@@ -5,10 +5,10 @@
 
 ::testing::AssertionResult CheckToken(miniCLexer::Token ltoken, miniCLexer::Token rtoken)
 {
-    if (ltoken.token == rtoken.token && ltoken.value == rtoken.value)
+    if (ltoken.LexemeType == rtoken.LexemeType && ltoken.Value == rtoken.Value)
         return ::testing::AssertionSuccess();
     else
-        return ::testing::AssertionFailure() << rtoken.token << rtoken.value;
+        return ::testing::AssertionFailure() << rtoken.LexemeType << rtoken.Value;
 }
 
 TEST(LexemeTest, lpar)

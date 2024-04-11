@@ -40,7 +40,7 @@ TEST(CodeBlockTest, Code1)
     for (std::pair<std::string, std::string> &token : checkBox)
     {
         miniCLexer::Token tmp = lexer.getNextToken();
-        ASSERT_TRUE(token.first == tmp.token && token.second == tmp.value);
+        ASSERT_TRUE(token.first == tmp.LexemeType && token.second == tmp.Value);
     }
 }
 
@@ -101,6 +101,6 @@ TEST(CodeBlockTest, Code2)
     for (std::pair<std::string, std::string> &token : checkBox)
     {
         miniCLexer::Token tmp = lexer.getNextToken();
-        ASSERT_TRUE(token.first == tmp.token && token.second == tmp.value);
+        ASSERT_TRUE(token.first == tmp.LexemeType && token.second == tmp.Value);
     }
 }

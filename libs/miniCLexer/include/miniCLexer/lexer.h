@@ -21,8 +21,8 @@ namespace miniCLexer
 
     struct Token
     {
-        std::string token;
-        std::string value;
+        std::string LexemeType;
+        std::string Value = "";
     };
 
     class Lexer
@@ -135,7 +135,7 @@ namespace miniCLexer
         void append();
         void runCommand(std::string command, edge currentEdge);
 
-        Token createToken(std::string lexem, std::string value);
+        Token createToken(std::string lexem, std::string Value);
 
     public:
         Lexer(std::istream &stream);

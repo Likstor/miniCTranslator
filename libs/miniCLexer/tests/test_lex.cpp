@@ -30,7 +30,7 @@ int main() {
     for (auto &&lex : correct)
     {
         miniCLexer::Token tmp = lexer.getNextToken();
-        ASSERT_TRUE(tmp.token == lex.token && tmp.value == lex.value);
+        ASSERT_TRUE(tmp.LexemeType == lex.LexemeType && tmp.Value == lex.Value);
     }
 }
 
@@ -210,7 +210,7 @@ int main() {
     for (int i = 0; i < correct.size(); ++i)
     {
         miniCLexer::Token tmp = lexer.getNextToken();
-        ASSERT_TRUE(tmp.token == correct[i].token && tmp.value == correct[i].value) << "token #" << i;
+        ASSERT_TRUE(tmp.LexemeType == correct[i].LexemeType && tmp.Value == correct[i].Value) << "token #" << i;
     }
 }
 
@@ -236,7 +236,7 @@ TEST(TrickyCode, BasicProgram)
     for (auto &&lex : correct)
     {
         miniCLexer::Token tmp = lexer.getNextToken();
-        ASSERT_TRUE(tmp.token == lex.token && tmp.value == lex.value);
+        ASSERT_TRUE(tmp.LexemeType == lex.LexemeType && tmp.Value == lex.Value);
     }
 }
 
@@ -263,7 +263,7 @@ for everyone!!!
     for (auto &&lex : correct)
     {
         miniCLexer::Token tmp = lexer.getNextToken();
-        ASSERT_TRUE(tmp.token == lex.token && tmp.value == lex.value);
+        ASSERT_TRUE(tmp.LexemeType == lex.LexemeType && tmp.Value == lex.Value);
     }
 }
 
@@ -302,7 +302,7 @@ TEST(TrickyCode, Expressions)
     for (auto &&lex : correct)
     {
         miniCLexer::Token tmp = lexer.getNextToken();
-        ASSERT_TRUE(tmp.token == lex.token && tmp.value == lex.value);
+        ASSERT_TRUE(tmp.LexemeType == lex.LexemeType && tmp.Value == lex.Value);
     }
 }
 
@@ -321,7 +321,7 @@ TEST(ErrorCode, BadString)
     for (auto &&lex : correct)
     {
         miniCLexer::Token tmp = lexer.getNextToken();
-        ASSERT_TRUE(tmp.token == lex.token && tmp.value == lex.value);
+        ASSERT_TRUE(tmp.LexemeType == lex.LexemeType && tmp.Value == lex.Value);
     }
 }
 
@@ -340,7 +340,7 @@ TEST(ErrorCode, EmptyChar)
     for (auto &&lex : correct)
     {
         miniCLexer::Token tmp = lexer.getNextToken();
-        ASSERT_TRUE(tmp.token == lex.token && tmp.value == lex.value);
+        ASSERT_TRUE(tmp.LexemeType == lex.LexemeType && tmp.Value == lex.Value);
     }
 }
 
@@ -359,7 +359,7 @@ TEST(ErrorCode, DoubleChar)
     for (auto &&lex : correct)
     {
         miniCLexer::Token tmp = lexer.getNextToken();
-        ASSERT_TRUE(tmp.token == lex.token && tmp.value == lex.value);
+        ASSERT_TRUE(tmp.LexemeType == lex.LexemeType && tmp.Value == lex.Value);
     }
 }
 
@@ -378,6 +378,6 @@ TEST(ErrorCode, SingleOperator)
     for (auto &&lex : correct)
     {
         miniCLexer::Token tmp = lexer.getNextToken();
-        ASSERT_TRUE(tmp.token == lex.token && tmp.value == lex.value);
+        ASSERT_TRUE(tmp.LexemeType == lex.LexemeType && tmp.Value == lex.Value);
     }
 }
