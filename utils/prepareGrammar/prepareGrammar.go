@@ -258,6 +258,8 @@ func ItemsBuild(startItem Items) ItemsSet {
 	for changed {
 		changed = false
 		for _, items := range C {
+			
+
 			for _, chr := range append(GrammarMiniC.Nonterminals, GrammarMiniC.Terminals...) {
 				gotoChr := gotoItems(items, chr)
 				if len(gotoChr) != 0 && !containsItems(C, gotoChr) {
@@ -343,7 +345,7 @@ func buildCanonicaLR1Table(startItems Items) CanonicalTableLR1 {
 					if act := MiniCLR1CanonicalTable.Action[i][rule.Symbol.LexemeType].ActionType; act != "error" {
 						fmt.Println(i, "Conflict!", act, "reduce", rule)
 					}
-					MiniCLR1CanonicalTable.Action[i][rule.Symbol.LexemeType] = Action{"reduce", -666, Rule{rule.LeftPart, append([]Token{}, rule.RightPart[:rule.dotPos]...)}}
+					MiniCLR1CanonicalTable.Action[i][rule.Symbol.LexemeType] = Action{"reduce", -1, Rule{rule.LeftPart, append([]Token{}, rule.RightPart[:rule.dotPos]...)}}
 					continue
 				}
 			}

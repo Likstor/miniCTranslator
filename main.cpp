@@ -80,6 +80,7 @@ int main(int argc, char *argv[])
         }
     }
     miniCBuilderAST::Builder bld{lexer, CT};
+
     bld.BuildAST();
 
     miniCBuilderAST::Node AST = bld.GetAST();

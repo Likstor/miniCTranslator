@@ -258,10 +258,6 @@
             "leftPart": "E2",
             "rightPart": [
                 {
-                    "LexemeType": "opnot",
-                    "Value": ""
-                },
-                {
                     "LexemeType": "E1",
                     "Value": ""
                 }
@@ -270,6 +266,10 @@
         {
             "leftPart": "E2",
             "rightPart": [
+                {
+                    "LexemeType": "opnot",
+                    "Value": ""
+                },
                 {
                     "LexemeType": "E1",
                     "Value": ""
@@ -331,14 +331,69 @@
         {
             "leftPart": "E1'",
             "rightPart": [
-                
+                {
+                    "LexemeType": "opinc",
+                    "Value": ""
+                }
             ]
         },
         {
             "leftPart": "E1'",
-            "rightPart": [
+            "rightPart": []
+        },
+        {
+            "leftPart" : "E1'",
+            "rightPart" : [
                 {
-                    "LexemeType": "opinc",
+                    "LexemeType" : "lpar",
+                    "Value" : ""
+                },
+                {
+                    "LexemeType" : "ArgList",
+                    "Value" : ""
+                },
+                {
+                    "LexemeType": "rpar",
+                    "Value": ""
+                }
+            ]
+        },
+        {
+            "leftPart": "ArgList",
+            "rightPart": [
+            ]
+        },
+        {
+            "leftPart" : "ArgList",
+            "rightPart" : [
+                {
+                    "LexemeType": "E",
+                    "Value": ""
+                },
+                {
+                    "LexemeType": "ArgList'",
+                    "Value": ""
+                }
+            ]
+        }, 
+        { 
+            "leftPart": "ArgList'",
+            "rightPart": [
+            ]
+        },
+        {
+            "leftPart" : "ArgList'",
+            "rightPart" : [
+                {
+                    "LexemeType": "comma",
+                    "Value" : ""
+                },
+                {
+                    "LexemeType": "E",
+                    "Value": ""
+                },
+                {
+                    "LexemeType": "ArgList'",
                     "Value": ""
                 }
             ]
@@ -361,7 +416,8 @@
         "opne",
         "opeq",
         "opand",
-        "opor"
+        "opor",
+        "comma"
     ],
     "Nonterminals": [
         "E",
@@ -377,6 +433,8 @@
         "E3'",
         "E2",
         "E1",
-        "E1'"
+        "E1'",
+        "ArgList",
+        "ArgList'"
     ]
 }
