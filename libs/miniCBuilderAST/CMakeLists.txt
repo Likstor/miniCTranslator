@@ -16,6 +16,7 @@ add_library(miniCBuilderAST STATIC)
 target_sources(${PROJECT_NAME}
     PRIVATE
         source/builder.cpp
+        source/node.cpp
 )
 
 target_include_directories(miniCBuilderAST

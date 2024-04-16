@@ -12,6 +12,7 @@ option(MINICTRANSLATOR_TESTING "Enable unit-tests" ON)
 
 add_subdirectory(libs/miniCLexer)
 add_subdirectory(libs/miniCBuilderAST)
+add_subdirectory(libs/miniCSemanticAnalyzer)
 include_directories(libs/)
 
 file(
@@ -19,20 +20,11 @@ file(
     GLOB HEADERS "include/*.h"
 )
 
-target_include_directories(miniCLexer
-    PRIVATE
-        ${CMAKE_CURRENT_SOURCE_DIR}/source
-        ${CMAKE_CURRENT_SOURCE_DIR}/libs
-    PUBLIC
-        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-        $<INSTALL_INTERFACE:include>
-)
-
-
 add_executable(miniCTranslator main.cpp ${SOURCES} ${HEADERS})
 
 target_link_libraries(miniCTranslator miniCLexer)
 target_link_libraries(miniCTranslator miniCBuilderAST)
+target_link_libraries(miniCTranslator miniCSemanticAnalyzer)
 
 
 if(MINICTRANSLATOR_TESTING)

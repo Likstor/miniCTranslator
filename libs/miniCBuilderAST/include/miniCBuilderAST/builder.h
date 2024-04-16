@@ -1,9 +1,12 @@
+#pragma once
 #include <vector>
 #include <string>
 #include <unordered_map>
 #include <miniCLexer/lexer.h>
+#include <miniCBuilderAST/node.h>
 #include <stack>
 #include <iostream>
+#include <any>
 
 namespace miniCBuilderAST
 {
@@ -34,11 +37,13 @@ namespace miniCBuilderAST
     private:
         miniCLexer::Lexer Lexer;
         CanonicalTable Table;
-        std::stack<miniCLexer::Token> StackTokens;
+        std::stack<miniCBuilderAST::Node> StackNode;
         std::stack<int> StackStates;
+        Node AST{"NONE", {}};
 
     public:
         Builder(miniCLexer::Lexer &table, CanonicalTable &Table);
         void BuildAST();
+        Node GetAST();
     };
 }

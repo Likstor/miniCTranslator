@@ -15,16 +15,16 @@
                 {
                     "LexemeType": "E6",
                     "Value": ""
+                },
+                {
+                    "LexemeType": "E7'",
+                    "Value": ""
                 }
             ]
         },
         {
-            "leftPart": "E7",
+            "leftPart": "E7'",
             "rightPart": [
-                {
-                    "LexemeType": "E7",
-                    "Value": ""
-                },
                 {
                     "LexemeType": "opor",
                     "Value": ""
@@ -32,7 +32,17 @@
                 {
                     "LexemeType": "E6",
                     "Value": ""
+                },
+                {
+                    "LexemeType": "E7'",
+                    "Value": ""
                 }
+            ]
+        },
+        {
+            "leftPart": "E7'",
+            "rightPart": [
+                
             ]
         },
         {
@@ -41,16 +51,16 @@
                 {
                     "LexemeType": "E5",
                     "Value": ""
+                },
+                {
+                    "LexemeType": "E6'",
+                    "Value": ""
                 }
             ]
         },
         {
-            "leftPart": "E6",
+            "leftPart": "E6'",
             "rightPart": [
-                {
-                    "LexemeType": "E6",
-                    "Value": ""
-                },
                 {
                     "LexemeType": "opand",
                     "Value": ""
@@ -58,33 +68,17 @@
                 {
                     "LexemeType": "E5",
                     "Value": ""
-                }
-            ]
-        },
-        {
-            "leftPart": "E5",
-            "rightPart": [
+                },
                 {
-                    "LexemeType": "E4",
+                    "LexemeType": "E6'",
                     "Value": ""
                 }
             ]
         },
         {
-            "leftPart": "E5",
+            "leftPart": "E6'",
             "rightPart": [
-                {
-                    "LexemeType": "E4",
-                    "Value": ""
-                },
-                {
-                    "LexemeType": "opne",
-                    "Value": ""
-                },
-                {
-                    "LexemeType": "E4",
-                    "Value": ""
-                }
+                
             ]
         },
         {
@@ -94,6 +88,15 @@
                     "LexemeType": "E4",
                     "Value": ""
                 },
+                {
+                    "LexemeType": "E5'",
+                    "Value": ""
+                }
+            ]
+        },
+        {
+            "leftPart": "E5'",
+            "rightPart": [
                 {
                     "LexemeType": "opeq",
                     "Value": ""
@@ -105,14 +108,10 @@
             ]
         },
         {
-            "leftPart": "E5",
+            "leftPart": "E5'",
             "rightPart": [
                 {
-                    "LexemeType": "E4",
-                    "Value": ""
-                },
-                {
-                    "LexemeType": "opgt",
+                    "LexemeType": "opne",
                     "Value": ""
                 },
                 {
@@ -122,29 +121,8 @@
             ]
         },
         {
-            "leftPart": "E5",
+            "leftPart": "E5'",
             "rightPart": [
-                {
-                    "LexemeType": "E4",
-                    "Value": ""
-                },
-                {
-                    "LexemeType": "ople",
-                    "Value": ""
-                },
-                {
-                    "LexemeType": "E4",
-                    "Value": ""
-                }
-            ]
-        },
-        {
-            "leftPart": "E5",
-            "rightPart": [
-                {
-                    "LexemeType": "E4",
-                    "Value": ""
-                },
                 {
                     "LexemeType": "oplt",
                     "Value": ""
@@ -156,38 +134,53 @@
             ]
         },
         {
-            "leftPart": "E4",
+            "leftPart": "E5'",
             "rightPart": [
                 {
-                    "LexemeType": "E3",
+                    "LexemeType": "opgt",
+                    "Value": ""
+                },
+                {
+                    "LexemeType": "E4",
                     "Value": ""
                 }
+            ]
+        },
+        {
+            "leftPart": "E5'",
+            "rightPart": [
+                {
+                    "LexemeType": "ople",
+                    "Value": ""
+                },
+                {
+                    "LexemeType": "E4",
+                    "Value": ""
+                }
+            ]
+        },
+        {
+            "leftPart": "E5'",
+            "rightPart": [
+                
             ]
         },
         {
             "leftPart": "E4",
             "rightPart": [
                 {
-                    "LexemeType": "E4",
-                    "Value": ""
-                },
-                {
-                    "LexemeType": "opminus",
-                    "Value": ""
-                },
-                {
                     "LexemeType": "E3",
+                    "Value": ""
+                },
+                {
+                    "LexemeType": "E4'",
                     "Value": ""
                 }
             ]
         },
         {
-            "leftPart": "E4",
+            "leftPart": "E4'",
             "rightPart": [
-                {
-                    "LexemeType": "E4",
-                    "Value": ""
-                },
                 {
                     "LexemeType": "opplus",
                     "Value": ""
@@ -195,7 +188,34 @@
                 {
                     "LexemeType": "E3",
                     "Value": ""
+                },
+                {
+                    "LexemeType": "E4'",
+                    "Value": ""
                 }
+            ]
+        },
+        {
+            "leftPart": "E4'",
+            "rightPart": [
+                {
+                    "LexemeType": "opminus",
+                    "Value": ""
+                },
+                {
+                    "LexemeType": "E3",
+                    "Value": ""
+                },
+                {
+                    "LexemeType": "E4'",
+                    "Value": ""
+                }
+            ]
+        },
+        {
+            "leftPart": "E4'",
+            "rightPart": [
+                
             ]
         },
         {
@@ -204,16 +224,16 @@
                 {
                     "LexemeType": "E2",
                     "Value": ""
+                },
+                {
+                    "LexemeType": "E3'",
+                    "Value": ""
                 }
             ]
         },
         {
-            "leftPart": "E3",
+            "leftPart": "E3'",
             "rightPart": [
-                {
-                    "LexemeType": "E3",
-                    "Value": ""
-                },
                 {
                     "LexemeType": "opmul",
                     "Value": ""
@@ -221,16 +241,17 @@
                 {
                     "LexemeType": "E2",
                     "Value": ""
+                },
+                {
+                    "LexemeType": "E3'",
+                    "Value": ""
                 }
             ]
         },
         {
-            "leftPart": "E2",
+            "leftPart": "E3'",
             "rightPart": [
-                {
-                    "LexemeType": "E1",
-                    "Value": ""
-                }
+                
             ]
         },
         {
@@ -242,6 +263,28 @@
                 },
                 {
                     "LexemeType": "E1",
+                    "Value": ""
+                }
+            ]
+        },
+        {
+            "leftPart": "E2",
+            "rightPart": [
+                {
+                    "LexemeType": "E1",
+                    "Value": ""
+                }
+            ]
+        },
+        {
+            "leftPart": "E1",
+            "rightPart": [
+                {
+                    "LexemeType": "id",
+                    "Value": ""
+                },
+                {
+                    "LexemeType": "E1'",
                     "Value": ""
                 }
             ]
@@ -259,41 +302,6 @@
             "leftPart": "E1",
             "rightPart": [
                 {
-                    "LexemeType": "id",
-                    "Value": ""
-                }
-            ]
-        },
-        {
-            "leftPart": "E1",
-            "rightPart": [
-                {
-                    "LexemeType": "id",
-                    "Value": ""
-                },
-                {
-                    "LexemeType": "opinc",
-                    "Value": ""
-                }
-            ]
-        },
-        {
-            "leftPart": "E1",
-            "rightPart": [
-                {
-                    "LexemeType": "opinc",
-                    "Value": ""
-                },
-                {
-                    "LexemeType": "id",
-                    "Value": ""
-                }
-            ]
-        },
-        {
-            "leftPart": "E1",
-            "rightPart": [
-                {
                     "LexemeType": "lpar",
                     "Value": ""
                 },
@@ -303,6 +311,34 @@
                 },
                 {
                     "LexemeType": "rpar",
+                    "Value": ""
+                }
+            ]
+        },
+        {
+            "leftPart": "E1",
+            "rightPart": [
+                {
+                    "LexemeType": "opinc",
+                    "Value": ""
+                },
+                {
+                    "LexemeType": "id",
+                    "Value": ""
+                }
+            ]
+        },
+        {
+            "leftPart": "E1'",
+            "rightPart": [
+                
+            ]
+        },
+        {
+            "leftPart": "E1'",
+            "rightPart": [
+                {
+                    "LexemeType": "opinc",
                     "Value": ""
                 }
             ]
@@ -329,12 +365,18 @@
     ],
     "Nonterminals": [
         "E",
-        "E1",
-        "E2",
-        "E3",
-        "E4",
-        "E5",
+        "E7",
+        "E7'",
         "E6",
-        "E7"
+        "E6'",
+        "E5",
+        "E5'",
+        "E4",
+        "E4'",
+        "E3",
+        "E3'",
+        "E2",
+        "E1",
+        "E1'"
     ]
 }

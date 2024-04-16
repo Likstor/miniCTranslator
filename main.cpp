@@ -3,10 +3,12 @@
 #include <iostream>
 #include <string>
 #include <unordered_map>
-#include <miniCLexer/lexer.h>
-#include <miniCBuilderAST/builder.h>
 #include <json.hpp>
 #include <typeinfo>
+#include <miniCLexer/lexer.h>
+#include <miniCBuilderAST/builder.h>
+#include <miniCBuilderAST/node.h>
+#include <miniCSemanticAnalyzer/analyzer.h>
 
 using json = nlohmann::json;
 
@@ -79,4 +81,8 @@ int main(int argc, char *argv[])
     }
     miniCBuilderAST::Builder bld{lexer, CT};
     bld.BuildAST();
+
+    miniCBuilderAST::Node AST = bld.GetAST();
+
+    miniCSemanticAnalyzer::E(AST, {});
 }

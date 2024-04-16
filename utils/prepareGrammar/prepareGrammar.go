@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"os"
 )
@@ -23,10 +24,10 @@ type Grammar struct {
 }
 
 type Item struct {
-	LeftPart string
+	LeftPart  string
 	RightPart []Token
-	Symbol Token
-	dotPos int
+	Symbol    Token
+	dotPos    int
 }
 
 type Items []Item
@@ -35,15 +36,15 @@ type ItemsSet []Items
 
 type Action struct {
 	ActionType string
-	Pos int
-	Rule Rule
+	Pos        int
+	Rule       Rule
 }
 
 type CanonicalTableLR1 struct {
-	Goto map[int]map[string]int
-	Action map[int]map[string]Action
-	StartPos int
-	Terminals []string
+	Goto         map[int]map[string]int
+	Action       map[int]map[string]Action
+	StartPos     int
+	Terminals    []string
 	Nonterminals []string
 }
 
@@ -66,8 +67,8 @@ func containsItem(I Items, item Item) bool {
 		check := true
 
 		if obj.LeftPart == item.LeftPart &&
-		obj.dotPos == item.dotPos &&
-		obj.Symbol.LexemeType == item.Symbol.LexemeType {
+			obj.dotPos == item.dotPos &&
+			obj.Symbol.LexemeType == item.Symbol.LexemeType {
 			if len(obj.RightPart) != len(item.RightPart) {
 				continue
 			}
@@ -87,15 +88,21 @@ func containsItem(I Items, item Item) bool {
 	return false
 }
 
-func containsItems(I ItemsSet, items Items) bool {
-	for _, itms := range I {
+func containsItems(I ItemsSet, candidate Items) bool {
+	for _, presented := range I {
 		counter := 0
-		for _, item := range itms {
-			if containsItem(items, item) {
+
+		if len(presented) != len(candidate) {
+			continue
+		}
+
+		for _, elem := range presented {
+			if containsItem(candidate, elem) {
 				counter++
 			}
 		}
-		if len(itms) == counter {
+
+		if len(candidate) == counter {
 			return true
 		}
 	}
@@ -113,9 +120,9 @@ func constructFirst() {
 	}
 
 	for _, rule := range GrammarMiniC.Rules {
-			if rule.RightPart[0].LexemeType == "epsilon" {
-				First[rule.LeftPart]["epsilon"] = false
-			}
+		if len(rule.RightPart) == 0 {
+			First[rule.LeftPart]["epsilon"] = false
+		}
 	}
 
 	changed := true
@@ -123,6 +130,10 @@ func constructFirst() {
 		changed = false
 
 		for _, rule := range GrammarMiniC.Rules {
+			if len(rule.RightPart) == 0 {
+				continue
+			}
+
 			h := 0
 			for {
 				token := rule.RightPart[h]
@@ -159,47 +170,77 @@ func closure(I Items) Items {
 	changed := true
 	for changed {
 		changed = false
+
+		var J Items
+		J = append(J, I...)
+
 		for _, item := range I {
-			if len(item.RightPart) == item.dotPos + 1 || isTerminal(item.RightPart[item.dotPos + 1].LexemeType) {
+			if len(item.RightPart) == item.dotPos+1 || isTerminal(item.RightPart[item.dotPos+1].LexemeType) {
 				continue
 			}
 
-			firstBa := append([]Token{}, item.RightPart[item.dotPos + 2:]...)
+			firstBa := append([]Token{}, item.RightPart[item.dotPos+2:]...)
 			firstBa = append(firstBa, item.Symbol)
+			firstI := 0
 
 			for _, rule2 := range GrammarMiniC.Rules {
-				if rule2.LeftPart != item.RightPart[item.dotPos + 1].LexemeType {
+				if rule2.LeftPart != item.RightPart[item.dotPos+1].LexemeType {
 					continue
 				}
-				for b := range First[firstBa[0].LexemeType] {
-					tempItem := Item{
-						rule2.LeftPart, 
-						append([]Token{{"dot", ""}}, rule2.RightPart...), 
-						Token{b, ""}, 
-						0,
-					}
-					if containsItem(I, tempItem) {
+
+			FirstBaRepeat:
+				hasEps := false
+				for b := range First[firstBa[firstI].LexemeType] {
+					var tempItem Item
+
+					if b == "epsilon" {
+						hasEps = true
 						continue
 					}
 
-					I = append(I, tempItem)
+					if len(rule2.RightPart) == 0 {
+						tempItem = Item{
+							rule2.LeftPart,
+							[]Token{{"dot", ""}},
+							Token{b, ""},
+							0,
+						}
+					} else {
+						tempItem = Item{
+							rule2.LeftPart,
+							append([]Token{{"dot", ""}}, rule2.RightPart...),
+							Token{b, ""},
+							0,
+						}
+					}
+					if containsItem(J, tempItem) {
+						continue
+					}
+
+					J = append(J, tempItem)
 					changed = true
+				}
+				if hasEps {
+					firstI++
+					goto FirstBaRepeat
 				}
 			}
 		}
+		I = Items{}
+		I = append(I, J...)
 	}
 
 	return I
 }
 
-func gotoItems(I Items, chr string) Items{
+func gotoItems(I Items, chr string) Items {
 	var J Items
 	for _, item := range I {
-		if item.dotPos + 1 < len(item.RightPart)  && item.RightPart[item.dotPos + 1].LexemeType == chr {
+		if item.dotPos+1 < len(item.RightPart) && item.RightPart[item.dotPos+1].LexemeType == chr {
 			alpha := append([]Token{}, item.RightPart[:item.dotPos]...)
-			beta := append([]Token{}, item.RightPart[item.dotPos + 2:]...)
+			beta := append([]Token{}, item.RightPart[item.dotPos+2:]...)
 			rightPartTemp := append([]Token{}, alpha...)
-			rightPartTemp = append(rightPartTemp, item.RightPart[item.dotPos + 1], Token{"dot", ""})
+			rightPartTemp = append(rightPartTemp, item.RightPart[item.dotPos+1], Token{"dot", ""})
 			rightPartTemp = append(rightPartTemp, beta...)
 			J = append(J, Item{item.LeftPart, rightPartTemp, item.Symbol, item.dotPos + 1})
 		}
@@ -253,6 +294,12 @@ func buildCanonicaLR1Table(startItems Items) CanonicalTableLR1 {
 
 	canonicalItems := ItemsBuild(startItems)
 
+	jsonItems, err := json.Marshal(canonicalItems)
+	if err != nil {
+		panic(err)
+	}
+
+	_ = os.WriteFile("canonicalItems.json", jsonItems, 0644)
 
 	for i := 0; i < len(canonicalItems); i++ {
 		MiniCLR1CanonicalTable.Action[i] = make(map[string]Action)
@@ -268,36 +315,51 @@ func buildCanonicaLR1Table(startItems Items) CanonicalTableLR1 {
 
 	for i, items := range canonicalItems {
 		for _, rule := range items {
-			if len(rule.RightPart) > rule.dotPos + 1 && isTerminal(rule.RightPart[rule.dotPos + 1].LexemeType) {
-				gotoIi := gotoItems(items, rule.RightPart[rule.dotPos + 1].LexemeType)
-				itemsJ := findItems(canonicalItems, gotoIi)
 
-				if itemsJ == -1 {
+			if len(rule.RightPart) > rule.dotPos+1 {
+				nextToken := rule.RightPart[rule.dotPos+1].LexemeType
+
+				if isTerminal(nextToken) {
+					act := MiniCLR1CanonicalTable.Action[i][nextToken]
+					gotoIi := gotoItems(items, nextToken)
+					itemsJ := findItems(canonicalItems, gotoIi)
+
+					if itemsJ == -1 {
+						panic("ITEMS J -1")
+					}
+
+					if act.ActionType != "error" && act.Pos != itemsJ {
+						fmt.Println(i, "Conflict!", act, "shift", itemsJ, rule)
+					}
+					MiniCLR1CanonicalTable.Action[i][nextToken] = Action{"shift", itemsJ, Rule{"NULL", []Token{}}}
 					continue
 				}
-				MiniCLR1CanonicalTable.Action[i][rule.RightPart[rule.dotPos + 1].LexemeType] = Action{"shift", itemsJ, Rule{"NULL", []Token{}}}
-				continue
-			}
-			
-			if rule.dotPos + 1 == len(rule.RightPart) && rule.LeftPart != "S'" {
-				gotoIi := gotoItems(items, rule.LeftPart)
-				itemsJ := findItems(canonicalItems, gotoIi)
-				MiniCLR1CanonicalTable.Action[i][rule.Symbol.LexemeType] = Action{"reduce", itemsJ, Rule{rule.LeftPart, append([]Token{}, rule.RightPart[:rule.dotPos]...)}}
-				continue
-			}
+			} else if rule.dotPos+1 == len(rule.RightPart) {
+				if rule.LeftPart == "S'" {
+					MiniCLR1CanonicalTable.Action[i]["eof"] = Action{"accept", -1, Rule{}}
+					continue
+				} else {
 
-			if  rule.dotPos + 1 == len(rule.RightPart) && rule.LeftPart == "S'"  {
-				MiniCLR1CanonicalTable.Action[i]["eof"] = Action{"accept", -1, Rule{}}
-				continue
+					if act := MiniCLR1CanonicalTable.Action[i][rule.Symbol.LexemeType].ActionType; act != "error" {
+						fmt.Println(i, "Conflict!", act, "reduce", rule)
+					}
+					MiniCLR1CanonicalTable.Action[i][rule.Symbol.LexemeType] = Action{"reduce", -666, Rule{rule.LeftPart, append([]Token{}, rule.RightPart[:rule.dotPos]...)}}
+					continue
+				}
 			}
 		}
-		
+
 		for _, temp := range GrammarMiniC.Nonterminals {
 			gotoA := gotoItems(items, temp)
 			itemsJ := findItems(canonicalItems, gotoA)
 			if itemsJ == -1 {
 				continue
 			}
+
+			if t, ok := MiniCLR1CanonicalTable.Goto[i][temp]; ok && t != -1 {
+				panic("NOT LR(1)")
+			}
+
 			MiniCLR1CanonicalTable.Goto[i][temp] = itemsJ
 
 		}
@@ -306,7 +368,7 @@ func buildCanonicaLR1Table(startItems Items) CanonicalTableLR1 {
 }
 
 func main() {
-	grammarFile, err := os.ReadFile("./grammarIn.json")
+	grammarFile, err := os.ReadFile("grammarIn.json")
 	if err != nil {
 		panic(err)
 	}
@@ -315,14 +377,21 @@ func main() {
 		log.Fatal(err)
 	}
 
+	constructFirst()
+
+	for key, value := range First {
+		fmt.Println(key, value)
+	}
+
 	startItems := Items{Item{"S'", []Token{{"dot", ""}, {"E", ""}}, Token{"eof", ""}, 0}}
 
+	closure(startItems)
 	canonicalTable := buildCanonicaLR1Table(startItems)
 
 	jsonCanonicalTable, err := json.Marshal(canonicalTable)
 	if err != nil {
 		panic(err)
 	}
-	
+
 	_ = os.WriteFile("canonicalTable.json", jsonCanonicalTable, 0644)
 }
