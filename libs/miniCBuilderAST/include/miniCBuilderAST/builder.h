@@ -12,8 +12,8 @@ namespace miniCBuilderAST
 {
     struct Rule
     {
-        std::string LeftPart;
-        std::vector<miniCLexer::Token> RightPart;
+        std::string Name;
+        std::vector<miniCLexer::Token> Body;
     };
 
     struct Action

@@ -14,28 +14,9 @@ using json = nlohmann::json;
 
 int main(int argc, char *argv[])
 {
-    // if (argc < 2)
-    // {
-    //     std::cerr << "None file path";
-    //     return -1;
-    // }
-
     std::ifstream stream(argv[1], std::ios::in);
 
     miniCLexer::Lexer lexer{stream};
-
-    // while (true)
-    // {
-    //     miniCLexer::Token temp = lexer.getNextToken();
-
-    //     std::cout << "[" << temp.LexemeType << ", \"" << temp.Value << "\"]" << std::endl;
-
-    //     if (temp.LexemeType == "error" || temp.LexemeType == "eof")
-    //     {
-    //         break;
-    //     }
-
-    // }
 
     std::ifstream json(argv[2], std::ios::in);
 
@@ -44,7 +25,7 @@ int main(int argc, char *argv[])
     miniCBuilderAST::CanonicalTable CT;
 
     CT.Terminals = canonicalTableJson["Terminals"];
-    CT.Nonterminals = canonicalTableJson["Nonterminals"];
+    CT.Nonterminals = canonicalTableJson["NonTerminals"];
 
     for (const auto &[key, value] : canonicalTableJson["Goto"].items())
     {
@@ -57,9 +38,9 @@ int main(int argc, char *argv[])
         {
             miniCBuilderAST::Action action;
             action.ActionType = canonicalTableJson["Action"][key][term]["ActionType"];
-            action.Pos = canonicalTableJson["Action"][key][term]["Pos"];
+            action.Pos = canonicalTableJson["Action"][key][term]["NextState"];
 
-            if (canonicalTableJson["Action"][key][term]["Rule"]["LeftPart"] == "NULL")
+            if (canonicalTableJson["Action"][key][term]["Rule"]["Name"] == "NULL")
             {
                 action.Rule = miniCBuilderAST::Rule{};
             }
@@ -67,11 +48,11 @@ int main(int argc, char *argv[])
             {
                 miniCBuilderAST::Rule rule;
 
-                rule.LeftPart = canonicalTableJson["Action"][key][term]["Rule"]["LeftPart"];
+                rule.Name = canonicalTableJson["Action"][key][term]["Rule"]["Name"];
 
-                for (int i = 0; i < canonicalTableJson["Action"][key][term]["Rule"]["RightPart"].size(); i++)
+                for (int i = 0; i < canonicalTableJson["Action"][key][term]["Rule"]["Body"].size(); i++)
                 {
-                    rule.RightPart.push_back(miniCLexer::Token{canonicalTableJson["Action"][key][term]["Rule"]["RightPart"][i]["LexemeType"], canonicalTableJson["Action"][key][term]["Rule"]["RightPart"][i]["Value"]});
+                    rule.Body.push_back(miniCLexer::Token{canonicalTableJson["Action"][key][term]["Rule"]["Body"][i], ""});
                 }
 
                 action.Rule = rule;
@@ -83,7 +64,7 @@ int main(int argc, char *argv[])
 
     bld.BuildAST();
 
-    miniCBuilderAST::Node AST = bld.GetAST();
+    // miniCBuilderAST::Node AST = bld.GetAST();
 
-    miniCSemanticAnalyzer::E(AST, {});
+    // miniCSemanticAnalyzer::E(AST, {});
 }

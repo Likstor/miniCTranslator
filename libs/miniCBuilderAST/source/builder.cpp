@@ -16,6 +16,7 @@ namespace miniCBuilderAST
         while (true)
         {
             int curState = StackStates.top();
+            std::cout << curState << curToken.LexemeType << std::endl;
             Action action = Table.Action[curState][curToken.LexemeType];
 
             if (action.ActionType == "shift")
@@ -32,7 +33,7 @@ namespace miniCBuilderAST
             {
                 std::vector<miniCBuilderAST::Node> tempArrayNode;
 
-                for (int i = 0; i < action.Rule.RightPart.size(); i++)
+                for (int i = 0; i < action.Rule.Body.size(); i++)
                 {
                     StackStates.pop();
 
@@ -42,10 +43,10 @@ namespace miniCBuilderAST
                 }
 
                 std::reverse(tempArrayNode.begin(), tempArrayNode.end());
-                miniCBuilderAST::Node tempNode{action.Rule.LeftPart, {}, tempArrayNode};
+                miniCBuilderAST::Node tempNode{action.Rule.Name, {}, tempArrayNode};
 
                 StackNode.push(tempNode);
-                StackStates.push(Table.Goto[StackStates.top()][action.Rule.LeftPart]);
+                StackStates.push(Table.Goto[StackStates.top()][action.Rule.Name]);
                 continue;
             }
 

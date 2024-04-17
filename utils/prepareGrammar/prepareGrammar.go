@@ -284,13 +284,6 @@ func buildCanonicaLR1Table(startItems Items) CanonicalTableLR1 {
 
 	canonicalItems := ItemsBuild(startItems)
 
-	jsonItems, err := json.Marshal(canonicalItems)
-	if err != nil {
-		panic(err)
-	}
-
-	_ = os.WriteFile("canonicalItems.json", jsonItems, 0644)
-
 	for i := 0; i < len(canonicalItems); i++ {
 		table.Action[i] = make(map[string]Action)
 		for _, t := range GrammarMiniC.Terminals {
@@ -321,6 +314,7 @@ func buildCanonicaLR1Table(startItems Items) CanonicalTableLR1 {
 					if action.ActionType != errAction.ActionType &&
 						action.NextState != state {
 						fmt.Println(i, "Conflict!", action, "shift", state, punct)
+						
 					}
 
 					table.Action[i][token] = Action{
@@ -330,7 +324,7 @@ func buildCanonicaLR1Table(startItems Items) CanonicalTableLR1 {
 					}
 				}
 			} else if punct.DotPos+1 == len(punct.Body) {
-				if punct.Name == "S'" {
+				if punct.Name == "StartState" {
 					table.Action[i]["eof"] = Action{
 						ActionType: "accept",
 						NextState:  -1,
@@ -340,6 +334,7 @@ func buildCanonicaLR1Table(startItems Items) CanonicalTableLR1 {
 
 					if act := table.Action[i][punct.Symbol].ActionType; act != "error" {
 						fmt.Println(i, "Conflict!", act, "reduce", punct)
+						continue
 					}
 
 					table.Action[i][punct.Symbol] = Action{
@@ -381,24 +376,17 @@ func main() {
 		log.Fatal(err)
 	}
 
-	constructFirst()
-
-	for key, value := range First {
-		fmt.Println(key, value)
-	}
-
 	startItems := Items{
 		Item{
 			Rule: Rule{
-				Name: "S'",
-				Body: []string{dot, "E"},
+				Name: "StartState",
+				Body: []string{dot, "StmtList"},
 			},
 			Symbol: "eof",
 			DotPos: 0,
 		},
 	}
 
-	closure(startItems)
 	canonicalTable := buildCanonicaLR1Table(startItems)
 
 	jsonCanonicalTable, err := json.Marshal(canonicalTable)

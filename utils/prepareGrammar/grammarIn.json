@@ -217,27 +217,424 @@
         "E",
         "ArgList'"
       ]
+    },
+    {
+      "name": "DeclareStmt",
+      "body": [
+        "Type",
+        "id",
+        "DeclareStmt'"
+      ]
+    },
+    {
+      "name": "DeclareStmt'",
+      "body": [
+        "lpar",
+        "ParamList",
+        "rpar",
+        "lbrace",
+        "StmtList",
+        "rbrace"
+      ]
+    },
+    {
+      "name": "DeclareStmt'",
+      "body": [
+        "opassign",
+        "num",
+        "DeclVarList'",
+        "semicolon"
+      ]
+    },
+    {
+      "name": "DeclareStmt'",
+      "body": [
+        "DeclVarList'",
+        "semicolon"
+      ]
+    },
+    {
+      "name": "Type",
+      "body": [
+        "kwchar"
+      ]
+    },
+    {
+      "name": "Type",
+      "body": [
+        "kwint"
+      ]
+    },
+    {
+      "name": "DeclVarList'",
+      "body": [
+        "comma",
+        "id",
+        "InitVar",
+        "DeclVarList'"
+      ]
+    },
+    {
+      "name": "DeclVarList'",
+      "body": []
+    },
+    {
+      "name": "InitVar",
+      "body": [
+        "opassign",
+        "InitVar'"
+      ]
+    },
+    {
+      "name": "InitVar'",
+      "body": [
+        "num"
+      ]
+    },
+    {
+      "name": "InitVar'",
+      "body": [
+        "chr"
+      ]
+    },
+    {
+      "name": "InitVar",
+      "body": []
+    },
+    {
+      "name": "ParamList",
+      "body": [
+        "Type",
+        "id",
+        "ParamList'"
+      ]
+    },
+    {
+      "name": "ParamList",
+      "body": []
+    },
+    {
+      "name": "ParamList'",
+      "body": [
+        "comma",
+        "Type",
+        "id",
+        "ParamList'"
+      ]
+    },
+    {
+      "name": "ParamList'",
+      "body": []
+    },
+    {
+      "name": "StmtList",
+      "body": [
+        "Stmt",
+        "StmtList"
+      ]
+    },
+    {
+      "name": "StmtList",
+      "body": []
+    },
+    {
+      "name": "Stmt",
+      "body": [
+        "DeclareStmt"
+      ]
+    },
+    {
+      "name": "Stmt",
+      "body": [
+        "AssignOrCallOp"
+      ]
+    },
+    {
+      "name": "Stmt",
+      "body": [
+        "WhileOp"
+      ]
+    },
+    {
+      "name": "Stmt",
+      "body": [
+        "ForOp"
+      ]
+    },
+    {
+      "name": "Stmt",
+      "body": [
+        "IfOp"
+      ]
+    },
+    {
+      "name": "Stmt",
+      "body": [
+        "SwitchOp"
+      ]
+    },
+    {
+      "name": "Stmt",
+      "body": [
+        "IOp"
+      ]
+    },
+    {
+      "name": "Stmt",
+      "body": [
+        "OOp"
+      ]
+    },
+    {
+      "name": "Stmt",
+      "body": [
+        "lbrace",
+        "StmtList",
+        "rbrace"
+      ]
+    },
+    {
+      "name": "Stmt",
+      "body": [
+        "kwreturn",
+        "E",
+        "semicolon"
+      ]
+    },
+    {
+      "name": "Stmt",
+      "body": [
+        "semicolon"
+      ]
+    },
+    {
+      "name": "AssignOrCallOp",
+      "body": [
+        "AssignOrCall",
+        "semicolon"
+      ]
+    },
+    {
+      "name": "AssignOrCall",
+      "body": [
+        "id",
+        "AssignOrCall'"
+      ]
+    },
+    {
+      "name": "AssignOrCall'",
+      "body": [
+        "opassign",
+        "E"
+      ]
+    },
+    {
+      "name": "AssignOrCall'",
+      "body": [
+        "lpar",
+        "ArgList",
+        "rpar"
+      ]
+    },
+    {
+      "name": "WhileOp",
+      "body": [
+        "kwwhile",
+        "lpar",
+        "E",
+        "rpar",
+        "Stmt"
+      ]
+    },
+    {
+      "name": "ForOp",
+      "body": [
+        "kwfor",
+        "lpar",
+        "ForInit",
+        "semicolon",
+        "ForExp",
+        "semicolon",
+        "ForLoop",
+        "rpar",
+        "Stmt"
+      ]
+    },
+    {
+      "name": "ForInit",
+      "body": [
+        "AssignOrCallOp"
+      ]
+    },
+    {
+      "name": "ForInit",
+      "body": []
+    },
+    {
+      "name": "ForExp",
+      "body": [
+        "E"
+      ]
+    },
+    {
+      "name": "ForExp",
+      "body": []
+    },
+    {
+      "name": "ForLoop",
+      "body": [
+        "AssignOrCallOp"
+      ]
+    },
+    {
+      "name": "ForLoop",
+      "body": [
+        "opinc",
+        "id"
+      ]
+    },
+    {
+      "name": "ForLoop",
+      "body": []
+    },
+    {
+      "name": "IfOp",
+      "body": [
+        "kwif",
+        "lpar",
+        "E",
+        "rpar",
+        "Stmt",
+        "ElsePart"
+      ]
+    },
+    {
+      "name": "ElsePart",
+      "body": [
+        "kwelse",
+        "Stmt"
+      ]
+    },
+    {
+      "name": "ElsePart",
+      "body": []
+    },
+    {
+      "name": "SwitchOp",
+      "body": [
+        "kwswitch",
+        "lpar",
+        "E",
+        "rpar",
+        "lbrace",
+        "Cases",
+        "rbrace"
+      ]
+    },
+    {
+      "name": "Cases",
+      "body": [
+        "ACase",
+        "Cases'"
+      ]
+    },
+    {
+      "name": "Cases'",
+      "body": [
+        "ACase",
+        "Cases'"
+      ]
+    },
+    {
+      "name": "Cases'",
+      "body": []
+    },
+    {
+      "name": "ACase",
+      "body": [
+        "kwcase",
+        "num",
+        "colon",
+        "StmtList"
+      ]
+    },
+    {
+      "name": "ACase",
+      "body": [
+        "kwdefault",
+        "colon",
+        "StmtList"
+      ]
+    },
+    {
+      "name": "IOp",
+      "body": [
+        "kwin",
+        "id",
+        "semicolon"
+      ]
+    },
+    {
+      "name": "OOp",
+      "body": [
+        "kwout",
+        "OOp'",
+        "semicolon"
+      ]
+    },
+    {
+      "name": "OOp'",
+      "body": [
+        "E"
+      ]
+    },
+    {
+      "name": "OOp'",
+      "body": [
+        "str"
+      ]
     }
   ],
   "Terminals": [
     "eof",
+    "num",
+    "chr",
+    "str",
+    "id",
     "lpar",
     "rpar",
-    "id",
-    "num",
-    "opinc",
-    "opnot",
-    "opmul",
-    "opminus",
+    "lbrace",
+    "rbrace",
+    "lbracket",
+    "rbracket",
+    "semicolon",
+    "comma",
+    "colon",
+    "opassign",
     "opplus",
-    "ople",
+    "opminus",
+    "opmul",
+    "opinc",
+    "opeq",
+    "opne",
     "oplt",
     "opgt",
-    "opne",
-    "opeq",
-    "opand",
+    "ople",
+    "opnot",
     "opor",
-    "comma"
+    "opand",
+    "kwint",
+    "kwchar",
+    "kwif",
+    "kwelse",
+    "kwswitch",
+    "kwcase",
+    "kwwhile",
+    "kwfor",
+    "kwreturn",
+    "kwin",
+    "kwout",
+    "kwdefault"
   ],
   "Nonterminals": [
     "E",
@@ -255,6 +652,34 @@
     "E1",
     "E1'",
     "ArgList",
-    "ArgList'"
+    "ArgList'",
+    "DeclareStmt",
+    "DeclareStmt'",
+    "Type",
+    "DeclVarList",
+    "DeclVarList'",
+    "InitVar",
+    "InitVar'",
+    "ParamList",
+    "ParamList'",
+    "StmtList",
+    "Stmt",
+    "AssignOrCallOp",
+    "AssignOrCall",
+    "AssignOrCall'",
+    "WhileOp",
+    "ForOp",
+    "ForInit",
+    "ForExp",
+    "ForLoop",
+    "IfOp",
+    "ElsePart",
+    "SwitchOp",
+    "Cases",
+    "Cases'",
+    "ACase",
+    "IOp",
+    "OOp",
+    "OOp'"
   ]
 }
