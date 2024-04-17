@@ -7,27 +7,22 @@ import (
 	"os"
 )
 
-type Token struct {
-	LexemeType string
-	Value      string
-}
-
 type Rule struct {
-	LeftPart  string
-	RightPart []Token
+	Name string
+	Body []string
 }
 
 type Grammar struct {
 	Rules        []Rule
 	Terminals    []string
-	Nonterminals []string
+	NonTerminals []string
 }
 
 type Item struct {
-	LeftPart  string
-	RightPart []Token
-	Symbol    Token
-	dotPos    int
+	Rule
+
+	Symbol string
+	DotPos int
 }
 
 type Items []Item
@@ -36,21 +31,33 @@ type ItemsSet []Items
 
 type Action struct {
 	ActionType string
-	Pos        int
+	NextState  int
 	Rule       Rule
 }
 
 type CanonicalTableLR1 struct {
 	Goto         map[int]map[string]int
 	Action       map[int]map[string]Action
-	StartPos     int
+	StartState   int
 	Terminals    []string
-	Nonterminals []string
+	NonTerminals []string
 }
 
 var (
-	First        = map[string]map[string]bool{}
+	First        = map[string]map[string]struct{}{}
 	GrammarMiniC Grammar
+
+	dummy   struct{}
+	dot     = "⦿"
+	epsilon = "ε"
+
+	nullRule = Rule{"NULL", []string{}}
+
+	errAction = Action{
+		ActionType: "error",
+		NextState:  -1,
+		Rule:       nullRule,
+	}
 )
 
 func isTerminal(chr string) bool {
@@ -62,187 +69,176 @@ func isTerminal(chr string) bool {
 	return false
 }
 
-func containsItem(I Items, item Item) bool {
-	for _, obj := range I {
-		check := true
+func containsItem(Collection Items, newOne Item) bool {
 
-		if obj.LeftPart == item.LeftPart &&
-			obj.dotPos == item.dotPos &&
-			obj.Symbol.LexemeType == item.Symbol.LexemeType {
-			if len(obj.RightPart) != len(item.RightPart) {
-				continue
-			}
-
-			for i, tkn := range item.RightPart {
-				if tkn.LexemeType == obj.RightPart[i].LexemeType {
-					continue
-				}
-				check = false
-				break
-			}
-			if check {
-				return true
-			}
-		}
-	}
-	return false
-}
-
-func containsItems(I ItemsSet, candidate Items) bool {
-	for _, presented := range I {
-		counter := 0
-
-		if len(presented) != len(candidate) {
+CollectionLoop:
+	for _, elem := range Collection {
+		if elem.Name != newOne.Name ||
+			elem.DotPos != newOne.DotPos ||
+			elem.Symbol != newOne.Symbol ||
+			len(elem.Body) != len(newOne.Body) {
 			continue
 		}
 
-		for _, elem := range presented {
-			if containsItem(candidate, elem) {
-				counter++
+		for i, newOneToken := range newOne.Body {
+			if newOneToken != elem.Body[i] {
+				continue CollectionLoop
 			}
 		}
 
-		if len(candidate) == counter {
+		// all checks are passed
+		return true
+	}
+
+	// there is no equal elements
+	return false
+}
+
+// assume sets doesn't contains same elements,
+// in other words, all elements are unique
+func isSameSets(first, second Items) bool {
+	if len(first) != len(second) {
+		return false
+	}
+
+	for _, elem := range first {
+		if !containsItem(second, elem) {
+			return false
+		}
+	}
+
+	// all checks are passed
+	return true
+}
+
+func containsItems(Set ItemsSet, candidate Items) bool {
+	for _, presented := range Set {
+		if isSameSets(presented, candidate) {
 			return true
 		}
 	}
+
 	return false
 }
 
 func constructFirst() {
-	for _, terminal := range GrammarMiniC.Terminals {
-		First[terminal] = make(map[string]bool)
-		First[terminal][terminal] = false
+	for _, t := range GrammarMiniC.Terminals {
+		First[t] = make(map[string]struct{})
+		First[t][t] = dummy
 	}
 
-	for _, nonterminal := range GrammarMiniC.Nonterminals {
-		First[nonterminal] = make(map[string]bool)
+	for _, nt := range GrammarMiniC.NonTerminals {
+		First[nt] = make(map[string]struct{})
 	}
 
-	for _, rule := range GrammarMiniC.Rules {
-		if len(rule.RightPart) == 0 {
-			First[rule.LeftPart]["epsilon"] = false
+	for _, r := range GrammarMiniC.Rules {
+		if len(r.Body) == 0 {
+			First[r.Name][epsilon] = dummy
 		}
 	}
 
-	changed := true
-	for changed {
+	for changed := true; changed; {
 		changed = false
 
 		for _, rule := range GrammarMiniC.Rules {
-			if len(rule.RightPart) == 0 {
+			if len(rule.Body) == 0 {
 				continue
 			}
 
-			h := 0
-			for {
-				token := rule.RightPart[h]
-				hasEpsilon := false
+			for i, hasEpsilon := 0, true; hasEpsilon; i++ {
+				hasEpsilon = false
 
-				for key := range First[token.LexemeType] {
-					if _, ok := First[token.LexemeType]["epsilon"]; ok {
-						hasEpsilon = true
-						continue
-					}
+				ruleToken := rule.Body[i]
+				if _, ok := First[ruleToken][epsilon]; ok {
+					hasEpsilon = true
+				}
 
-					if _, ok := First[rule.LeftPart][key]; !ok {
+				for terminal := range First[ruleToken] {
+					if _, ok := First[rule.Name][terminal]; !ok {
 						changed = true
+						First[rule.Name][terminal] = dummy
 					}
-
-					First[rule.LeftPart][key] = false
 				}
 
-				if h+1 == len(rule.RightPart) && hasEpsilon {
-					First[rule.LeftPart]["epsilon"] = false
+				if i+1 == len(rule.Body) && hasEpsilon {
+					First[rule.Name][epsilon] = dummy
 					break
 				}
-
-				if !hasEpsilon {
-					break
-				}
-				h++
 			}
 		}
 	}
 }
 
 func closure(I Items) Items {
-	changed := true
-	for changed {
+	for changed := true; changed; {
 		changed = false
 
-		var J Items
-		J = append(J, I...)
-
 		for _, item := range I {
-			if len(item.RightPart) == item.dotPos+1 || isTerminal(item.RightPart[item.dotPos+1].LexemeType) {
+			if len(item.Body) == item.DotPos+1 || isTerminal(item.Body[item.DotPos+1]) {
 				continue
 			}
 
-			firstBa := append([]Token{}, item.RightPart[item.dotPos+2:]...)
+			firstBa := append([]string{}, item.Body[item.DotPos+2:]...)
 			firstBa = append(firstBa, item.Symbol)
-			firstI := 0
 
 			for _, rule2 := range GrammarMiniC.Rules {
-				if rule2.LeftPart != item.RightPart[item.dotPos+1].LexemeType {
+				if rule2.Name != item.Body[item.DotPos+1] {
 					continue
 				}
 
-			FirstBaRepeat:
-				hasEps := false
-				for b := range First[firstBa[firstI].LexemeType] {
-					var tempItem Item
+				for i, hasEpsilon := 0, true; hasEpsilon; i++ {
+					hasEpsilon = false
 
-					if b == "epsilon" {
-						hasEps = true
-						continue
-					}
-
-					if len(rule2.RightPart) == 0 {
-						tempItem = Item{
-							rule2.LeftPart,
-							[]Token{{"dot", ""}},
-							Token{b, ""},
-							0,
+					for b := range First[firstBa[i]] {
+						if b == epsilon {
+							hasEpsilon = true
+							continue
 						}
-					} else {
-						tempItem = Item{
-							rule2.LeftPart,
-							append([]Token{{"dot", ""}}, rule2.RightPart...),
-							Token{b, ""},
-							0,
+
+						newItem := Item{
+							Rule: Rule{
+								Name: rule2.Name,
+								Body: append([]string{dot}, rule2.Body...),
+							},
+							Symbol: b,
+							DotPos: 0,
+						}
+
+						if !containsItem(I, newItem) {
+							I = append(I, newItem)
+							changed = true
 						}
 					}
-					if containsItem(J, tempItem) {
-						continue
-					}
-
-					J = append(J, tempItem)
-					changed = true
-				}
-				if hasEps {
-					firstI++
-					goto FirstBaRepeat
 				}
 			}
 		}
-		I = Items{}
-		I = append(I, J...)
 	}
 
 	return I
 }
 
-func gotoItems(I Items, chr string) Items {
+func gotoItems(I Items, X string) Items {
 	var J Items
 	for _, item := range I {
-		if item.dotPos+1 < len(item.RightPart) && item.RightPart[item.dotPos+1].LexemeType == chr {
-			alpha := append([]Token{}, item.RightPart[:item.dotPos]...)
-			beta := append([]Token{}, item.RightPart[item.dotPos+2:]...)
-			rightPartTemp := append([]Token{}, alpha...)
-			rightPartTemp = append(rightPartTemp, item.RightPart[item.dotPos+1], Token{"dot", ""})
-			rightPartTemp = append(rightPartTemp, beta...)
-			J = append(J, Item{item.LeftPart, rightPartTemp, item.Symbol, item.dotPos + 1})
+		if item.DotPos+1 < len(item.Body) && X == item.Body[item.DotPos+1] {
+			alpha := append([]string{}, item.Body[:item.DotPos]...)
+			beta := append([]string{}, item.Body[item.DotPos+2:]...)
+
+			newBody := append([]string{}, alpha...)
+			newBody = append(newBody, X, dot)
+			newBody = append(newBody, beta...)
+
+			J = append(
+				J,
+				Item{
+					Rule: Rule{
+						Name: item.Name,
+						Body: newBody,
+					},
+					Symbol: item.Symbol,
+					DotPos: item.DotPos + 1,
+				},
+			)
 		}
 	}
 	return closure(J)
@@ -251,19 +247,16 @@ func gotoItems(I Items, chr string) Items {
 func ItemsBuild(startItem Items) ItemsSet {
 	constructFirst()
 
-	changed := true
 	var C ItemsSet
 	C = append(C, closure(startItem))
 
-	for changed {
+	for changed := true; changed; {
 		changed = false
-		for _, items := range C {
-			
-
-			for _, chr := range append(GrammarMiniC.Nonterminals, GrammarMiniC.Terminals...) {
-				gotoChr := gotoItems(items, chr)
-				if len(gotoChr) != 0 && !containsItems(C, gotoChr) {
-					C = append(C, gotoChr)
+		for _, I := range C {
+			for _, X := range append(GrammarMiniC.NonTerminals, GrammarMiniC.Terminals...) {
+				newI := gotoItems(I, X)
+				if len(newI) != 0 && !containsItems(C, newI) {
+					C = append(C, newI)
 					changed = true
 				}
 			}
@@ -273,14 +266,8 @@ func ItemsBuild(startItem Items) ItemsSet {
 }
 
 func findItems(itemsSet ItemsSet, items Items) int {
-	for i, itms := range itemsSet {
-		counter := 0
-		for _, item := range itms {
-			if containsItem(items, item) {
-				counter++
-			}
-		}
-		if len(itms) == counter {
+	for i, collection := range itemsSet {
+		if isSameSets(collection, items) {
 			return i
 		}
 	}
@@ -288,11 +275,12 @@ func findItems(itemsSet ItemsSet, items Items) int {
 }
 
 func buildCanonicaLR1Table(startItems Items) CanonicalTableLR1 {
-	MiniCLR1CanonicalTable := CanonicalTableLR1{}
-	MiniCLR1CanonicalTable.Terminals = GrammarMiniC.Terminals
-	MiniCLR1CanonicalTable.Nonterminals = GrammarMiniC.Nonterminals
-	MiniCLR1CanonicalTable.Action = make(map[int]map[string]Action)
-	MiniCLR1CanonicalTable.Goto = make(map[int]map[string]int)
+	table := CanonicalTableLR1{
+		Terminals:    GrammarMiniC.Terminals,
+		NonTerminals: GrammarMiniC.NonTerminals,
+		Action:       map[int]map[string]Action{},
+		Goto:         map[int]map[string]int{},
+	}
 
 	canonicalItems := ItemsBuild(startItems)
 
@@ -304,69 +292,83 @@ func buildCanonicaLR1Table(startItems Items) CanonicalTableLR1 {
 	_ = os.WriteFile("canonicalItems.json", jsonItems, 0644)
 
 	for i := 0; i < len(canonicalItems); i++ {
-		MiniCLR1CanonicalTable.Action[i] = make(map[string]Action)
-		for _, term := range GrammarMiniC.Terminals {
-			MiniCLR1CanonicalTable.Action[i][term] = Action{"error", -1, Rule{"NULL", []Token{}}}
+		table.Action[i] = make(map[string]Action)
+		for _, t := range GrammarMiniC.Terminals {
+			table.Action[i][t] = errAction
 		}
 
-		MiniCLR1CanonicalTable.Goto[i] = make(map[string]int)
-		for _, term := range GrammarMiniC.Nonterminals {
-			MiniCLR1CanonicalTable.Goto[i][term] = -1
+		table.Goto[i] = make(map[string]int)
+		for _, nt := range GrammarMiniC.NonTerminals {
+			table.Goto[i][nt] = -1
 		}
 	}
 
-	for i, items := range canonicalItems {
-		for _, rule := range items {
+	for i, curr := range canonicalItems {
+		for _, punct := range curr {
 
-			if len(rule.RightPart) > rule.dotPos+1 {
-				nextToken := rule.RightPart[rule.dotPos+1].LexemeType
+			if punct.DotPos+1 < len(punct.Body) {
+				token := punct.Body[punct.DotPos+1]
 
-				if isTerminal(nextToken) {
-					act := MiniCLR1CanonicalTable.Action[i][nextToken]
-					gotoIi := gotoItems(items, nextToken)
-					itemsJ := findItems(canonicalItems, gotoIi)
+				if isTerminal(token) {
+					action := table.Action[i][token]
+					next := gotoItems(curr, token)
+					state := findItems(canonicalItems, next)
 
-					if itemsJ == -1 {
-						panic("ITEMS J -1")
+					if state == -1 {
+						panic("cannot find next state in canonical")
 					}
 
-					if act.ActionType != "error" && act.Pos != itemsJ {
-						fmt.Println(i, "Conflict!", act, "shift", itemsJ, rule)
+					if action.ActionType != errAction.ActionType &&
+						action.NextState != state {
+						fmt.Println(i, "Conflict!", action, "shift", state, punct)
 					}
-					MiniCLR1CanonicalTable.Action[i][nextToken] = Action{"shift", itemsJ, Rule{"NULL", []Token{}}}
-					continue
+
+					table.Action[i][token] = Action{
+						ActionType: "shift",
+						NextState:  state,
+						Rule:       nullRule,
+					}
 				}
-			} else if rule.dotPos+1 == len(rule.RightPart) {
-				if rule.LeftPart == "S'" {
-					MiniCLR1CanonicalTable.Action[i]["eof"] = Action{"accept", -1, Rule{}}
-					continue
+			} else if punct.DotPos+1 == len(punct.Body) {
+				if punct.Name == "S'" {
+					table.Action[i]["eof"] = Action{
+						ActionType: "accept",
+						NextState:  -1,
+						Rule:       nullRule,
+					}
 				} else {
 
-					if act := MiniCLR1CanonicalTable.Action[i][rule.Symbol.LexemeType].ActionType; act != "error" {
-						fmt.Println(i, "Conflict!", act, "reduce", rule)
+					if act := table.Action[i][punct.Symbol].ActionType; act != "error" {
+						fmt.Println(i, "Conflict!", act, "reduce", punct)
 					}
-					MiniCLR1CanonicalTable.Action[i][rule.Symbol.LexemeType] = Action{"reduce", -1, Rule{rule.LeftPart, append([]Token{}, rule.RightPart[:rule.dotPos]...)}}
-					continue
+
+					table.Action[i][punct.Symbol] = Action{
+						ActionType: "reduce",
+						NextState:  -1,
+						Rule: Rule{
+							Name: punct.Name,
+							Body: append([]string{}, punct.Body[:punct.DotPos]...),
+						},
+					}
 				}
 			}
 		}
 
-		for _, temp := range GrammarMiniC.Nonterminals {
-			gotoA := gotoItems(items, temp)
-			itemsJ := findItems(canonicalItems, gotoA)
-			if itemsJ == -1 {
+		for _, nt := range GrammarMiniC.NonTerminals {
+			next := gotoItems(curr, nt)
+			state := findItems(canonicalItems, next)
+			if state == -1 {
 				continue
 			}
 
-			if t, ok := MiniCLR1CanonicalTable.Goto[i][temp]; ok && t != -1 {
+			if t, ok := table.Goto[i][nt]; ok && t != -1 {
 				panic("NOT LR(1)")
 			}
 
-			MiniCLR1CanonicalTable.Goto[i][temp] = itemsJ
-
+			table.Goto[i][nt] = state
 		}
 	}
-	return MiniCLR1CanonicalTable
+	return table
 }
 
 func main() {
@@ -385,7 +387,16 @@ func main() {
 		fmt.Println(key, value)
 	}
 
-	startItems := Items{Item{"S'", []Token{{"dot", ""}, {"E", ""}}, Token{"eof", ""}, 0}}
+	startItems := Items{
+		Item{
+			Rule: Rule{
+				Name: "S'",
+				Body: []string{dot, "E"},
+			},
+			Symbol: "eof",
+			DotPos: 0,
+		},
+	}
 
 	closure(startItems)
 	canonicalTable := buildCanonicaLR1Table(startItems)
