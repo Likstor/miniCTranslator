@@ -1,440 +1,260 @@
 {
-    "Rules": [
-        {
-            "leftPart": "E",
-            "rightPart": [
-                {
-                    "LexemeType": "E7",
-                    "Value": ""
-                }
-            ]
-        },
-        {
-            "leftPart": "E7",
-            "rightPart": [
-                {
-                    "LexemeType": "E6",
-                    "Value": ""
-                },
-                {
-                    "LexemeType": "E7'",
-                    "Value": ""
-                }
-            ]
-        },
-        {
-            "leftPart": "E7'",
-            "rightPart": [
-                {
-                    "LexemeType": "opor",
-                    "Value": ""
-                },
-                {
-                    "LexemeType": "E6",
-                    "Value": ""
-                },
-                {
-                    "LexemeType": "E7'",
-                    "Value": ""
-                }
-            ]
-        },
-        {
-            "leftPart": "E7'",
-            "rightPart": [
-                
-            ]
-        },
-        {
-            "leftPart": "E6",
-            "rightPart": [
-                {
-                    "LexemeType": "E5",
-                    "Value": ""
-                },
-                {
-                    "LexemeType": "E6'",
-                    "Value": ""
-                }
-            ]
-        },
-        {
-            "leftPart": "E6'",
-            "rightPart": [
-                {
-                    "LexemeType": "opand",
-                    "Value": ""
-                },
-                {
-                    "LexemeType": "E5",
-                    "Value": ""
-                },
-                {
-                    "LexemeType": "E6'",
-                    "Value": ""
-                }
-            ]
-        },
-        {
-            "leftPart": "E6'",
-            "rightPart": [
-                
-            ]
-        },
-        {
-            "leftPart": "E5",
-            "rightPart": [
-                {
-                    "LexemeType": "E4",
-                    "Value": ""
-                },
-                {
-                    "LexemeType": "E5'",
-                    "Value": ""
-                }
-            ]
-        },
-        {
-            "leftPart": "E5'",
-            "rightPart": [
-                {
-                    "LexemeType": "opeq",
-                    "Value": ""
-                },
-                {
-                    "LexemeType": "E4",
-                    "Value": ""
-                }
-            ]
-        },
-        {
-            "leftPart": "E5'",
-            "rightPart": [
-                {
-                    "LexemeType": "opne",
-                    "Value": ""
-                },
-                {
-                    "LexemeType": "E4",
-                    "Value": ""
-                }
-            ]
-        },
-        {
-            "leftPart": "E5'",
-            "rightPart": [
-                {
-                    "LexemeType": "oplt",
-                    "Value": ""
-                },
-                {
-                    "LexemeType": "E4",
-                    "Value": ""
-                }
-            ]
-        },
-        {
-            "leftPart": "E5'",
-            "rightPart": [
-                {
-                    "LexemeType": "opgt",
-                    "Value": ""
-                },
-                {
-                    "LexemeType": "E4",
-                    "Value": ""
-                }
-            ]
-        },
-        {
-            "leftPart": "E5'",
-            "rightPart": [
-                {
-                    "LexemeType": "ople",
-                    "Value": ""
-                },
-                {
-                    "LexemeType": "E4",
-                    "Value": ""
-                }
-            ]
-        },
-        {
-            "leftPart": "E5'",
-            "rightPart": [
-                
-            ]
-        },
-        {
-            "leftPart": "E4",
-            "rightPart": [
-                {
-                    "LexemeType": "E3",
-                    "Value": ""
-                },
-                {
-                    "LexemeType": "E4'",
-                    "Value": ""
-                }
-            ]
-        },
-        {
-            "leftPart": "E4'",
-            "rightPart": [
-                {
-                    "LexemeType": "opplus",
-                    "Value": ""
-                },
-                {
-                    "LexemeType": "E3",
-                    "Value": ""
-                },
-                {
-                    "LexemeType": "E4'",
-                    "Value": ""
-                }
-            ]
-        },
-        {
-            "leftPart": "E4'",
-            "rightPart": [
-                {
-                    "LexemeType": "opminus",
-                    "Value": ""
-                },
-                {
-                    "LexemeType": "E3",
-                    "Value": ""
-                },
-                {
-                    "LexemeType": "E4'",
-                    "Value": ""
-                }
-            ]
-        },
-        {
-            "leftPart": "E4'",
-            "rightPart": [
-                
-            ]
-        },
-        {
-            "leftPart": "E3",
-            "rightPart": [
-                {
-                    "LexemeType": "E2",
-                    "Value": ""
-                },
-                {
-                    "LexemeType": "E3'",
-                    "Value": ""
-                }
-            ]
-        },
-        {
-            "leftPart": "E3'",
-            "rightPart": [
-                {
-                    "LexemeType": "opmul",
-                    "Value": ""
-                },
-                {
-                    "LexemeType": "E2",
-                    "Value": ""
-                },
-                {
-                    "LexemeType": "E3'",
-                    "Value": ""
-                }
-            ]
-        },
-        {
-            "leftPart": "E3'",
-            "rightPart": [
-                
-            ]
-        },
-        {
-            "leftPart": "E2",
-            "rightPart": [
-                {
-                    "LexemeType": "E1",
-                    "Value": ""
-                }
-            ]
-        },
-        {
-            "leftPart": "E2",
-            "rightPart": [
-                {
-                    "LexemeType": "opnot",
-                    "Value": ""
-                },
-                {
-                    "LexemeType": "E1",
-                    "Value": ""
-                }
-            ]
-        },
-        {
-            "leftPart": "E1",
-            "rightPart": [
-                {
-                    "LexemeType": "id",
-                    "Value": ""
-                },
-                {
-                    "LexemeType": "E1'",
-                    "Value": ""
-                }
-            ]
-        },
-        {
-            "leftPart": "E1",
-            "rightPart": [
-                {
-                    "LexemeType": "num",
-                    "Value": ""
-                }
-            ]
-        },
-        {
-            "leftPart": "E1",
-            "rightPart": [
-                {
-                    "LexemeType": "lpar",
-                    "Value": ""
-                },
-                {
-                    "LexemeType": "E",
-                    "Value": ""
-                },
-                {
-                    "LexemeType": "rpar",
-                    "Value": ""
-                }
-            ]
-        },
-        {
-            "leftPart": "E1",
-            "rightPart": [
-                {
-                    "LexemeType": "opinc",
-                    "Value": ""
-                },
-                {
-                    "LexemeType": "id",
-                    "Value": ""
-                }
-            ]
-        },
-        {
-            "leftPart": "E1'",
-            "rightPart": [
-                {
-                    "LexemeType": "opinc",
-                    "Value": ""
-                }
-            ]
-        },
-        {
-            "leftPart": "E1'",
-            "rightPart": []
-        },
-        {
-            "leftPart" : "E1'",
-            "rightPart" : [
-                {
-                    "LexemeType" : "lpar",
-                    "Value" : ""
-                },
-                {
-                    "LexemeType" : "ArgList",
-                    "Value" : ""
-                },
-                {
-                    "LexemeType": "rpar",
-                    "Value": ""
-                }
-            ]
-        },
-        {
-            "leftPart": "ArgList",
-            "rightPart": [
-            ]
-        },
-        {
-            "leftPart" : "ArgList",
-            "rightPart" : [
-                {
-                    "LexemeType": "E",
-                    "Value": ""
-                },
-                {
-                    "LexemeType": "ArgList'",
-                    "Value": ""
-                }
-            ]
-        }, 
-        { 
-            "leftPart": "ArgList'",
-            "rightPart": [
-            ]
-        },
-        {
-            "leftPart" : "ArgList'",
-            "rightPart" : [
-                {
-                    "LexemeType": "comma",
-                    "Value" : ""
-                },
-                {
-                    "LexemeType": "E",
-                    "Value": ""
-                },
-                {
-                    "LexemeType": "ArgList'",
-                    "Value": ""
-                }
-            ]
-        }
-    ],
-    "Terminals": [
-        "eof",
-        "lpar",
-        "rpar",
-        "id",
-        "num",
-        "opinc",
-        "opnot",
-        "opmul",
-        "opminus",
-        "opplus",
-        "ople",
-        "oplt",
-        "opgt",
-        "opne",
-        "opeq",
-        "opand",
-        "opor",
-        "comma"
-    ],
-    "Nonterminals": [
-        "E",
-        "E7",
-        "E7'",
+  "rules": [
+    {
+      "name": "E",
+      "body": [
+        "E7"
+      ]
+    },
+    {
+      "name": "E7",
+      "body": [
         "E6",
-        "E6'",
+        "E7'"
+      ]
+    },
+    {
+      "name": "E7'",
+      "body": [
+        "opor",
+        "E6",
+        "E7'"
+      ]
+    },
+    {
+      "name": "E7'",
+      "body": []
+    },
+    {
+      "name": "E6",
+      "body": [
         "E5",
-        "E5'",
+        "E6'"
+      ]
+    },
+    {
+      "name": "E6'",
+      "body": [
+        "opand",
+        "E5",
+        "E6'"
+      ]
+    },
+    {
+      "name": "E6'",
+      "body": []
+    },
+    {
+      "name": "E5",
+      "body": [
         "E4",
-        "E4'",
+        "E5'"
+      ]
+    },
+    {
+      "name": "E5'",
+      "body": [
+        "opeq",
+        "E4"
+      ]
+    },
+    {
+      "name": "E5'",
+      "body": [
+        "opne",
+        "E4"
+      ]
+    },
+    {
+      "name": "E5'",
+      "body": [
+        "oplt",
+        "E4"
+      ]
+    },
+    {
+      "name": "E5'",
+      "body": [
+        "opgt",
+        "E4"
+      ]
+    },
+    {
+      "name": "E5'",
+      "body": [
+        "ople",
+        "E4"
+      ]
+    },
+    {
+      "name": "E5'",
+      "body": []
+    },
+    {
+      "name": "E4",
+      "body": [
         "E3",
-        "E3'",
+        "E4'"
+      ]
+    },
+    {
+      "name": "E4'",
+      "body": [
+        "opplus",
+        "E3",
+        "E4'"
+      ]
+    },
+    {
+      "name": "E4'",
+      "body": [
+        "opminus",
+        "E3",
+        "E4'"
+      ]
+    },
+    {
+      "name": "E4'",
+      "body": []
+    },
+    {
+      "name": "E3",
+      "body": [
         "E2",
-        "E1",
-        "E1'",
+        "E3'"
+      ]
+    },
+    {
+      "name": "E3'",
+      "body": [
+        "opmul",
+        "E2",
+        "E3'"
+      ]
+    },
+    {
+      "name": "E3'",
+      "body": []
+    },
+    {
+      "name": "E2",
+      "body": [
+        "E1"
+      ]
+    },
+    {
+      "name": "E2",
+      "body": [
+        "opnot",
+        "E1"
+      ]
+    },
+    {
+      "name": "E1",
+      "body": [
+        "id",
+        "E1'"
+      ]
+    },
+    {
+      "name": "E1",
+      "body": [
+        "num"
+      ]
+    },
+    {
+      "name": "E1",
+      "body": [
+        "lpar",
+        "E",
+        "rpar"
+      ]
+    },
+    {
+      "name": "E1",
+      "body": [
+        "opinc",
+        "id"
+      ]
+    },
+    {
+      "name": "E1'",
+      "body": [
+        "opinc"
+      ]
+    },
+    {
+      "name": "E1'",
+      "body": []
+    },
+    {
+      "name": "E1'",
+      "body": [
+        "lpar",
         "ArgList",
+        "rpar"
+      ]
+    },
+    {
+      "name": "ArgList",
+      "body": []
+    },
+    {
+      "name": "ArgList",
+      "body": [
+        "E",
         "ArgList'"
-    ]
+      ]
+    },
+    {
+      "name": "ArgList'",
+      "body": []
+    },
+    {
+      "name": "ArgList'",
+      "body": [
+        "comma",
+        "E",
+        "ArgList'"
+      ]
+    }
+  ],
+  "Terminals": [
+    "eof",
+    "lpar",
+    "rpar",
+    "id",
+    "num",
+    "opinc",
+    "opnot",
+    "opmul",
+    "opminus",
+    "opplus",
+    "ople",
+    "oplt",
+    "opgt",
+    "opne",
+    "opeq",
+    "opand",
+    "opor",
+    "comma"
+  ],
+  "Nonterminals": [
+    "E",
+    "E7",
+    "E7'",
+    "E6",
+    "E6'",
+    "E5",
+    "E5'",
+    "E4",
+    "E4'",
+    "E3",
+    "E3'",
+    "E2",
+    "E1",
+    "E1'",
+    "ArgList",
+    "ArgList'"
+  ]
 }
