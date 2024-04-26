@@ -10,13 +10,16 @@ namespace miniCBuilderAST
         StackStates.push(0);
     }
 
-    void Builder::BuildAST()
+    bool Builder::BuildAST()
     {
         miniCLexer::Token curToken = Lexer.getNextToken();
         while (true)
         {
+            if (curToken.LexemeType == "error") {
+                return false;
+            }
+
             int curState = StackStates.top();
-            std::cout << curState << curToken.LexemeType << std::endl;
             Action action = Table.Action[curState][curToken.LexemeType];
 
             if (action.ActionType == "shift")
@@ -53,25 +56,29 @@ namespace miniCBuilderAST
             if (action.ActionType == "accept")
             {
                 AST = StackNode.top();
-                std::cout << "ACCEPT " << std::endl;
-                return;
+                return true;
             }
 
             if (action.ActionType == "error")
             {
-                std::cout << "ERROR" << std::endl;
-                return;
+                return false;
             }
         }
     }
 
-    Node Builder::GetAST()
+    std::pair<Node, bool> Builder::GetAST()
     {
         if (AST.GetLexemeType() == "NONE")
         {
-            BuildAST();
+            bool ok = BuildAST();
+            if (ok) {
+                return {AST, true};
+            }
+            else{
+                return {AST, false};
+            }
         }
 
-        return AST;
+        return {AST, true};
     }
 }

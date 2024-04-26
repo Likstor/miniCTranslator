@@ -325,6 +325,7 @@ func buildCanonicaLR1Table(startItems Items) CanonicalTableLR1 {
 				}
 			} else if punct.DotPos+1 == len(punct.Body) {
 				if punct.Name == "StartState" {
+					
 					table.Action[i]["eof"] = Action{
 						ActionType: "accept",
 						NextState:  -1,

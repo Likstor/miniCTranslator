@@ -13,9 +13,13 @@ endif()
 
 add_library(miniCSemanticAnalyzer STATIC)
 
+file (
+    GLOB SOURCES "source/*.cpp"
+)
+
 target_sources(${PROJECT_NAME}
     PRIVATE
-        source/analyzer.cpp
+        ${SOURCES}
 )
 
 target_include_directories(miniCSemanticAnalyzer

@@ -249,6 +249,15 @@
     {
       "name": "DeclareStmt'",
       "body": [
+        "opassign",
+        "chr",
+        "DeclVarList'",
+        "semicolon"
+      ]
+    },
+    {
+      "name": "DeclareStmt'",
+      "body": [
         "DeclVarList'",
         "semicolon"
       ]
@@ -463,7 +472,7 @@
     {
       "name": "ForInit",
       "body": [
-        "AssignOrCallOp"
+        "AssignOrCall"
       ]
     },
     {
@@ -483,7 +492,7 @@
     {
       "name": "ForLoop",
       "body": [
-        "AssignOrCallOp"
+        "AssignOrCall"
       ]
     },
     {

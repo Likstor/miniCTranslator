@@ -101,7 +101,7 @@ TEST(LexemeTest, comma)
 
 TEST(LexemeTest, colon)
 {
-    std::string code = ".";
+    std::string code = ":";
     std::istringstream inputStream(code);
 
     miniCLexer::Lexer lexer{inputStream};

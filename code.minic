@@ -1,34 +1,30 @@
-if (a > 6);
-if (b<-7)
-a = 13;
-else
-b = 3;
-
-int a = 1000000;
-int a, b = 1000000, c;
-char a, b, c = 'a';
-
-int a() {};
-char b() {};
-
-int a(int a, char b) {};
-char b(int a, char b) {};
-
-a = 1;
-a();
-a(a, b);
-
-while (a < 2) {}
-for (;;) {}
-if (42) {}
-switch (fiftyCent) {
-    case 5: {}
-    default: {}
+char f(int a, char c) {
+    return a;
 }
-in a;
-out ++b;
-;
-{}
-return 12 + (4 * 2);
 
-return (4 --4);
+int main() {
+    switch (a) {
+        default:
+            out "Unknown";
+        case 1:
+            out "YES";
+        case 2:
+            out "NO";
+        default:
+            out "Unknown";
+    }
+
+    if (a == 1) {
+        out "YES";
+    }
+    else if (a == 2) {
+        out "NO";
+    }
+    else {
+        out "Unknown";
+    }
+
+    while(1) if (2) out 3; else out 4;
+
+    return a;
+}

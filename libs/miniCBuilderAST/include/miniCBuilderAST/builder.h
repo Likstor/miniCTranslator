@@ -43,7 +43,7 @@ namespace miniCBuilderAST
 
     public:
         Builder(miniCLexer::Lexer &table, CanonicalTable &Table);
-        void BuildAST();
-        Node GetAST();
+        bool BuildAST();
+        std::pair<Node, bool> GetAST();
     };
 }

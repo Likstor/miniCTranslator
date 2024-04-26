@@ -62,9 +62,17 @@ int main(int argc, char *argv[])
     }
     miniCBuilderAST::Builder bld{lexer, CT};
 
-    bld.BuildAST();
+    std::pair<miniCBuilderAST::Node, bool> AST = bld.GetAST();
 
-    // miniCBuilderAST::Node AST = bld.GetAST();
+    if (AST.second)
+    {
+        std::cout << "ACCEPT" << std::endl;
 
-    // miniCSemanticAnalyzer::E(AST, {});
+        miniCSemanticAnalyzer::SemanticAnalyzer SA{AST.first};
+        SA.StartAnalysis();
+    }
+    else
+    {
+        std::cout << "ERROR" << std::endl;
+    }
 }
