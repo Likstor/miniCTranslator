@@ -4,53 +4,100 @@ namespace miniCSemanticAnalyzer
 {
     SymbolTable::SymbolTable(){};
 
-    SymbolData &SymbolTable::getSymbolData(int context, std::string name)
+    SymbolData &SymbolTable::GetSymbolData(int code)
     {
-        return data[context][name];
+        return data[code];
     }
 
     std::pair<int, bool> SymbolTable::findSymbolData(std::string name)
     {
         for (size_t i = contextArray.size() - 1; i >= 0; i--)
         {
-            if (contextMap[name][i] == true)
+            auto [code, ok] = subData[i][name];
+            if (ok)
             {
-                return {i, true};
+                return {code, ok};
             }
         }
 
-        return {0, false};
+        return {NULL, false};
     }
 
-    int Alloc()
+    int SymbolTable::Alloc()
     {
+        SymbolData temp{
+            "#DEV_" + std::to_string(currentCode),
+            SymbolClass::Dev,
+            SymbolType::Dev,
+            NULL,
+            NULL};
+
+        data[currentCode] = temp;
+        return currentCode++;
     }
 
-    int EnterContext()
+    void SymbolTable::EnterContext()
     {
+        contextArray.push_back(currentContext++);
     }
 
-    int ExitContext()
+    void SymbolTable::ExitContext()
     {
+        contextArray.pop_back();
     }
 
-    int NewLabel()
+    int SymbolTable::NewLabel()
     {
+        return currentLabel++;
     }
 
-    int CheckVar(std::string name)
+    std::pair<int, bool> SymbolTable::CheckVar(std::string name)
     {
+        auto [code, ok] = findSymbolData(name);
+        if (ok)
+        {
+            return {code, ok};
+        }
+        return {NULL, false};
     }
 
-    int AddVar(std::string name, std::string type, std::string init)
+    int SymbolTable::AddVar(std::string name, SymbolType type, int init)
     {
+        SymbolData temp{
+            name,
+            SymbolClass::Var,
+            type,
+            NULL,
+            init};
+
+        subData[contextArray.back()][temp.Name] = {currentCode, true};
+        data[currentCode] = temp;
+
+        return currentCode++;
     }
 
-    int CheckFunc(std::string name, int len)
+    std::pair<int, bool> SymbolTable::CheckFunc(std::string name, unsigned int len)
     {
+        auto [code, ok] = findSymbolData(name + "_" + std::to_string(len));
+        if (ok)
+        {
+            return {code, ok};
+        }
+        return {NULL, false};
     }
 
-    int AddFunc(std::string name, std::string type)
+    int SymbolTable::AddFunc(std::string name, SymbolType type, unsigned int len)
     {
+        SymbolData temp{
+            name + std::to_string(len),
+            SymbolClass::Func,
+            type,
+            len,
+            NULL};
+
+        subData[contextArray.back()][temp.Name] = {currentCode, true};
+        data[currentCode] = temp;
+
+        return currentCode++;
     }
 }
