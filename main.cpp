@@ -9,6 +9,7 @@
 #include <miniCBuilderAST/builder.h>
 #include <miniCBuilderAST/node.h>
 #include <miniCSemanticAnalyzer/analyzer.h>
+#include <miniCSemanticAnalyzer/exception.h>
 
 using json = nlohmann::json;
 
@@ -68,8 +69,16 @@ int main(int argc, char *argv[])
     {
         std::cout << "ACCEPT" << std::endl;
 
+        try 
+        {
         miniCSemanticAnalyzer::SemanticAnalyzer SA{AST.first};
         SA.StartAnalysis();
+        std::cout << "ACCEPT" << std::endl;
+        }
+        catch (miniCSemanticAnalyzer::SemanticError e)
+        {
+            std::cout << e.what() << std::endl;
+        }
     }
     else
     {

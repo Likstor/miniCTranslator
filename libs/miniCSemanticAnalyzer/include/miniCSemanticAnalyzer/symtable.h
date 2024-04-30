@@ -1,3 +1,4 @@
+#pragma once
 #include <unordered_map>
 #include <string>
 #include <vector>
@@ -24,8 +25,8 @@ namespace miniCSemanticAnalyzer
         std::string Name;
         SymbolClass Class;
         SymbolType Type;
-        unsigned int Len;
-        int Init;
+        std::string Len;
+        std::string Init;
     };
 
     class SymbolTable
@@ -39,25 +40,25 @@ namespace miniCSemanticAnalyzer
         int currentContext = -1;
         int currentLabel = 0;
 
-        std::pair<int, bool> findSymbolData(std::string name);
+        std::pair<std::string, bool> findSymbolData(std::string name);
 
     public:
         SymbolTable();
 
-        SymbolData &GetSymbolData(int code);
+        SymbolData &GetSymbolData(std::string code);
 
-        int Alloc();
+        std::string Alloc();
 
         void EnterContext();
         void ExitContext();
 
-        int NewLabel();
+        std::string NewLabel();
 
-        std::pair<int, bool> CheckVar(std::string name);
-        int AddVar(std::string name, SymbolType type, int init);
+        std::string CheckVar(std::string name);
+        std::string AddVar(std::string name, SymbolType type, std::string init);
 
-        std::pair<int, bool> CheckFunc(std::string name, unsigned int len);
-        int AddFunc(std::string name, SymbolType type, unsigned int len);
+        std::string CheckFunc(std::string name, std::string len);
+        std::string AddFunc(std::string name, SymbolType type, std::string len);
     };
 
     std::ostream &operator<<(std::ostream &os, const SymbolTable &symtable);

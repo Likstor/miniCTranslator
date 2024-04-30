@@ -165,6 +165,12 @@
     {
       "name": "E1",
       "body": [
+        "chr"
+      ]
+    },
+    {
+      "name": "E1",
+      "body": [
         "lpar",
         "E",
         "rpar"

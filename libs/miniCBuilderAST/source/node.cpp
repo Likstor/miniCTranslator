@@ -12,12 +12,12 @@ namespace miniCBuilderAST
         return children.size() == 0 ? true : false;
     }
 
-    std::vector<std::string> Node::GetValues()
+    std::vector<std::string> &Node::GetValues()
     {
         return values;
     }
 
-    std::vector<Node> Node::GetChildren()
+    std::vector<Node> &Node::GetChildren()
     {
         return children;
     }
@@ -25,5 +25,10 @@ namespace miniCBuilderAST
     std::string Node::GetLexemeType()
     {
         return lexemeType;
+    }
+
+    void Node::NewVal(std::string val)
+    {
+        values.push_back(val);
     }
 }

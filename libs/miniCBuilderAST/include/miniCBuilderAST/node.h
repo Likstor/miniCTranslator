@@ -18,7 +18,8 @@ namespace miniCBuilderAST
 
         bool IsLeaf();
         std::string GetLexemeType();
-        std::vector<std::string> GetValues();
-        std::vector<Node> GetChildren();
+        std::vector<std::string> &GetValues();
+        std::vector<Node>& GetChildren();
+        void NewVal(std::string val);
     };
 }

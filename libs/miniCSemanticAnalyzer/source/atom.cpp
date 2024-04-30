@@ -4,12 +4,12 @@
 
 namespace miniCSemanticAnalyzer
 {
-    Atom::Atom(int type, std::string first, std::string second, std::string third) : type{type},
-                                                                                    first{first},
-                                                                                    second{second},
-                                                                                    third{third} {}
+    Atom::Atom(const int type, const std::string first, const std::string second, const std::string third) : type{type},
+                                                                                                             first{first},
+                                                                                                             second{second},
+                                                                                                             third{third} {}
 
-    std::string Atom::GetType()
+    const std::string Atom::GetType() const
     {
         std::string output;
 
@@ -29,6 +29,18 @@ namespace miniCSemanticAnalyzer
             break;
         case AtomType::EQ:
             output = "EQ";
+            break;
+        case AtomType::NE:
+            output = "NE";
+            break;
+        case AtomType::GT:
+            output = "GT";
+            break;
+        case AtomType::LT:
+            output = "LT";
+            break;
+        case AtomType::LE:
+            output = "LE";
             break;
         case AtomType::LBL:
             output = "LBL";
@@ -70,22 +82,23 @@ namespace miniCSemanticAnalyzer
         return output;
     }
 
-    std::string Atom::GetFirst()
+    const std::string Atom::GetFirst() const
     {
         return first;
     }
 
-    std::string Atom::GetSecond()
+    const std::string Atom::GetSecond() const
     {
         return second;
     }
-    std::string Atom::GetThird()
+    const std::string Atom::GetThird() const
     {
         return third;
     }
 
-    std::ostream &operator<<(std::ostream &os, Atom &atom)
+    std::ostream &operator<<(std::ostream &os, const Atom &atom)
     {
-        return os << std::format("<%d, %d, %d, %d>", atom.GetType(), atom.GetFirst(), atom.GetSecond(), atom.GetThird());
+        os << "<" << atom.GetType() << ", " << atom.GetFirst() << ", " << atom.GetSecond() << ", " << atom.GetThird() << ">" << std::endl;
+        return os;
     }
 }

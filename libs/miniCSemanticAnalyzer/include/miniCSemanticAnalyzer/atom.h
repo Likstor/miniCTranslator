@@ -11,6 +11,10 @@ namespace miniCSemanticAnalyzer
         AND,
         MOV,
         EQ,
+        NE,
+        GT,
+        LT,
+        LE,
         LBL,
         ADD,
         SUB,
@@ -27,17 +31,17 @@ namespace miniCSemanticAnalyzer
     class Atom
     {
     private:
-        int type;
-        std::string first;
-        std::string second;
-        std::string third;
+        const int type;
+        const std::string first;
+        const std::string second;
+        const std::string third;
 
     public:
-        std::string GetType();
-        std::string GetFirst();
-        std::string GetSecond();
-        std::string GetThird();
-        Atom(int type, std::string first, std::string second, std::string third);
+        const std::string GetType() const;
+        const std::string GetFirst() const;
+        const std::string GetSecond() const;
+        const std::string GetThird() const;
+        Atom(const int type, const std::string first, const std::string second, const std::string third);
     };
 
     std::ostream &operator<<(std::ostream &os, const Atom &atom);

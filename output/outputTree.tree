@@ -1,0 +1,21 @@
+StmtList 
+├Stmt 
+│└AssignOrCallOp 
+│ ├AssignOrCall 
+│ │└a AssignOrCall' 
+│ │ └opassign E 
+│ │  └E7 
+│ │   ├E6 
+│ │   │├E5 
+│ │   ││├E4 
+│ │   │││├E3 
+│ │   ││││├E2 
+│ │   │││││└E1 
+│ │   │││││ └5 
+│ │   ││││└E3' 
+│ │   │││└E4' 
+│ │   │││ ├opplus E3 
+│ │   │││ │├E2 
+│ │   │││ ││└E1 
+│ │   │││ ││ └fib E1' 
+│ │   │││ ││  ├lpar ArgList 

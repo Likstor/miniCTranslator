@@ -1,39 +1,44 @@
+#pragma once
 #include <miniCSemanticAnalyzer/symtable.h>
+#include <miniCSemanticAnalyzer/exception.h>
+#include <format>
 
 namespace miniCSemanticAnalyzer
 {
     SymbolTable::SymbolTable(){};
 
-    SymbolData &SymbolTable::GetSymbolData(int code)
+    SymbolData &SymbolTable::GetSymbolData(std::string code)
     {
-        return data[code];
+        return data[std::stoi(code)];
     }
 
-    std::pair<int, bool> SymbolTable::findSymbolData(std::string name)
+    std::pair<std::string, bool> SymbolTable::findSymbolData(std::string name)
     {
-        for (size_t i = contextArray.size() - 1; i >= 0; i--)
+        for (int i = int(contextArray.size()); i >= 0; i--)
         {
-            auto [code, ok] = subData[i][name];
+            auto [code, ok] = subData[contextArray[i]][std::format("c%d_", contextArray[i]) + name];
             if (ok)
             {
-                return {code, ok};
+                return {std::to_string(code), ok};
             }
         }
 
-        return {NULL, false};
+        return {"NULL", false};
     }
 
-    int SymbolTable::Alloc()
+    std::string SymbolTable::Alloc()
     {
         SymbolData temp{
             "#DEV_" + std::to_string(currentCode),
             SymbolClass::Dev,
             SymbolType::Dev,
-            NULL,
-            NULL};
+            "NULL",
+            "NULL"};
 
+        subData[contextArray.back()][temp.Name] = {currentCode, true};
         data[currentCode] = temp;
-        return currentCode++;
+
+        return "#DEV_" + std::to_string(currentCode++);
     }
 
     void SymbolTable::EnterContext()
@@ -46,25 +51,26 @@ namespace miniCSemanticAnalyzer
         contextArray.pop_back();
     }
 
-    int SymbolTable::NewLabel()
+    std::string SymbolTable::NewLabel()
     {
-        return currentLabel++;
+        return "#LABEL_" + std::to_string(currentLabel++);
     }
 
-    std::pair<int, bool> SymbolTable::CheckVar(std::string name)
+    std::string SymbolTable::CheckVar(std::string name)
     {
-        auto [code, ok] = findSymbolData(name);
+        auto [code, ok] = findSymbolData("var_" + name);
         if (ok)
         {
-            return {code, ok};
+            return code;
         }
-        return {NULL, false};
+
+        throw SemanticError("Unknown variable: " + name);
     }
 
-    int SymbolTable::AddVar(std::string name, SymbolType type, int init)
+    std::string SymbolTable::AddVar(std::string name, SymbolType type, std::string init)
     {
         SymbolData temp{
-            name,
+            "c" + std::to_string(contextArray.back()) + "_var_" + name,
             SymbolClass::Var,
             type,
             NULL,
@@ -73,23 +79,24 @@ namespace miniCSemanticAnalyzer
         subData[contextArray.back()][temp.Name] = {currentCode, true};
         data[currentCode] = temp;
 
-        return currentCode++;
+        return std::to_string(currentCode++);
     }
 
-    std::pair<int, bool> SymbolTable::CheckFunc(std::string name, unsigned int len)
+    std::string SymbolTable::CheckFunc(std::string name, std::string len)
     {
-        auto [code, ok] = findSymbolData(name + "_" + std::to_string(len));
+        auto [code, ok] = findSymbolData("func_" + name + "_" + len);
         if (ok)
         {
-            return {code, ok};
+            return code;
         }
-        return {NULL, false};
+
+        throw SemanticError("Unknown function: " + name);
     }
 
-    int SymbolTable::AddFunc(std::string name, SymbolType type, unsigned int len)
+    std::string SymbolTable::AddFunc(std::string name, SymbolType type, std::string len)
     {
         SymbolData temp{
-            name + std::to_string(len),
+            "c" + std::to_string(contextArray.back()) + "_func_" + name + "_" + len,
             SymbolClass::Func,
             type,
             len,
@@ -98,6 +105,6 @@ namespace miniCSemanticAnalyzer
         subData[contextArray.back()][temp.Name] = {currentCode, true};
         data[currentCode] = temp;
 
-        return currentCode++;
+        return std::to_string(currentCode++);
     }
 }
