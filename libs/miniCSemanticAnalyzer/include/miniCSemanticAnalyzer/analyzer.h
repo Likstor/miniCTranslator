@@ -10,6 +10,7 @@ namespace miniCSemanticAnalyzer
     private:
         std::ofstream outputTree;
         std::ofstream outputAtoms;
+        std::ofstream outputTable;
         miniCBuilderAST::Node AST;
         miniCSemanticAnalyzer::SymbolTable symtable;
         bool prevNewString = true;

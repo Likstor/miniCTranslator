@@ -15,18 +15,59 @@ namespace miniCSemanticAnalyzer
 
     enum class SymbolType
     {
-        Dev,
         Char,
+        Int,
         Func
     };
 
-    struct SymbolData
+        struct SymbolData
     {
         std::string Name;
         SymbolClass Class;
         SymbolType Type;
         std::string Len;
         std::string Init;
+        std::string Offset;
+
+        std::string GetClass()
+        {
+            if (Class == SymbolClass::Dev)
+            {
+                return "Dev";
+            }
+            else if (Class == SymbolClass::Func)
+            {
+                return "Func";
+            }
+            else if (Class == SymbolClass::Var)
+            {
+                return "Var";
+            }
+            else
+            {
+                return "Unknown";
+            }
+        }
+
+        std::string GetType()
+        {
+            if (Type == SymbolType::Func)
+            {
+                return "Func";
+            }
+            else if (Type == SymbolType::Char)
+            {
+                return "Var";
+            }
+            else if (Type == SymbolType::Int)
+            {
+                return "Int";
+            }
+            else
+            {
+                return "Unknown";
+            }
+        }
     };
 
     class SymbolTable
@@ -45,6 +86,8 @@ namespace miniCSemanticAnalyzer
     public:
         SymbolTable();
 
+        int GetContext();
+
         SymbolData &GetSymbolData(std::string code);
 
         std::string Alloc();
@@ -59,6 +102,7 @@ namespace miniCSemanticAnalyzer
 
         std::string CheckFunc(std::string name, std::string len);
         std::string AddFunc(std::string name, SymbolType type, std::string len);
+        friend std::ostream &operator<<(std::ostream &os, const SymbolTable &symtable);
     };
 
     std::ostream &operator<<(std::ostream &os, const SymbolTable &symtable);

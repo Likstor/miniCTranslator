@@ -4,6 +4,7 @@
 #include <iostream>
 #include <miniCSemanticAnalyzer/atom.h>
 #include <miniCSemanticAnalyzer/exception.h>
+#include <format>
 
 namespace miniCSemanticAnalyzer
 {
@@ -60,7 +61,7 @@ namespace miniCSemanticAnalyzer
             std::string s = symtable.Alloc(); // s = alloc(C)
 
             Atom OR{AtomType::OR, Node.GetValues()[0], e6.GetValues()[0], s};
-            outputAtoms << OR;
+            outputAtoms << std::format("{}: ", symtable.GetContext()) << OR;
 
             e7l.NewVal(s);
 
@@ -114,7 +115,7 @@ namespace miniCSemanticAnalyzer
             std::string s = symtable.Alloc(); // s = alloc(C)
 
             Atom AND{AtomType::AND, Node.GetValues()[0], e5.GetValues()[0], s};
-            outputAtoms << AND;
+            outputAtoms << std::format("{}: ", symtable.GetContext()) << AND;
 
             e6l.NewVal(s);
 
@@ -161,7 +162,7 @@ namespace miniCSemanticAnalyzer
         std::string l = symtable.NewLabel(); // l = newLabel()
 
         Atom MOV_1{AtomType::MOV, "1", "", s};
-        outputAtoms << MOV_1;
+        outputAtoms << std::format("{}: ", symtable.GetContext()) << MOV_1;
 
         if (Node.GetChildren()[0].GetLexemeType() == "opeq")
         {
@@ -171,7 +172,7 @@ namespace miniCSemanticAnalyzer
             E4(e4, treePrint);
 
             Atom EQ{AtomType::EQ, Node.GetValues()[0], e4.GetValues()[0], l};
-            outputAtoms << EQ;
+            outputAtoms << std::format("{}: ", symtable.GetContext()) << EQ;
         }
         else if (Node.GetChildren()[0].GetLexemeType() == "opne")
         {
@@ -181,7 +182,7 @@ namespace miniCSemanticAnalyzer
             E4(e4, treePrint);
 
             Atom NE{AtomType::NE, Node.GetValues()[0], e4.GetValues()[0], l};
-            outputAtoms << NE;
+            outputAtoms << std::format("{}: ", symtable.GetContext()) << NE;
         }
         else if (Node.GetChildren()[0].GetLexemeType() == "oplt")
         {
@@ -191,7 +192,7 @@ namespace miniCSemanticAnalyzer
             E4(e4, treePrint);
 
             Atom LT{AtomType::LT, Node.GetValues()[0], e4.GetValues()[0], l};
-            outputAtoms << LT;
+            outputAtoms << std::format("{}: ", symtable.GetContext()) << LT;
         }
         else if (Node.GetChildren()[0].GetLexemeType() == "opgt")
         {
@@ -201,7 +202,7 @@ namespace miniCSemanticAnalyzer
             E4(e4, treePrint);
 
             Atom GT{AtomType::GT, Node.GetValues()[0], e4.GetValues()[0], l};
-            outputAtoms << GT;
+            outputAtoms << std::format("{}: ", symtable.GetContext()) << GT;
         }
         else if (Node.GetChildren()[0].GetLexemeType() == "ople")
         {
@@ -211,14 +212,14 @@ namespace miniCSemanticAnalyzer
             E4(e4, treePrint);
 
             Atom LE{AtomType::LE, Node.GetValues()[0], e4.GetValues()[0], l};
-            outputAtoms << LE;
+            outputAtoms << std::format("{}: ", symtable.GetContext()) << LE;
         }
 
         Atom MOV_2{AtomType::MOV, "0", "", s};
-        outputAtoms << MOV_2;
+        outputAtoms << std::format("{}: ", symtable.GetContext()) << MOV_2;
 
         Atom LBL{AtomType::LBL, "", "", l};
-        outputAtoms << LBL;
+        outputAtoms << std::format("{}: ", symtable.GetContext()) << LBL;
 
         Node.NewVal(s); // q = s
     }
@@ -267,7 +268,7 @@ namespace miniCSemanticAnalyzer
             s = symtable.Alloc(); // s = alloc(C)
 
             Atom ADD{AtomType::ADD, Node.GetValues()[0], e3.GetValues()[0], s};
-            outputAtoms << ADD;
+            outputAtoms << std::format("{}: ", symtable.GetContext()) << ADD;
         }
         else if (Node.GetChildren()[0].GetLexemeType() == "opminus")
         {
@@ -279,7 +280,7 @@ namespace miniCSemanticAnalyzer
             s = symtable.Alloc(); // s = alloc(C)
 
             Atom SUB{AtomType::SUB, Node.GetValues()[0], e3.GetValues()[0], s};
-            outputAtoms << SUB;
+            outputAtoms << std::format("{}: ", symtable.GetContext()) << SUB;
         }
 
         e4l.NewVal(s);
@@ -335,7 +336,7 @@ namespace miniCSemanticAnalyzer
             s = symtable.Alloc(); // s = alloc(C)
 
             Atom MUL{AtomType::MUL, Node.GetValues()[0], e2.GetValues()[0], s};
-            outputAtoms << MUL;
+            outputAtoms << std::format("{}: ", symtable.GetContext()) << MUL;
 
             e3l.NewVal(s);
 
@@ -363,7 +364,7 @@ namespace miniCSemanticAnalyzer
             std::string r = symtable.Alloc(); // r = alloc(C)
 
             Atom NOT{AtomType::NOT, e1.GetValues()[0], "", r};
-            outputAtoms << NOT;
+            outputAtoms << std::format("{}: ", symtable.GetContext()) << NOT;
         }
         else
         {
@@ -393,13 +394,13 @@ namespace miniCSemanticAnalyzer
         {
             treePrint.push_back(0);
             printTreeString(treePrint, {Node.GetChildren()[0].GetValues()[0]}, true);
-            Node.NewVal(Node.GetChildren()[0].GetValues()[0]);
+            Node.NewVal(std::format("'{}'", Node.GetChildren()[0].GetValues()[0]));
         }
         else if (Node.GetChildren()[0].GetLexemeType() == "chr")
         {
             treePrint.push_back(0);
             printTreeString(treePrint, {Node.GetChildren()[0].GetValues()[0]}, true);
-            Node.NewVal(std::to_string(int(Node.GetChildren()[0].GetValues()[0][0])));
+            Node.NewVal(std::format("'{}'", std::to_string(int(Node.GetChildren()[0].GetValues()[0][0]))));
         }
         else if (Node.GetChildren()[0].GetLexemeType() == "lpar")
         {
@@ -419,10 +420,10 @@ namespace miniCSemanticAnalyzer
             treePrint.push_back(0);
             printTreeString(treePrint, {"opinc", Node.GetChildren()[1].GetValues()[0]}, true);
 
-            std::string code = symtable.GetSymbolData(symtable.CheckVar(Node.GetChildren()[1].GetValues()[0])).Name;
+            std::string code = symtable.CheckVar(Node.GetChildren()[1].GetValues()[0]);
 
-            Atom ADD{AtomType::ADD, code, "1", code};
-            outputAtoms << ADD;
+            Atom ADD{AtomType::ADD, code, "'1'", code};
+            outputAtoms << std::format("{}: ", symtable.GetContext()) << ADD;
 
             Node.NewVal(code);
         }
@@ -434,7 +435,7 @@ namespace miniCSemanticAnalyzer
 
         if (Node.IsLeaf())
         {
-            std::string s = symtable.GetSymbolData(symtable.CheckVar(Node.GetValues()[0])).Name;
+            std::string s = symtable.CheckVar(Node.GetValues()[0]);
             Node.NewVal(s);
             return;
         }
@@ -444,12 +445,12 @@ namespace miniCSemanticAnalyzer
             treePrint.push_back(0);
             printTreeString(treePrint, {Node.GetChildren()[0].GetLexemeType()}, true);
 
-            std::string s = symtable.GetSymbolData(symtable.CheckVar(Node.GetValues()[0])).Name;
+            std::string s = symtable.CheckVar(Node.GetValues()[0]);
             std::string r = symtable.Alloc();
 
             Atom MOV{AtomType::MOV, s, "", r};
-            Atom ADD{AtomType::ADD, s, "1", s};
-            outputAtoms << MOV << ADD;
+            Atom ADD{AtomType::ADD, s, "'1'", s};
+            outputAtoms << std::format("{}: ", symtable.GetContext()) << MOV << ADD;
 
             Node.NewVal(r);
         }
@@ -460,12 +461,12 @@ namespace miniCSemanticAnalyzer
 
             ArgList(Node.GetChildren()[1], treePrint);
 
-            std::string s = symtable.GetSymbolData(symtable.CheckFunc(Node.GetValues()[0], Node.GetChildren()[1].GetValues()[0])).Name;
+            std::string s = symtable.CheckFunc(Node.GetValues()[0], Node.GetChildren()[1].GetValues()[0]);
             std::string r = symtable.Alloc();
 
             Atom CALL{AtomType::CALL, s, "", r};
-            outputAtoms << CALL;
-            
+            outputAtoms << std::format("{}: ", symtable.GetContext()) << CALL;
+
             Node.NewVal(r);
 
             treePrint.pop_back();
@@ -497,7 +498,7 @@ namespace miniCSemanticAnalyzer
         Node.NewVal(std::to_string(std::stoi(argList.GetValues()[0]) + 1));
 
         Atom PARAM{AtomType::PARAM, "", "", e.GetValues()[0]};
-        outputAtoms << PARAM;
+        outputAtoms << std::format("{}: ", symtable.GetContext()) << PARAM;
     }
 
     void SemanticAnalyzer::ArgListList(miniCBuilderAST::Node &Node, std::vector<int> treePrint)
@@ -525,7 +526,7 @@ namespace miniCSemanticAnalyzer
         Node.NewVal(std::to_string(std::stoi(argList.GetValues()[0]) + 1));
 
         Atom PARAM{AtomType::PARAM, "", "", e.GetValues()[0]};
-        outputAtoms << PARAM;
+        outputAtoms << std::format("{}: ", symtable.GetContext()) << PARAM;
     }
 
     void SemanticAnalyzer::DeclareStmt(miniCBuilderAST::Node &Node, std::vector<int> treePrint)
@@ -1093,6 +1094,7 @@ namespace miniCSemanticAnalyzer
     {
         outputTree.open("./output/outputTree.tree");
         outputAtoms.open("./output/outputAtoms.atom");
+        outputTable.open("./output/outputTable.table");
     }
 
     SemanticAnalyzer::~SemanticAnalyzer()
@@ -1104,5 +1106,7 @@ namespace miniCSemanticAnalyzer
     void SemanticAnalyzer::StartAnalysis()
     {
         StmtList(AST, {});
+
+        outputTable << symtable;
     }
 }
