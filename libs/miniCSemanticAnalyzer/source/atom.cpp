@@ -5,9 +5,9 @@
 namespace miniCSemanticAnalyzer
 {
     Atom::Atom(const int type, const std::string first, const std::string second, const std::string third) : type{type},
-                                                                                                             first{first},
-                                                                                                             second{second},
-                                                                                                             third{third} {}
+                                                                                                            first{first},
+                                                                                                            second{second},
+                                                                                                            third{third} {}
 
     const std::string Atom::GetType() const
     {
@@ -91,6 +91,7 @@ namespace miniCSemanticAnalyzer
     {
         return second;
     }
+    
     const std::string Atom::GetThird() const
     {
         return third;

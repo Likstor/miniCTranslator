@@ -2,6 +2,7 @@
 #include <miniCBuilderAST/node.h>
 #include <fstream>
 #include <miniCSemanticAnalyzer/symtable.h>
+#include <miniCSemanticAnalyzer/atom.h>
 
 namespace miniCSemanticAnalyzer
 {
@@ -11,8 +12,11 @@ namespace miniCSemanticAnalyzer
         std::ofstream outputTree;
         std::ofstream outputAtoms;
         std::ofstream outputTable;
+
         miniCBuilderAST::Node AST;
         miniCSemanticAnalyzer::SymbolTable symtable;
+        std::vector<miniCSemanticAnalyzer::Atom> atomsArray;
+
         bool prevNewString = true;
 
         void E(miniCBuilderAST::Node &Node, std::vector<int> treePrint);
@@ -73,6 +77,7 @@ namespace miniCSemanticAnalyzer
 
         void printTreeString(std::vector<int> treePrint, std::vector<std::string> nodes, bool newString);
 
+        void recordAtom(miniCSemanticAnalyzer::Atom& atom);
     public:
         SemanticAnalyzer(miniCBuilderAST::Node &AST);
         void StartAnalysis();

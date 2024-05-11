@@ -23,7 +23,7 @@ namespace miniCSemanticAnalyzer
     {
         for (int i = int(contextArray.size()); i >= 0; i--)
         {
-            auto [code, ok] = subData[contextArray[i]][std::format("c{}_", contextArray[i]) + name];
+            auto [code, ok] = subData[contextArray[i]][name];
             if (ok)
             {
                 return {std::to_string(code), ok};
@@ -37,6 +37,7 @@ namespace miniCSemanticAnalyzer
     {
         SymbolData temp{
             "#TEMP_" + std::to_string(currentCode),
+            GetContext(),
             SymbolClass::Dev,
             SymbolType::Int,
             "NULL",
@@ -50,7 +51,7 @@ namespace miniCSemanticAnalyzer
 
     void SymbolTable::EnterContext()
     {
-        contextArray.push_back(currentContext++);
+        contextArray.push_back(++currentContext);
     }
 
     void SymbolTable::ExitContext()
@@ -76,11 +77,28 @@ namespace miniCSemanticAnalyzer
 
     std::string SymbolTable::AddVar(std::string name, SymbolType type, std::string init)
     {
+        auto [code, ok] = findSymbolData("var_" + name);
+        if (ok)
+        {
+            SymbolData &sd = GetSymbolData(code);
+
+            if (sd.Type == type)
+            {
+                sd.Init = init;
+            }
+            else
+            {
+                throw SemanticError(std::format("Trying to redefine the variable \"{}\" with a value of a different type", name));
+            }
+            return code;
+        }
+
         SymbolData temp{
-            "c" + std::to_string(contextArray.back()) + "_var_" + name,
+            "var_" + name,
+            GetContext(),
             SymbolClass::Var,
             type,
-            NULL,
+            "NULL",
             init};
 
         subData[contextArray.back()][temp.Name] = {currentCode, true};
@@ -91,7 +109,7 @@ namespace miniCSemanticAnalyzer
 
     std::string SymbolTable::CheckFunc(std::string name, std::string len)
     {
-        auto [code, ok] = findSymbolData("func_" + name + "_" + len);
+        auto [code, ok] = findSymbolData(std::format("func_{}_{}", name, len));
         if (ok)
         {
             return code;
@@ -102,14 +120,21 @@ namespace miniCSemanticAnalyzer
 
     std::string SymbolTable::AddFunc(std::string name, SymbolType type, std::string len)
     {
+        auto [code, ok] = findSymbolData(std::format("func_{}_{}", name, len));
+        if (ok)
+        {
+            throw SemanticError("Trying to override a function: " + name);
+        }
+
         SymbolData temp{
-            "c" + std::to_string(contextArray.back()) + "_func_" + name + "_" + len,
+            std::format("func_{}_{}", name, len),
+            -1,
             SymbolClass::Func,
             type,
             len,
-            NULL};
+            "NULL"};
 
-        subData[contextArray.back()][temp.Name] = {currentCode, true};
+        subData[-1][temp.Name] = {currentCode, true};
         data[currentCode] = temp;
 
         return std::to_string(currentCode++);
@@ -136,13 +161,14 @@ namespace miniCSemanticAnalyzer
         size_t lenLen = 3;
         size_t initLen = 4;
         size_t offsetLen = 6;
+        size_t scopeLen = 5;
         size_t temp = 0;
 
         std::string coll = "│ ";
         std::string colr = " │";
         std::string col = " │ ";
 
-        auto prepateData = [=](int len, std::string data, std::string orient = "left")
+        auto prepareData = [=](int len, std::string data, std::string orient = "left")
         {
             std::stringstream temp;
 
@@ -173,44 +199,47 @@ namespace miniCSemanticAnalyzer
 
         for (auto [code, sd] : symtable.data)
         {
-            temp = std::to_string(code).size();
+            temp = std::to_string(code).length();
             codeLen = temp > codeLen ? temp : codeLen;
 
-            temp = sd.Name.size();
+            temp = sd.Name.length();
             nameLen = temp > nameLen ? temp : nameLen;
 
-            temp = std::to_string(int(sd.Class)).size();
+            temp = std::to_string(int(sd.Class)).length();
             classLen = temp > classLen ? temp : classLen;
 
-            temp = std::to_string(int(sd.Type)).size();
+            temp = std::to_string(int(sd.Type)).length();
             typeLen = temp > typeLen ? temp : typeLen;
 
-            temp = sd.Len.size();
+            temp = sd.Len.length();
             lenLen = temp > lenLen ? temp : lenLen;
 
-            temp = sd.Init.size();
+            temp = sd.Init.length();
             initLen = temp > initLen ? temp : initLen;
 
-            temp = sd.Offset.size();
+            temp = sd.Offset.length();
             offsetLen = temp > offsetLen ? temp : offsetLen;
+
+            temp = std::to_string(sd.Scope).length();
+            scopeLen = temp > scopeLen ? temp : scopeLen;
         }
 
         std::stringstream sep;
-        sep << "├" << fill(codeLen + 2) << "┼" << fill(nameLen + 2) << "┼" << fill(classLen + 2) << "┼" << fill(typeLen + 2) << "┼" << fill(lenLen + 2) << "┼" << fill(initLen + 2) << "┼" << fill(offsetLen + 2) << "┤" << std::endl;
+        sep << "├" << fill(codeLen + 2) << "┼" << fill(nameLen + 2) << "┼" << fill(scopeLen + 2) << "┼" << fill(classLen + 2) << "┼" << fill(typeLen + 2) << "┼" << fill(lenLen + 2) << "┼" << fill(initLen + 2) << "┼" << fill(offsetLen + 2) << "┤" << std::endl;
 
         std::stringstream top;
-        top << "┌" << fill(codeLen + 2) << "┬" << fill(nameLen + 2) << "┬" << fill(classLen + 2) << "┬" << fill(typeLen + 2) << "┬" << fill(lenLen + 2) << "┬" << fill(initLen + 2) << "┬" << fill(offsetLen + 2) << "┐" << std::endl;
+        top << "┌" << fill(codeLen + 2) << "┬" << fill(nameLen + 2) << "┬" << fill(scopeLen + 2) << "┬" << fill(classLen + 2) << "┬" << fill(typeLen + 2) << "┬" << fill(lenLen + 2) << "┬" << fill(initLen + 2) << "┬" << fill(offsetLen + 2) << "┐" << std::endl;
 
         std::stringstream bottom;
-        bottom << "└" << fill(codeLen + 2) << "┴" << fill(nameLen + 2) << "┴" << fill(classLen + 2) << "┴" << fill(typeLen + 2) << "┴" << fill(lenLen + 2) << "┴" << fill(initLen + 2) << "┴" << fill(offsetLen + 2) << "┘" << std::endl;
+        bottom << "└" << fill(codeLen + 2) << "┴" << fill(nameLen + 2) << "┴" << fill(scopeLen + 2) << "┴" << fill(classLen + 2) << "┴" << fill(typeLen + 2) << "┴" << fill(lenLen + 2) << "┴" << fill(initLen + 2) << "┴" << fill(offsetLen + 2) << "┘" << std::endl;
 
         os << top.str();
-        os << coll << prepateData(codeLen, "Code") << col << prepateData(nameLen, "Name") << col << prepateData(classLen, "Class") << col << prepateData(typeLen, "Type") << col << prepateData(lenLen, "Len") << col << prepateData(initLen, "Init") << col << prepateData(offsetLen, "Offset") << colr << std::endl;
+        os << coll << prepareData(codeLen, "Code") << col << prepareData(nameLen, "Name") << col << prepareData(scopeLen, "Scope") << col << prepareData(classLen, "Class") << col << prepareData(typeLen, "Type") << col << prepareData(lenLen, "Len") << col << prepareData(initLen, "Init") << col << prepareData(offsetLen, "Offset") << colr << std::endl;
         os << sep.str();
 
         for (auto [code, sd] : symtable.data)
         {
-            os << coll << prepateData(codeLen, std::to_string(code), "right") << col << prepateData(nameLen, sd.Name) << col << prepateData(classLen, sd.GetClass()) << col << prepateData(typeLen, sd.GetType()) << col << prepateData(lenLen, sd.Len) << col << prepateData(initLen, sd.Init, "right") << col << prepateData(offsetLen, sd.Offset) << colr << std::endl;
+            os << coll << prepareData(codeLen, std::to_string(code), "right") << col << prepareData(nameLen, sd.Name) << col << prepareData(scopeLen, std::to_string(sd.Scope), "right") << col << prepareData(classLen, sd.GetClass()) << col << prepareData(typeLen, sd.GetType()) << col << prepareData(lenLen, sd.Len) << col << prepareData(initLen, sd.Init, "right") << col << prepareData(offsetLen, sd.Offset) << colr << std::endl;
         }
 
         os << bottom.str();

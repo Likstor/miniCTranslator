@@ -43,6 +43,5 @@ namespace miniCSemanticAnalyzer
         const std::string GetThird() const;
         Atom(const int type, const std::string first, const std::string second, const std::string third);
     };
-
     std::ostream &operator<<(std::ostream &os, const Atom &atom);
 }

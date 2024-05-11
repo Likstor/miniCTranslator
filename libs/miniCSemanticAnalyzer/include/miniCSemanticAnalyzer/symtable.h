@@ -20,9 +20,10 @@ namespace miniCSemanticAnalyzer
         Func
     };
 
-        struct SymbolData
+    struct SymbolData
     {
         std::string Name;
+        int Scope;
         SymbolClass Class;
         SymbolType Type;
         std::string Len;
@@ -57,7 +58,7 @@ namespace miniCSemanticAnalyzer
             }
             else if (Type == SymbolType::Char)
             {
-                return "Var";
+                return "Char";
             }
             else if (Type == SymbolType::Int)
             {
@@ -98,10 +99,10 @@ namespace miniCSemanticAnalyzer
         std::string NewLabel();
 
         std::string CheckVar(std::string name);
-        std::string AddVar(std::string name, SymbolType type, std::string init);
+        std::string AddVar(std::string name, SymbolType type, std::string init = "NULL");
 
         std::string CheckFunc(std::string name, std::string len);
-        std::string AddFunc(std::string name, SymbolType type, std::string len);
+        std::string AddFunc(std::string name, SymbolType type, std::string len = "0");
         friend std::ostream &operator<<(std::ostream &os, const SymbolTable &symtable);
     };
 

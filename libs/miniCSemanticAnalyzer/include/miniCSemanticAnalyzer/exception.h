@@ -9,6 +9,7 @@ namespace miniCSemanticAnalyzer
 
     public:
         SemanticError(std::string msg) : message(msg) {}
+        SemanticError(const char* msg) : message(msg) {}
         const char *what() const throw()
         {
             return message.c_str();
