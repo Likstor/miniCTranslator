@@ -459,12 +459,19 @@ namespace miniCSemanticAnalyzer
         }
         else if (Node.GetChildren()[0].GetLexemeType() == "lpar")
         {
+            std::string &name = Node.GetValues()[0];
+
             treePrint.push_back(1);
             printTreeString(treePrint, {"lpar"}, false);
 
             ArgList(Node.GetChildren()[1], treePrint);
 
-            std::string s = symtable.CheckFunc(Node.GetValues()[0], Node.GetChildren()[1].GetValues()[0]);
+            if (name == "main")
+            {
+                throw SemanticError("Trying to call main function");
+            }
+
+            std::string s = symtable.CheckFunc(name, Node.GetChildren()[1].GetValues()[0]);
             std::string r = symtable.Alloc();
 
             Atom CALL{AtomType::CALL, s, "", r};
@@ -573,15 +580,25 @@ namespace miniCSemanticAnalyzer
             ParamList(Node.GetChildren()[1], treePrint);
 
             std::string funcCode;
+            std::string &name = Node.GetValues()[1];
 
             std::string type = Node.GetValues()[0]; // addFunc(q, p)
             if (type == "Char")
             {
-                funcCode = symtable.AddFunc(Node.GetValues()[1], SymbolType::Char, Node.GetChildren()[1].GetValues()[0]);
+                funcCode = symtable.AddFunc(name, SymbolType::Char, Node.GetChildren()[1].GetValues()[0]);
             }
             else if (type == "Int")
             {
-                funcCode = symtable.AddFunc(Node.GetValues()[1], SymbolType::Int, Node.GetChildren()[1].GetValues()[0]);
+                funcCode = symtable.AddFunc(name, SymbolType::Int, Node.GetChildren()[1].GetValues()[0]);
+            }
+
+            if (name == "main")
+            {
+                if (mainFunction != "NULL")
+                {
+                    throw SemanticError("An attempt to override the main function");
+                }
+                mainFunction = funcCode;
             }
 
             printTreeString(treePrint, {"rpar", "lbrace"}, false);
@@ -1070,11 +1087,18 @@ namespace miniCSemanticAnalyzer
         }
         else if (Node.GetChildren()[0].GetLexemeType() == "lpar")
         {
+            std::string &name = Node.GetValues()[0];
+
             treePrint.push_back(1);
             printTreeString(treePrint, {"ArgList"}, false);
             ArgList(Node.GetChildren()[1], treePrint);
 
-            std::string q = symtable.CheckFunc(Node.GetValues()[0], Node.GetChildren()[1].GetValues()[0]);
+            if (name == "main")
+            {
+                throw SemanticError("Trying to call main function");
+            }
+
+            std::string q = symtable.CheckFunc(name, Node.GetChildren()[1].GetValues()[0]);
             std::string r = symtable.Alloc();
 
             Atom CALL{AtomType::CALL, q, "", r};
@@ -1366,6 +1390,11 @@ namespace miniCSemanticAnalyzer
     void SemanticAnalyzer::StartAnalysis()
     {
         StmtList(AST, {});
+
+        if (mainFunction == "NULL")
+        {
+            throw SemanticError("Main function is missing");
+        }
 
         outputTable << symtable;
     }

@@ -16,6 +16,7 @@ namespace miniCSemanticAnalyzer
         miniCBuilderAST::Node AST;
         miniCSemanticAnalyzer::SymbolTable symtable;
         std::vector<miniCSemanticAnalyzer::Atom> atomsArray;
+        std::string mainFunction = "NULL";
 
         bool prevNewString = true;
 

@@ -19,3 +19,8 @@ char parF(char a, int b, char c)
 {
     return paramFunc(1, 2, 3);
 }
+
+int main(int a)
+{
+
+}

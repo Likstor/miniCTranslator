@@ -69,11 +69,11 @@ int main(int argc, char *argv[])
     {
         std::cout << "ACCEPT" << std::endl;
 
-        try 
+        try
         {
-        miniCSemanticAnalyzer::SemanticAnalyzer SA{AST.first};
-        SA.StartAnalysis();
-        std::cout << "ACCEPT" << std::endl;
+            miniCSemanticAnalyzer::SemanticAnalyzer SA{AST.first};
+            SA.StartAnalysis();
+            std::cout << "ACCEPT" << std::endl;
         }
         catch (miniCSemanticAnalyzer::SemanticError e)
         {

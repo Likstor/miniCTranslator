@@ -254,3 +254,12 @@ StmtList
     │  │└StmtList 
     │  └rbrace 
     └StmtList 
+     ├Stmt 
+     │└DeclareStmt 
+     │ ├Type 
+     │ │└kwint 
+     │ └main DeclareStmtList 
+     │  ├lpar ParamList 
+     │  │├Type 
+     │  ││└kwint 
+     │  │└a ParamList' 
