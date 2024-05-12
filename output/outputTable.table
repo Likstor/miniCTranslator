@@ -1,0 +1,20 @@
+┌──────┬──────────────────┬───────┬───────┬──────┬──────┬───────┬────────┐
+│ Code │ Name             │ Scope │ Class │ Type │ Len  │ Init  │ Offset │
+├──────┼──────────────────┼───────┼───────┼──────┼──────┼───────┼────────┤
+│    0 │ var_b            │    -1 │ Var   │ Int  │ NULL │  NULL │        │
+│    1 │ func_main_0      │    -1 │ Func  │ Int  │ 0    │  NULL │        │
+│    2 │ var_test         │     0 │ Var   │ Int  │ NULL │ 99999 │        │
+│    3 │ func_testFc_0    │    -1 │ Func  │ Char │ 0    │  NULL │        │
+│    4 │ var_test         │     1 │ Var   │ Int  │ NULL │  NULL │        │
+│    5 │ var_test2        │     1 │ Var   │ Int  │ NULL │  NULL │        │
+│    6 │ var_biba         │     2 │ Var   │ Int  │ NULL │  NULL │        │
+│    7 │ var_boba         │     2 │ Var   │ Char │ NULL │  NULL │        │
+│    8 │ var_aboba        │     2 │ Var   │ Int  │ NULL │  NULL │        │
+│    9 │ func_paramFunc_3 │    -1 │ Func  │ Char │ 3    │  NULL │        │
+│   10 │ var_a            │     3 │ Var   │ Char │ NULL │  NULL │        │
+│   11 │ var_c            │     3 │ Var   │ Char │ NULL │  NULL │        │
+│   12 │ func_parF_3      │    -1 │ Func  │ Char │ 3    │  NULL │        │
+│   13 │ #TEMP_13         │     3 │ Dev   │ Int  │ NULL │  NULL │        │
+│   14 │ #TEMP_14         │     3 │ Dev   │ Int  │ NULL │  NULL │        │
+│   15 │ var_ttttt        │     3 │ Var   │ Int  │ NULL │     0 │        │
+└──────┴──────────────────┴───────┴───────┴──────┴──────┴───────┴────────┘

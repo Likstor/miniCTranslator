@@ -46,8 +46,7 @@ namespace miniCLexer
             {"out", "kwout"},
             {"char", "kwchar"},
             {"int", "kwint"},
-            {"default", "kwdefault"}
-        };
+            {"default", "kwdefault"}};
 
         std::unordered_map<ll, edgesMap> lexicalGraph{
             {0, {
@@ -127,10 +126,13 @@ namespace miniCLexer
                  }},
             {12, {
                      {"\"", {0, true, false, "str"}},
+                     {"\\", {13, true, false, ""}},
                      {"eof", {-1, false, false, "error"}},
                      {"default", {12, true, true, ""}},
                  }},
-        };
+            {13, {
+                     {"default", {12, true, true, ""}},
+                 }}};
 
         void read();
         void append();
