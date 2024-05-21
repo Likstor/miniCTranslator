@@ -4,18 +4,20 @@
 
 namespace miniCSemanticAnalyzer
 {
-    Atom::Atom(const int type, const std::string first, const std::string second, const std::string third) : type{type},
-                                                                                                            first{first},
-                                                                                                            second{second},
-                                                                                                            third{third} {}
+    Atom::Atom(const AtomType type, const std::string first, const std::string second, const std::string third) : type{type},
+                                                                                                                  first{first},
+                                                                                                                  second{second},
+                                                                                                                  third{third} {}
 
-    const std::string Atom::GetType() const
+    Atom::Atom() : type{AtomType::ERROR}, first{""}, second{""}, third{""} {}
+
+    const std::string Atom::GetTypeStr() const
     {
         std::string output;
 
         switch (type)
         {
-        case 0:
+        case AtomType::ERROR:
             output = "ERROR";
             break;
         case AtomType::OR:
@@ -82,6 +84,11 @@ namespace miniCSemanticAnalyzer
         return output;
     }
 
+    const AtomType Atom::GetType() const
+    {
+        return type;
+    }
+
     const std::string Atom::GetFirst() const
     {
         return first;
@@ -91,7 +98,7 @@ namespace miniCSemanticAnalyzer
     {
         return second;
     }
-    
+
     const std::string Atom::GetThird() const
     {
         return third;
@@ -99,7 +106,7 @@ namespace miniCSemanticAnalyzer
 
     std::ostream &operator<<(std::ostream &os, const Atom &atom)
     {
-        os << "<" << atom.GetType() << ", " << atom.GetFirst() << ", " << atom.GetSecond() << ", " << atom.GetThird() << ">" << std::endl;
+        os << "<" << atom.GetTypeStr() << ", " << atom.GetFirst() << ", " << atom.GetSecond() << ", " << atom.GetThird() << ">" << std::endl;
         return os;
     }
 }

@@ -6,9 +6,8 @@
 
 namespace miniCSemanticAnalyzer
 {
-    enum class SymbolClass
+    enum class SymbolKind
     {
-        Dev,
         Var,
         Func
     };
@@ -24,23 +23,19 @@ namespace miniCSemanticAnalyzer
     {
         std::string Name;
         int Scope;
-        SymbolClass Class;
+        SymbolKind Kind;
         SymbolType Type;
         std::string Len;
         std::string Init;
-        std::string Offset;
+        int Offset;
 
-        std::string GetClass()
+        std::string GetKind()
         {
-            if (Class == SymbolClass::Dev)
-            {
-                return "Dev";
-            }
-            else if (Class == SymbolClass::Func)
+            if (Kind == SymbolKind::Func)
             {
                 return "Func";
             }
-            else if (Class == SymbolClass::Var)
+            else if (Kind == SymbolKind::Var)
             {
                 return "Var";
             }
@@ -71,6 +66,13 @@ namespace miniCSemanticAnalyzer
         }
     };
 
+    struct Context
+    {
+        size_t Len;
+        std::vector<long long int> Vars;
+        int PrevContext;
+    };
+
     class SymbolTable
     {
     private:
@@ -82,12 +84,16 @@ namespace miniCSemanticAnalyzer
         int currentContext = -1;
         int currentLabel = 0;
 
+        std::unordered_map<int, Context> contextMap;
+
         std::pair<std::string, bool> findSymbolData(std::string name);
 
     public:
         SymbolTable();
 
         int GetContext();
+
+        std::unordered_map<int, Context> &GetContextMap();
 
         SymbolData &GetSymbolData(std::string code);
 
@@ -104,6 +110,9 @@ namespace miniCSemanticAnalyzer
         std::string CheckFunc(std::string name, std::string len);
         std::string AddFunc(std::string name, SymbolType type, std::string len = "0");
         friend std::ostream &operator<<(std::ostream &os, const SymbolTable &symtable);
+
+        void AddVarToContext(int var);
+        void FillOffset();
     };
 
     std::ostream &operator<<(std::ostream &os, const SymbolTable &symtable);

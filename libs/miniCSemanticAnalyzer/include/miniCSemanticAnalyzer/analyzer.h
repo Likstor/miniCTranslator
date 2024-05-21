@@ -15,8 +15,10 @@ namespace miniCSemanticAnalyzer
 
         miniCBuilderAST::Node AST;
         miniCSemanticAnalyzer::SymbolTable symtable;
-        std::vector<miniCSemanticAnalyzer::Atom> atomsArray;
-        std::string mainFunction = "NULL";
+
+        std::unordered_map<std::string, std::vector<std::pair<int, miniCSemanticAnalyzer::Atom>>> functionMap;
+        std::string currentFunction;
+        bool mainCheck = false;
 
         bool prevNewString = true;
 
@@ -42,7 +44,6 @@ namespace miniCSemanticAnalyzer
         void DeclareStmtList(miniCBuilderAST::Node &Node, std::vector<int> treePrint);
 
         void Type(miniCBuilderAST::Node &Node, std::vector<int> treePrint);
-        void DeclVarList(miniCBuilderAST::Node &Node, std::vector<int> treePrint);
         void DeclVarListList(miniCBuilderAST::Node &Node, std::vector<int> treePrint);
         void InitVar(miniCBuilderAST::Node &Node, std::vector<int> treePrint);
         void InitVarList(miniCBuilderAST::Node &Node, std::vector<int> treePrint);
@@ -78,10 +79,13 @@ namespace miniCSemanticAnalyzer
 
         void printTreeString(std::vector<int> treePrint, std::vector<std::string> nodes, bool newString);
 
-        void recordAtom(miniCSemanticAnalyzer::Atom& atom);
+        void recordAtom(miniCSemanticAnalyzer::Atom &atom);
+
     public:
         SemanticAnalyzer(miniCBuilderAST::Node &AST);
         void StartAnalysis();
         ~SemanticAnalyzer();
+        miniCSemanticAnalyzer::SymbolTable& GetSymTable();
+        std::unordered_map<std::string, std::vector<std::pair<int, miniCSemanticAnalyzer::Atom>>>& GetFunctionMap();
     };
 }

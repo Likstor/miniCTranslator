@@ -10,6 +10,7 @@
 #include <miniCBuilderAST/node.h>
 #include <miniCSemanticAnalyzer/analyzer.h>
 #include <miniCSemanticAnalyzer/exception.h>
+#include <miniCAtomsToIntel8080/translator.h>
 
 using json = nlohmann::json;
 
@@ -69,16 +70,22 @@ int main(int argc, char *argv[])
     {
         std::cout << "ACCEPT" << std::endl;
 
+        miniCSemanticAnalyzer::SemanticAnalyzer SA{AST.first};
+
         try
         {
-            miniCSemanticAnalyzer::SemanticAnalyzer SA{AST.first};
             SA.StartAnalysis();
             std::cout << "ACCEPT" << std::endl;
         }
         catch (miniCSemanticAnalyzer::SemanticError e)
         {
             std::cout << e.what() << std::endl;
+            return -1;
         }
+
+        miniCAtomsToIntel8080::Translator Translator{SA.GetSymTable(), SA.GetFunctionMap()};
+
+        Translator.Translate();
     }
     else
     {

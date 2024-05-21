@@ -13,6 +13,7 @@ option(MINICTRANSLATOR_TESTING "Enable unit-tests" ON)
 add_subdirectory(libs/miniCLexer)
 add_subdirectory(libs/miniCBuilderAST)
 add_subdirectory(libs/miniCSemanticAnalyzer)
+add_subdirectory(libs/miniCAtomsToIntel8080)
 include_directories(libs/)
 
 file(
@@ -25,7 +26,7 @@ add_executable(miniCTranslator main.cpp ${SOURCES} ${HEADERS})
 target_link_libraries(miniCTranslator miniCLexer)
 target_link_libraries(miniCTranslator miniCBuilderAST)
 target_link_libraries(miniCTranslator miniCSemanticAnalyzer)
-
+target_link_libraries(miniCTranslator miniCAtomsToIntel8080)
 
 if(MINICTRANSLATOR_TESTING)
     enable_testing()

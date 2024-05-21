@@ -31,17 +31,19 @@ namespace miniCSemanticAnalyzer
     class Atom
     {
     private:
-        const int type;
+        AtomType type;
         const std::string first;
         const std::string second;
         const std::string third;
 
     public:
-        const std::string GetType() const;
+        const std::string GetTypeStr() const;
+        const AtomType GetType() const;
         const std::string GetFirst() const;
         const std::string GetSecond() const;
         const std::string GetThird() const;
-        Atom(const int type, const std::string first, const std::string second, const std::string third);
+        Atom(const AtomType type, const std::string first, const std::string second, const std::string third);
+        Atom();
     };
     std::ostream &operator<<(std::ostream &os, const Atom &atom);
 }
