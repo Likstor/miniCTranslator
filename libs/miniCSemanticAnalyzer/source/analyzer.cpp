@@ -571,17 +571,22 @@ namespace miniCSemanticAnalyzer
                 throw SemanticError("Definition function inside another function");
             }
 
+            // Входим в контекст тела функции
             symtable.EnterContext();
 
             treePrint.push_back(1);
             printTreeString(treePrint, {"lpar"}, false);
+
+            // Выделяем место для возвращаемого значение
             symtable.AddVarToContext(-2);
 
+            // Во время обхода ParamList в контекст добавятся коды параметров
             ParamList(Node.GetChildren()[1], treePrint);
 
             std::string funcCode;
             std::string &name = Node.GetValues()[1];
             std::string type = Node.GetValues()[0];
+
             // addFunc(q, p)
             if (type == "Char")
             {
@@ -593,8 +598,10 @@ namespace miniCSemanticAnalyzer
             }
             
 
+            // Выделяем место для адреса возврата
             symtable.AddVarToContext(-2);
 
+            // Проверка на то, является ли эта функция функцией main
             if (name == "main")
             {
                 if (mainCheck)
@@ -611,9 +618,12 @@ namespace miniCSemanticAnalyzer
 
             printTreeString(treePrint, {"rpar", "lbrace"}, false);
 
+            
+            // Генерируем атом ENTERCTX
             Atom ENTERCTX{AtomType::ENTERCTX, "", "", std::to_string(symtable.GetContext())};
             recordAtom(ENTERCTX);
 
+            // Обход StmtList
             StmtList(Node.GetChildren()[4], treePrint);
 
             treePrint.pop_back();
@@ -623,8 +633,10 @@ namespace miniCSemanticAnalyzer
             Atom RET{AtomType::RET, "", "", "'0'"};
             recordAtom(RET);
 
+            // Генерируем атом EXITCTX
             Atom EXITCTX{AtomType::EXITCTX, "", "", ""};
             recordAtom(EXITCTX);
+            // Выходим из контекста тела функции
             symtable.ExitContext();
         }
         else if (Node.GetChildren()[0].GetLexemeType() == "opassign")
@@ -1011,18 +1023,27 @@ namespace miniCSemanticAnalyzer
         {
             if (symtable.GetContext() == -1)
             {
-                throw SemanticError(std::format("Operator {} should be inside function", Node.GetChildren()[0].GetLexemeType()));
+                throw SemanticError(std::format("Operator {} should be inside function",
+                                                 Node.GetChildren()[0].GetLexemeType()));
             }
 
             treePrint.push_back(1);
             printTreeString(treePrint, {"lbrace"}, false);
 
+            // Новые действия перед вызовом StmtList
+            // Входим в контекст внутри фигурных скобок
             symtable.EnterContext();
+            // Генерируем атом ENTERCTX
             Atom ENTERCTX{AtomType::ENTERCTX, "", "", std::to_string(symtable.GetContext())};
             recordAtom(ENTERCTX);
+
             StmtList(Node.GetChildren()[1], treePrint);
+
+            // Новые действия после вызова StmtList
+            //Генерируем атом EXITCTX
             Atom EXITCTX{AtomType::EXITCTX, "", "", ""};
             recordAtom(EXITCTX);
+            // Выходим из контекста
             symtable.ExitContext();
 
             treePrint.pop_back();
@@ -1293,12 +1314,21 @@ namespace miniCSemanticAnalyzer
         Atom EQ{AtomType::EQ, e.GetValues()[0], "'0'", l1};
         recordAtom(EQ);
 
+        // Новые действия перед вызовом Stmt
+        // Заходим в контекст тела if
         symtable.EnterContext();
+        // Генерируем атом ENTERCTX
         Atom ENTERCTX{AtomType::ENTERCTX, "", "", std::to_string(symtable.GetContext())};
         recordAtom(ENTERCTX);
+
+        // Вызов Stmt
         Stmt(Node.GetChildren()[4], treePrint);
+
+        // Новые действия после вызова Stmt
+        // Генерируем атом EXITCTX
         Atom EXITCTX{AtomType::EXITCTX, "", "", ""};
         recordAtom(EXITCTX);
+        // Выходим из контекста
         symtable.ExitContext();
 
         std::string l2 = symtable.NewLabel();

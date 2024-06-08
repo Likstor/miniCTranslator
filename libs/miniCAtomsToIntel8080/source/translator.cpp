@@ -14,6 +14,7 @@ namespace miniCAtomsToIntel8080
 
     void Translator::popN(int n)
     {
+        // Записываем POP B n-раз
         for (int i = 0; i < n; i++)
         {
             outputASM << "POP B" << std::endl;
@@ -23,6 +24,7 @@ namespace miniCAtomsToIntel8080
 
     void Translator::pushN(int n)
     {
+        // Записываем PUSH B n-раз
         for (int i = 0; i < n; i++)
         {
             outputASM << "PUSH B" << std::endl;
@@ -32,29 +34,38 @@ namespace miniCAtomsToIntel8080
 
     void Translator::loadOp(const std::string &value, int shift)
     {
+        // MVI A, value если это число 
         if (value.starts_with('\''))
         {
             outputASM << std::format("MVI A, {}", value.substr(1, value.size() - 2)) << std::endl;
             return;
         }
 
+        // Получаем информацию из таблицы символов о переменной по ее коду
         miniCSemanticAnalyzer::SymbolData &sd = symtable.GetSymbolData(value);
 
+        // LDA var_name если переменная в глобальном контексте
         if (sd.Scope == -1)
         {
             outputASM << std::format("LDA {}", sd.Name) << std::endl;
             return;
         }
 
+        // Записываем сдвиг переменной в ее контексте
         int offsetShift = sd.Offset;
 
+        // Проходимся по вектору контекстов
         for (size_t i = contextArray.size() - 1; i > 0; --i)
         {
+            // Если попали в контекст функции, то заканчиваем
             if (sd.Scope == contextArray[i])
             {
                 break;
             }
-
+            /*
+            Иначе записываем сдвиг относительно количества переменных
+            в этом контексте
+            */
             offsetShift += contextMap[contextArray[i]].Len * 2;
         }
 
@@ -66,23 +77,31 @@ namespace miniCAtomsToIntel8080
 
     void Translator::saveOp(const std::string &value)
     {
+        // Получаем информацию из таблицы символов о переменной по ее коду
         miniCSemanticAnalyzer::SymbolData &sd = symtable.GetSymbolData(value);
 
+        // STA var_name если переменная в глобальном контексте
         if (sd.Scope == -1)
         {
-            outputASM << std::format("LDA {}", sd.Name) << std::endl;
+            outputASM << std::format("STA {}", sd.Name) << std::endl;
             return;
         }
 
+        // Записываем сдвиг переменной в ее контексте
         int offsetShift = sd.Offset;
 
+        // Проходимся по вектору контекстов
         for (size_t i = contextArray.size() - 1; i > 0; --i)
         {
+            // Если попали в контекст функции, то заканчиваем
             if (sd.Scope == contextArray[i])
             {
                 break;
             }
-
+            /*
+            Иначе записываем сдвиг относительно количества переменных 
+            в этом контексте
+            */
             offsetShift += contextMap[contextArray[i]].Len * 2;
         }
 
@@ -274,16 +293,27 @@ namespace miniCAtomsToIntel8080
     {
         loadOp(atom.GetThird());
 
+        // Счетчик для количества переменных, которое необходимо снять со стека
         int countVars = 0;
+        // Цикл по вектору контекстов
         for (size_t i = 0; i < contextArray.size(); i++)
         {
+            // Записываем количество переменных в контексте
             countVars += contextMap[contextArray[i]].Len;
         }
 
+        /* 
+        Как сдвиг будет записано (countVars - 1) * 2. Вычитая единицу мы
+        получим сдвиг к возвращаемому значению.
+        */
         outputASM << std::format("LXI H, {}", (countVars - 1) * 2) << std::endl
                   << "DAD SP" << std::endl
                   << "MOV M, A" << std::endl;
 
+        /*
+        Снимаем со стека все переменные, кроме адреса возврата, возвращаемого значения
+        и параметров функции.
+        */
         popN(countVars - std::stoi(funcSd.Len) - 2);
 
         outputASM << "RET" << std::endl
@@ -310,30 +340,49 @@ namespace miniCAtomsToIntel8080
 
     void Translator::ENTERCTX(int scope)
     {
+        // Добавляем новый контекст в вектор
         contextArray.push_back(scope);
+        // Выделяем необходимое место для переменных на стеке
         pushN(contextMap[contextArray.back()].Len);
     }
 
     void Translator::EXITCTX()
     {
+        // Снимаем необходимо количество переменных со стека
         popN(contextMap[contextArray.back()].Len);
+        // Удаляем последний контекст из вектора
         contextArray.pop_back();
     }
 
     void Translator::run()
     {
+        // Инициализируем программу (глобальные переменные и вызов main)
         loader();
 
+        // Цикл по функция и привязанным к ним атомам
         for (auto &&[funcCode, atoms] : functionMap)
         {
+            // Получаем информацию о функции из таблицы символов
             funcSd = symtable.GetSymbolData(funcCode);
+            // Записываем метку функции
             outputASM << std::format("{}:", funcSd.Name) << std::endl;
 
+            // Получаем контекст функции из первого атома, т.к. этим атомом является ENTERCTX
             int funcScope = std::stoi(atoms[0].GetThird());
+            // Добавляем контекст в вектор контекстов
             contextArray.push_back(funcScope);
+            // Выделяем необходимое количество места на стеке для переменных контекста тела функции
             pushN(contextMap[contextArray.back()].Len - 2 - std::stoi(funcSd.Len));
 
-            for (size_t i = 1; i < atoms.size() - 1; i++){
+            /* 
+            Проходим по всем атомам начиная со второго атома и до предпоследнего.
+            Идем до предпоследнего, т.к. это всегда будет RET и он снимет необходимое
+            количество переменных со стека и выйдет из функции, следовательно нам 
+            нет необходимости обрабатывать последний EXITCTX, 
+            ибо появившиеся POP B никогда не будут выполняться.
+            */
+            for (size_t i = 1; i < atoms.size() - 1; i++)
+            {
                 miniCSemanticAnalyzer::Atom atom = atoms[i];
 
                 switch (atom.GetType())
@@ -404,6 +453,7 @@ namespace miniCAtomsToIntel8080
                 }
             }
 
+            // Очищаем вектор контекстов
             contextArray.clear();
             outputASM << std::endl;
         }
