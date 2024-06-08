@@ -1,0 +1,37 @@
+int main()
+{
+    int n1, n2;
+    char a, b = '5', c;
+    {
+        {
+            {
+                {
+                    {
+                        {
+                            {
+                                {
+                                    int i;
+                                    i = i + 1 + n1;
+                                    return i;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    int i;
+    for (i = 0; i < n1; ++i)
+    {
+        int g;
+        for (g = 0; g <= n2; ++g)
+        {
+            char h = 'k';
+            return h;
+        }
+    }
+int g;
+    for (i = 0; i < n1; ++i) for (g = 0; g < n2; ++g) if (1) for (;;) out 1; else {out 1;}
+}
