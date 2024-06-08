@@ -97,7 +97,7 @@ namespace miniCLexer
 
             currentState = currentEdge.nextState;
 
-            if (currentEdge.append) // Проверка необходимости добавления в буффер
+            if (currentEdge.append) // Проверка необходимости добавления в буфер
             {
                 append();
             }
