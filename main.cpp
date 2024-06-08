@@ -16,79 +16,111 @@ using json = nlohmann::json;
 
 int main(int argc, char *argv[])
 {
+    std::cout << std::endl
+              << "Translator of the MiniC language into the Intel 8080 assembler." << std::endl << std::endl;
+
+        if (argc < 3)
+    {
+        std::cout << "Enter the path to the file with the code and the file with the canonical table." << std::endl
+                  << "Format: \"miniCTranslator.exe [code file] [canonical table json]\"" << std::endl
+                  << "Example: \"miniCTranslator.exe ./code.minic ./canonicalTable.json\"" << std::endl;
+        return -1;
+    }
+
+    std::cout << "Translation started..." << std::endl;
+
     std::ifstream stream(argv[1], std::ios::in);
-
-    miniCLexer::Lexer lexer{stream};
-
-    std::ifstream json(argv[2], std::ios::in);
-
-    auto canonicalTableJson = nlohmann::ordered_json::parse(json);
 
     miniCBuilderAST::CanonicalTable CT;
 
-    CT.Terminals = canonicalTableJson["Terminals"];
-    CT.Nonterminals = canonicalTableJson["NonTerminals"];
-
-    for (const auto &[key, value] : canonicalTableJson["Goto"].items())
+    try 
     {
-        CT.Goto[std::stoi(key)] = value;
-    }
+        // JSON PARSE
+        std::ifstream json(argv[2], std::ios::in);
 
-    for (const auto &[key, value] : canonicalTableJson["Action"].items())
-    {
-        for (auto term : CT.Terminals)
+        auto canonicalTableJson = nlohmann::ordered_json::parse(json);
+
+        CT.Terminals = canonicalTableJson["Terminals"];
+        CT.Nonterminals = canonicalTableJson["NonTerminals"];
+
+        for (const auto &[key, value] : canonicalTableJson["Goto"].items())
         {
-            miniCBuilderAST::Action action;
-            action.ActionType = canonicalTableJson["Action"][key][term]["ActionType"];
-            action.Pos = canonicalTableJson["Action"][key][term]["NextState"];
+            CT.Goto[std::stoi(key)] = value;
+        }
 
-            if (canonicalTableJson["Action"][key][term]["Rule"]["Name"] == "NULL")
+        for (const auto &[key, value] : canonicalTableJson["Action"].items())
+        {
+            for (auto term : CT.Terminals)
             {
-                action.Rule = miniCBuilderAST::Rule{};
-            }
-            else
-            {
-                miniCBuilderAST::Rule rule;
+                miniCBuilderAST::Action action;
+                action.ActionType = canonicalTableJson["Action"][key][term]["ActionType"];
+                action.Pos = canonicalTableJson["Action"][key][term]["NextState"];
 
-                rule.Name = canonicalTableJson["Action"][key][term]["Rule"]["Name"];
-
-                for (int i = 0; i < canonicalTableJson["Action"][key][term]["Rule"]["Body"].size(); i++)
+                if (canonicalTableJson["Action"][key][term]["Rule"]["Name"] == "NULL")
                 {
-                    rule.Body.push_back(miniCLexer::Token{canonicalTableJson["Action"][key][term]["Rule"]["Body"][i], ""});
+                    action.Rule = miniCBuilderAST::Rule{};
                 }
+                else
+                {
+                    miniCBuilderAST::Rule rule;
 
-                action.Rule = rule;
+                    rule.Name = canonicalTableJson["Action"][key][term]["Rule"]["Name"];
+
+                    for (int i = 0; i < canonicalTableJson["Action"][key][term]["Rule"]["Body"].size(); i++)
+                    {
+                        rule.Body.push_back(miniCLexer::Token{canonicalTableJson["Action"][key][term]["Rule"]["Body"][i], ""});
+                    }
+
+                    action.Rule = rule;
+                }
+                CT.Action[std::stoi(key)][term] = action;
             }
-            CT.Action[std::stoi(key)][term] = action;
         }
     }
+    catch (...)
+    {
+        std::cout << "JSON parse \033[1;31merror\033[0m" << std::endl;
+        return -1;
+    }
+    
+    // JSON PARSE
+
+    miniCLexer::Lexer lexer{stream};
+
     miniCBuilderAST::Builder bld{lexer, CT};
+
+    std::cout << "Lexical and syntax analysis status: ";
 
     std::pair<miniCBuilderAST::Node, bool> AST = bld.GetAST();
 
     if (AST.second)
     {
-        std::cout << "ACCEPT" << std::endl;
+        std::cout << "\033[1;32mACCEPT\033[0m" << std::endl;
 
         miniCSemanticAnalyzer::SemanticAnalyzer SA{AST.first};
 
+        std::cout << "Semantic analysis status: ";
         try
         {
             SA.StartAnalysis();
-            std::cout << "ACCEPT" << std::endl;
+            std::cout << "\033[1;32mACCEPT\033[0m" << std::endl;
         }
         catch (miniCSemanticAnalyzer::SemanticError e)
         {
-            std::cout << e.what() << std::endl;
+            std::cout << "\033[1;31mERROR\033[0m" << std::endl;
+
+            std::cerr <<  e.what() << std::endl;
             return -1;
         }
 
         miniCAtomsToIntel8080::Translator Translator{SA.GetSymTable(), SA.GetFunctionMap()};
 
         Translator.Translate();
+
+        std::cout << "Translation complete. The result files is located in \"./output/\"" << std::endl;
     }
     else
     {
-        std::cout << "ERROR" << std::endl;
+        std::cout << "\033[1;31mERROR\033[0m" << std::endl;
     }
 }

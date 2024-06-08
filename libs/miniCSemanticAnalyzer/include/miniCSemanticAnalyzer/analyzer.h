@@ -16,7 +16,7 @@ namespace miniCSemanticAnalyzer
         miniCBuilderAST::Node AST;
         miniCSemanticAnalyzer::SymbolTable symtable;
 
-        std::unordered_map<std::string, std::vector<std::pair<int, miniCSemanticAnalyzer::Atom>>> functionMap;
+        std::unordered_map<std::string, std::vector<miniCSemanticAnalyzer::Atom>> functionMap;
         std::string currentFunction;
         bool mainCheck = false;
 
@@ -86,6 +86,6 @@ namespace miniCSemanticAnalyzer
         void StartAnalysis();
         ~SemanticAnalyzer();
         miniCSemanticAnalyzer::SymbolTable& GetSymTable();
-        std::unordered_map<std::string, std::vector<std::pair<int, miniCSemanticAnalyzer::Atom>>>& GetFunctionMap();
+        std::unordered_map<std::string, std::vector<miniCSemanticAnalyzer::Atom>>& GetFunctionMap();
     };
 }

@@ -25,7 +25,9 @@ namespace miniCSemanticAnalyzer
         RET,
         JMP,
         IN,
-        OUT
+        OUT,
+        ENTERCTX,
+        EXITCTX
     };
 
     class Atom

@@ -77,6 +77,12 @@ namespace miniCSemanticAnalyzer
         case AtomType::OUT:
             output = "OUT";
             break;
+        case AtomType::ENTERCTX:
+            output = "ENTERCTX";
+            break;
+        case AtomType::EXITCTX:
+            output = "EXITCTX";
+            break;
         default:
             output = "UNKNOWN";
         }

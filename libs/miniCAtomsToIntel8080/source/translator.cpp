@@ -3,9 +3,10 @@
 #include <format>
 #include <string>
 
+
 namespace miniCAtomsToIntel8080
 {
-    Translator::Translator(miniCSemanticAnalyzer::SymbolTable &symtable, std::unordered_map<std::string, std::vector<std::pair<int, miniCSemanticAnalyzer::Atom>>> &functionMap) : symtable{symtable}, functionMap{functionMap}
+    Translator::Translator(miniCSemanticAnalyzer::SymbolTable &symtable, std::unordered_map<std::string, std::vector<miniCSemanticAnalyzer::Atom>> &functionMap) : symtable{symtable}, functionMap{functionMap}
     {
         outputASM.open("./output/i8080.asm");
         contextMap = symtable.GetContextMap();
@@ -29,7 +30,7 @@ namespace miniCAtomsToIntel8080
         outputASM << std::endl;
     }
 
-    void Translator::loadOp(const std::string &value)
+    void Translator::loadOp(const std::string &value, int shift)
     {
         if (value.starts_with('\''))
         {
@@ -57,7 +58,7 @@ namespace miniCAtomsToIntel8080
             offsetShift += contextMap[contextArray[i]].Len * 2;
         }
 
-        outputASM << std::format("LXI H, {}; load {}", offsetShift, sd.Name) << std::endl
+        outputASM << std::format("LXI H, {}; load from {}", offsetShift + shift, sd.Name) << std::endl
                   << "DAD SP" << std::endl
                   << "MOV A, M" << std::endl
                   << std::endl;
@@ -85,7 +86,7 @@ namespace miniCAtomsToIntel8080
             offsetShift += contextMap[contextArray[i]].Len * 2;
         }
 
-        outputASM << std::format("LXI H, {}; save {}", offsetShift, sd.Name) << std::endl
+        outputASM << std::format("LXI H, {}; save in {}", offsetShift, sd.Name) << std::endl
                   << "DAD SP" << std::endl
                   << "MOV M, A" << std::endl
                   << std::endl;
@@ -114,33 +115,33 @@ namespace miniCAtomsToIntel8080
                   << std::endl;
     }
 
-    void Translator::OR(miniCSemanticAnalyzer::Atom &atom, int scope)
+    void Translator::OR(miniCSemanticAnalyzer::Atom &atom)
     {
         loadOp(atom.GetSecond());
         outputASM << "MOV B, A" << std::endl;
         loadOp(atom.GetFirst());
         outputASM << "ORA B" << std::endl;
         saveOp(atom.GetThird());
-        std::cout << std::endl;
+        outputASM << std::endl;
     }
 
-    void Translator::AND(miniCSemanticAnalyzer::Atom &atom, int scope)
+    void Translator::AND(miniCSemanticAnalyzer::Atom &atom)
     {
         loadOp(atom.GetSecond());
         outputASM << "MOV B, A" << std::endl;
         loadOp(atom.GetFirst());
         outputASM << "ANA B" << std::endl;
         saveOp(atom.GetThird());
-        std::cout << std::endl;
+        outputASM << std::endl;
     }
 
-    void Translator::MOV(miniCSemanticAnalyzer::Atom &atom, int scope)
+    void Translator::MOV(miniCSemanticAnalyzer::Atom &atom)
     {
         loadOp(atom.GetFirst());
         saveOp(atom.GetThird());
     }
 
-    void Translator::EQ(miniCSemanticAnalyzer::Atom &atom, int scope)
+    void Translator::EQ(miniCSemanticAnalyzer::Atom &atom)
     {
         loadOp(atom.GetSecond());
         outputASM << "MOV B, A" << std::endl;
@@ -150,7 +151,7 @@ namespace miniCAtomsToIntel8080
                   << std::endl;
     }
 
-    void Translator::NE(miniCSemanticAnalyzer::Atom &atom, int scope)
+    void Translator::NE(miniCSemanticAnalyzer::Atom &atom)
     {
         loadOp(atom.GetSecond());
         outputASM << "MOV B, A" << std::endl;
@@ -160,7 +161,7 @@ namespace miniCAtomsToIntel8080
                   << std::endl;
     }
 
-    void Translator::GT(miniCSemanticAnalyzer::Atom &atom, int scope)
+    void Translator::GT(miniCSemanticAnalyzer::Atom &atom)
     {
         loadOp(atom.GetSecond());
         outputASM << "MOV B, A" << std::endl;
@@ -170,7 +171,7 @@ namespace miniCAtomsToIntel8080
                   << std::endl;
     }
 
-    void Translator::LT(miniCSemanticAnalyzer::Atom &atom, int scope)
+    void Translator::LT(miniCSemanticAnalyzer::Atom &atom)
     {
         loadOp(atom.GetSecond());
         outputASM << "MOV B, A" << std::endl;
@@ -180,7 +181,7 @@ namespace miniCAtomsToIntel8080
                   << std::endl;
     }
 
-    void Translator::LE(miniCSemanticAnalyzer::Atom &atom, int scope)
+    void Translator::LE(miniCSemanticAnalyzer::Atom &atom)
     {
         loadOp(atom.GetSecond());
         outputASM << "MOV B, A" << std::endl;
@@ -191,75 +192,132 @@ namespace miniCAtomsToIntel8080
                   << std::endl;
     }
 
-    void Translator::LBL(miniCSemanticAnalyzer::Atom &atom, int scope)
+    void Translator::LBL(miniCSemanticAnalyzer::Atom &atom)
     {
         outputASM << std::format("{}:", atom.GetThird()) << std::endl;
     }
 
-    void Translator::ADD(miniCSemanticAnalyzer::Atom &atom, int scope)
+    void Translator::ADD(miniCSemanticAnalyzer::Atom &atom)
     {
         loadOp(atom.GetSecond());
         outputASM << "MOV B, A" << std::endl;
         loadOp(atom.GetFirst());
         outputASM << "ADD B" << std::endl;
         saveOp(atom.GetThird());
-        std::cout << std::endl;
+        outputASM << std::endl;
     }
 
-    void Translator::SUB(miniCSemanticAnalyzer::Atom &atom, int scope)
+    void Translator::SUB(miniCSemanticAnalyzer::Atom &atom)
     {
         loadOp(atom.GetSecond());
         outputASM << "MOV B, A" << std::endl;
         loadOp(atom.GetFirst());
         outputASM << "SUB B" << std::endl;
         saveOp(atom.GetThird());
-        std::cout << std::endl;
+        outputASM << std::endl;
     }
 
-    void Translator::MUL(miniCSemanticAnalyzer::Atom &atom, int scope)
+    void Translator::MUL(miniCSemanticAnalyzer::Atom &atom)
     {
-        // TODO: Как вызвать Mult?
+        loadOp(atom.GetSecond());
+        outputASM << "MOV D, A" << std::endl;
+        loadOp(atom.GetFirst());
+        outputASM << "NOV C, A" << std::endl;
+
+        outputASM << "CALL @MULT" << std::endl;
+        saveOp(atom.GetThird());
+        outputASM << std::endl;
     }
 
-    void Translator::NOT(miniCSemanticAnalyzer::Atom &atom, int scope)
+    void Translator::NOT(miniCSemanticAnalyzer::Atom &atom)
     {
         loadOp(atom.GetFirst());
         outputASM << "CMA" << std::endl;
         saveOp(atom.GetThird());
-        std::cout << std::endl;
+        outputASM << std::endl;
     }
 
-    void Translator::CALL(miniCSemanticAnalyzer::Atom &atom, int scope)
+    void Translator::CALL(miniCSemanticAnalyzer::Atom &atom)
     {
-        // TODO: Сделать CALL
+        miniCSemanticAnalyzer::SymbolData &sd = symtable.GetSymbolData(atom.GetFirst());
+
+        int len = std::stoi(sd.Len);
+
+        pushN(len + 1);
+
+        for (int i = 1; i <= len; i++)
+        {
+            loadOp(programStack.top(), (len + 1) * 2);
+            programStack.pop();
+
+            outputASM << std::format("LXI H, {}", i * 2) << std::endl
+                      << "DAD SP" << std::endl
+                      << "MOV A, M" << std::endl
+                      << std::endl;
+        }
+
+        outputASM << std::format("CALL {}", symtable.GetSymbolData(atom.GetFirst()).Name) << std::endl;
+
+        popN(len + 1);
+
+        outputASM << "MOV A, C" << std::endl;
+
+        saveOp(atom.GetThird());
     }
 
-    void Translator::PARAM(miniCSemanticAnalyzer::Atom &atom, int scope)
+    void Translator::PARAM(miniCSemanticAnalyzer::Atom &atom)
     {
         programStack.push(atom.GetThird());
     }
 
-    void Translator::RET(miniCSemanticAnalyzer::Atom &atom, int scope)
+    void Translator::RET(miniCSemanticAnalyzer::Atom &atom)
     {
-        // TODO: Сделать RET
+        loadOp(atom.GetThird());
+
+        int countVars = 0;
+        for (size_t i = 0; i < contextArray.size(); i++)
+        {
+            countVars += contextMap[contextArray[i]].Len;
+        }
+
+        outputASM << std::format("LXI H, {}", (countVars - 1) * 2) << std::endl
+                  << "DAD SP" << std::endl
+                  << "MOV M, A" << std::endl;
+
+        popN(countVars - std::stoi(funcSd.Len) - 2);
+
+        outputASM << "RET" << std::endl
+                  << std::endl;
     }
 
-    void Translator::JMP(miniCSemanticAnalyzer::Atom &atom, int scope)
+    void Translator::JMP(miniCSemanticAnalyzer::Atom &atom)
     {
         outputASM << std::format("JMP {}", atom.GetThird()) << std::endl;
     }
 
-    void Translator::IN(miniCSemanticAnalyzer::Atom &atom, int scope)
+    void Translator::IN(miniCSemanticAnalyzer::Atom &atom)
     {
         outputASM << "IN 0" << std::endl;
         saveOp(atom.GetThird());
         outputASM << std::endl;
     }
 
-    void Translator::OUT(miniCSemanticAnalyzer::Atom &atom, int scope)
+    void Translator::OUT(miniCSemanticAnalyzer::Atom &atom)
     {
         loadOp(atom.GetThird());
         outputASM << "OUT 1" << std::endl;
+    }
+
+    void Translator::ENTERCTX(int scope)
+    {
+        contextArray.push_back(scope);
+        pushN(contextMap[contextArray.back()].Len);
+    }
+
+    void Translator::EXITCTX()
+    {
+        popN(contextMap[contextArray.back()].Len);
+        contextArray.pop_back();
     }
 
     void Translator::run()
@@ -268,87 +326,80 @@ namespace miniCAtomsToIntel8080
 
         for (auto &&[funcCode, atoms] : functionMap)
         {
-            miniCSemanticAnalyzer::SymbolData &funcSd = symtable.GetSymbolData(funcCode);
+            funcSd = symtable.GetSymbolData(funcCode);
             outputASM << std::format("{}:", funcSd.Name) << std::endl;
 
-            contextArray.push_back(atoms.back().first);
+            int funcScope = std::stoi(atoms[0].GetThird());
+            contextArray.push_back(funcScope);
+            pushN(contextMap[contextArray.back()].Len - 2 - std::stoi(funcSd.Len));
 
-            pushN(contextMap[contextArray.back()].Len - std::stoi(funcSd.Len) - 1);
-
-            for (auto &&[scope, atom] : atoms)
-            {
-                while (scope != contextArray.back())
-                {
-                    if (contextMap[scope].PrevContext == contextArray.back())
-                    {
-                        contextArray.push_back(scope);
-                        pushN(contextMap[contextArray.back()].Len);
-                    }
-                    else
-                    {
-                        popN(contextMap[contextArray.back()].Len);
-                        contextArray.pop_back();
-                    }
-                }
+            for (size_t i = 1; i < atoms.size() - 1; i++){
+                miniCSemanticAnalyzer::Atom atom = atoms[i];
 
                 switch (atom.GetType())
                 {
                 case miniCSemanticAnalyzer::AtomType::OR:
-                    OR(atom, scope);
+                    OR(atom);
                     break;
                 case miniCSemanticAnalyzer::AtomType::AND:
-                    AND(atom, scope);
+                    AND(atom);
                     break;
                 case miniCSemanticAnalyzer::AtomType::MOV:
-                    MOV(atom, scope);
+                    MOV(atom);
                     break;
                 case miniCSemanticAnalyzer::AtomType::EQ:
-                    EQ(atom, scope);
+                    EQ(atom);
                     break;
                 case miniCSemanticAnalyzer::AtomType::NE:
-                    NE(atom, scope);
+                    NE(atom);
                     break;
                 case miniCSemanticAnalyzer::AtomType::GT:
-                    GT(atom, scope);
+                    GT(atom);
                     break;
                 case miniCSemanticAnalyzer::AtomType::LT:
-                    LT(atom, scope);
+                    LT(atom);
                     break;
                 case miniCSemanticAnalyzer::AtomType::LE:
-                    LE(atom, scope);
+                    LE(atom);
                     break;
                 case miniCSemanticAnalyzer::AtomType::LBL:
-                    LBL(atom, scope);
+                    LBL(atom);
                     break;
                 case miniCSemanticAnalyzer::AtomType::ADD:
-                    ADD(atom, scope);
+                    ADD(atom);
                     break;
                 case miniCSemanticAnalyzer::AtomType::SUB:
-                    SUB(atom, scope);
+                    SUB(atom);
                     break;
                 case miniCSemanticAnalyzer::AtomType::MUL:
-                    MUL(atom, scope);
+                    MUL(atom);
                     break;
                 case miniCSemanticAnalyzer::AtomType::NOT:
-                    NOT(atom, scope);
+                    NOT(atom);
                     break;
                 case miniCSemanticAnalyzer::AtomType::CALL:
-                    CALL(atom, scope);
+                    CALL(atom);
                     break;
                 case miniCSemanticAnalyzer::AtomType::PARAM:
-                    PARAM(atom, scope);
+                    PARAM(atom);
                     break;
                 case miniCSemanticAnalyzer::AtomType::RET:
-                    RET(atom, scope);
+                    RET(atom);
                     break;
                 case miniCSemanticAnalyzer::AtomType::JMP:
-                    JMP(atom, scope);
+                    JMP(atom);
                     break;
                 case miniCSemanticAnalyzer::AtomType::IN:
-                    IN(atom, scope);
+                    IN(atom);
                     break;
                 case miniCSemanticAnalyzer::AtomType::OUT:
-                    OUT(atom, scope);
+                    OUT(atom);
+                    break;
+                case miniCSemanticAnalyzer::AtomType::ENTERCTX:
+                    ENTERCTX(std::stoi(atom.GetThird()));
+                    break;
+                case miniCSemanticAnalyzer::AtomType::EXITCTX:
+                    EXITCTX();
                     break;
                 }
             }

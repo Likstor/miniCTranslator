@@ -51,6 +51,7 @@ namespace miniCLexer
         std::unordered_map<ll, edgesMap> lexicalGraph{
             {0, {
                     {" ", {0, true, false, ""}},
+                    {"\t", {0, true, false, ""}},
                     {"\n", {0, true, false, ""}},
                     {"'", {10, true, false, ""}},
                     {"\"", {12, true, false, ""}},

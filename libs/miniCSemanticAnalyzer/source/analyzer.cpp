@@ -500,12 +500,13 @@ namespace miniCSemanticAnalyzer
 
         treePrint.pop_back();
         treePrint.push_back(1);
-        ArgListList(argList, treePrint);
-
-        Node.NewVal(std::to_string(std::stoi(argList.GetValues()[0]) + 1));
 
         Atom PARAM{AtomType::PARAM, "", "", e.GetValues()[0]};
         recordAtom(PARAM);
+
+        ArgListList(argList, treePrint);
+
+        Node.NewVal(std::to_string(std::stoi(argList.GetValues()[0]) + 1));
     }
 
     void SemanticAnalyzer::ArgListList(miniCBuilderAST::Node &Node, std::vector<int> treePrint)
@@ -528,12 +529,13 @@ namespace miniCSemanticAnalyzer
 
         treePrint.pop_back();
         treePrint.push_back(0);
-        ArgListList(argList, treePrint);
-
-        Node.NewVal(std::to_string(std::stoi(argList.GetValues()[0]) + 1));
 
         Atom PARAM{AtomType::PARAM, "", "", e.GetValues()[0]};
         recordAtom(PARAM);
+
+        ArgListList(argList, treePrint);
+
+        Node.NewVal(std::to_string(std::stoi(argList.GetValues()[0]) + 1));
     }
 
     void SemanticAnalyzer::DeclareStmt(miniCBuilderAST::Node &Node, std::vector<int> treePrint)
@@ -573,6 +575,7 @@ namespace miniCSemanticAnalyzer
 
             treePrint.push_back(1);
             printTreeString(treePrint, {"lpar"}, false);
+            symtable.AddVarToContext(-2);
 
             ParamList(Node.GetChildren()[1], treePrint);
 
@@ -588,11 +591,7 @@ namespace miniCSemanticAnalyzer
             {
                 currentFunction = symtable.AddFunc(name, SymbolType::Int, Node.GetChildren()[1].GetValues()[0]);
             }
-
-            // functionMap[currentFunction]; // TODO: Some fucking shit
-            // auto tmp = functionMap.extract(currentFunction);
-            // tmp.key() = funcCode;
-            // functionMap.insert(move(tmp));
+            
 
             symtable.AddVarToContext(-2);
 
@@ -600,7 +599,7 @@ namespace miniCSemanticAnalyzer
             {
                 if (mainCheck)
                 {
-                    throw SemanticError("An attempt to override the main function");
+                    throw SemanticError("An attempt to override the main function");\
                 }
 
                 if (Node.GetChildren()[1].GetValues()[0] != "0")
@@ -612,6 +611,9 @@ namespace miniCSemanticAnalyzer
 
             printTreeString(treePrint, {"rpar", "lbrace"}, false);
 
+            Atom ENTERCTX{AtomType::ENTERCTX, "", "", std::to_string(symtable.GetContext())};
+            recordAtom(ENTERCTX);
+
             StmtList(Node.GetChildren()[4], treePrint);
 
             treePrint.pop_back();
@@ -621,6 +623,8 @@ namespace miniCSemanticAnalyzer
             Atom RET{AtomType::RET, "", "", "'0'"};
             recordAtom(RET);
 
+            Atom EXITCTX{AtomType::EXITCTX, "", "", ""};
+            recordAtom(EXITCTX);
             symtable.ExitContext();
         }
         else if (Node.GetChildren()[0].GetLexemeType() == "opassign")
@@ -1013,7 +1017,13 @@ namespace miniCSemanticAnalyzer
             treePrint.push_back(1);
             printTreeString(treePrint, {"lbrace"}, false);
 
+            symtable.EnterContext();
+            Atom ENTERCTX{AtomType::ENTERCTX, "", "", std::to_string(symtable.GetContext())};
+            recordAtom(ENTERCTX);
             StmtList(Node.GetChildren()[1], treePrint);
+            Atom EXITCTX{AtomType::EXITCTX, "", "", ""};
+            recordAtom(EXITCTX);
+            symtable.ExitContext();
 
             treePrint.pop_back();
             treePrint.push_back(0);
@@ -1134,15 +1144,20 @@ namespace miniCSemanticAnalyzer
         treePrint.pop_back();
         treePrint.push_back(0);
         printTreeString(treePrint, {"rpar"}, false);
+
         symtable.EnterContext();
+        Atom ENTERCTX{AtomType::ENTERCTX, "", "", std::to_string(symtable.GetContext())};
+        recordAtom(ENTERCTX);
         Stmt(Node.GetChildren()[4], treePrint);
+        Atom EXITCTX{AtomType::EXITCTX, "", "", ""};
+        recordAtom(EXITCTX);
+        symtable.ExitContext();
 
         Atom JMP{AtomType::JMP, "", "", l1};
         recordAtom(JMP);
 
         Atom LBL2{AtomType::LBL, "", "", l2};
         recordAtom(LBL2);
-        symtable.ExitContext();
     }
 
     void SemanticAnalyzer::ForOp(miniCBuilderAST::Node &Node, std::vector<int> treePrint)
@@ -1187,8 +1202,14 @@ namespace miniCSemanticAnalyzer
         treePrint.pop_back();
         treePrint.push_back(0);
         printTreeString(treePrint, {"rpar"}, false);
+
         symtable.EnterContext();
+        Atom ENTERCTX{AtomType::ENTERCTX, "", "", std::to_string(symtable.GetContext())};
+        recordAtom(ENTERCTX);
         Stmt(Node.GetChildren()[8], treePrint);
+        Atom EXITCTX{AtomType::EXITCTX, "", "", ""};
+        recordAtom(EXITCTX);
+        symtable.ExitContext();
 
         Atom JMP3{AtomType::JMP, "", "", l2};
         recordAtom(JMP3);
@@ -1196,7 +1217,6 @@ namespace miniCSemanticAnalyzer
         Atom LBL4{AtomType::LBL, "", "", l4};
         recordAtom(LBL4);
 
-        symtable.ExitContext();
     }
 
     void SemanticAnalyzer::ForInit(miniCBuilderAST::Node &Node, std::vector<int> treePrint)
@@ -1272,8 +1292,14 @@ namespace miniCSemanticAnalyzer
         std::string l1 = symtable.NewLabel();
         Atom EQ{AtomType::EQ, e.GetValues()[0], "'0'", l1};
         recordAtom(EQ);
+
         symtable.EnterContext();
+        Atom ENTERCTX{AtomType::ENTERCTX, "", "", std::to_string(symtable.GetContext())};
+        recordAtom(ENTERCTX);
         Stmt(Node.GetChildren()[4], treePrint);
+        Atom EXITCTX{AtomType::EXITCTX, "", "", ""};
+        recordAtom(EXITCTX);
+        symtable.ExitContext();
 
         std::string l2 = symtable.NewLabel();
         Atom JMP{AtomType::JMP, "", "", l2};
@@ -1285,7 +1311,6 @@ namespace miniCSemanticAnalyzer
         treePrint.pop_back();
         treePrint.push_back(0);
 
-        symtable.ExitContext();
         ElsePart(Node.GetChildren()[5], treePrint);
 
         Atom LBL2{AtomType::LBL, "", "", l2};
@@ -1300,13 +1325,16 @@ namespace miniCSemanticAnalyzer
         {
             return;
         }
-        
-        symtable.EnterContext();
 
         treePrint.push_back(0);
         printTreeString(treePrint, {"kwelse"}, false);
 
+        symtable.EnterContext();
+        Atom ENTERCTX{AtomType::ENTERCTX, "", "", std::to_string(symtable.GetContext())};
+        recordAtom(ENTERCTX);
         Stmt(Node.GetChildren()[1], treePrint);
+        Atom EXITCTX{AtomType::EXITCTX, "", "", ""};
+        recordAtom(EXITCTX);
         symtable.ExitContext();
     }
 
@@ -1438,11 +1466,18 @@ namespace miniCSemanticAnalyzer
             std::string p = Node.GetValues()[0];
             std::string val = Node.GetChildren()[1].GetValues()[0];
 
-            Atom NE{AtomType::NE, p, val, next};
+            Atom NE{AtomType::NE, p, std::format("'{}'", val), next};
             recordAtom(NE);
 
             printTreeString(treePrint, {"kwcase", val, "colon"}, false);
+
+            symtable.EnterContext();
+            Atom ENTERCTX{AtomType::ENTERCTX, "", "", std::to_string(symtable.GetContext())};
+            recordAtom(ENTERCTX);
             StmtList(Node.GetChildren()[3], treePrint);
+            Atom EXITCTX{AtomType::EXITCTX, "", "", ""};
+            recordAtom(EXITCTX);
+            symtable.ExitContext();
 
             Atom JMP{AtomType::JMP, "", "", end};
             recordAtom(JMP);
@@ -1468,7 +1503,14 @@ namespace miniCSemanticAnalyzer
             recordAtom(LBL1);
 
             printTreeString(treePrint, {"kwdefault", "colon"}, false);
+
+            symtable.EnterContext();
+            Atom ENTERCTX{AtomType::ENTERCTX, "", "", std::to_string(symtable.GetContext())};
+            recordAtom(ENTERCTX);
             StmtList(Node.GetChildren()[2], treePrint);
+            Atom EXITCTX{AtomType::EXITCTX, "", "", ""};
+            recordAtom(EXITCTX);
+            symtable.ExitContext();
 
             Atom JMP2{AtomType::JMP, "", "", end};
             recordAtom(JMP2);
@@ -1519,9 +1561,7 @@ namespace miniCSemanticAnalyzer
         }
         else
         {
-            printTreeString(treePrint, {child.GetValues()[0]}, true);
-
-            output = std::format("\'{}\'", child.GetValues()[0]); // " + " for translation to i8080
+            throw SemanticError("Strings not implemented");
         }
 
         Atom OUT{AtomType::OUT, "", "", output};
@@ -1607,7 +1647,7 @@ namespace miniCSemanticAnalyzer
     {
         if (symtable.GetContext() != -1)
         {
-            functionMap[currentFunction].push_back({symtable.GetContext(), atom});
+            functionMap[currentFunction].push_back(atom);
             outputAtoms << std::format("{}: ", symtable.GetContext()) << atom;
         }
     }
@@ -1617,7 +1657,7 @@ namespace miniCSemanticAnalyzer
         return symtable;
     }
 
-    std::unordered_map<std::string, std::vector<std::pair<int, miniCSemanticAnalyzer::Atom>>> &SemanticAnalyzer::GetFunctionMap()
+    std::unordered_map<std::string, std::vector<miniCSemanticAnalyzer::Atom>> &SemanticAnalyzer::GetFunctionMap()
     {
         return functionMap;
     }

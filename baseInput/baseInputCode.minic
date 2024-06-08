@@ -1,7 +1,20 @@
+int someFunc(int d, char g)
+{
+    int a, b, c = 15;
+    for (a = 0; a < d; ++a)
+    {
+        char h;
+        return h;
+    }
+    out b;
+}
+
 int main()
 {
     int n1, n2;
     char a, b = '5', c;
+
+    someFunc(n1, n2);
     {
         {
             {

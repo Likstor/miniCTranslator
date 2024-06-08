@@ -1,6 +1,7 @@
 #pragma once
 #include <miniCSemanticAnalyzer/symtable.h>
 #include <miniCSemanticAnalyzer/exception.h>
+#include <miniCSemanticAnalyzer/atom.h>
 #include <format>
 #include <iomanip>
 #include <sstream>
@@ -48,27 +49,28 @@ namespace miniCSemanticAnalyzer
             "NULL",
             "NULL"};
 
+        // Записываем информацию в таблицу для быстрого доступа
         subData[contextArray.back()][temp.Name] = {currentCode, true};
+        // Записываем информацию в таблицу символов
         data[currentCode] = temp;
 
-        if (contextArray.back() != -1)
-        {
-            AddVarToContext(currentCode);
-        }
+        // Добавляем переменную в текущий контекст
+        AddVarToContext(currentCode);
 
         return std::to_string(currentCode++);
     }
 
     void SymbolTable::EnterContext()
     {
-        int tmpContext = currentContext;
-        contextArray.push_back(++currentContext);
-        contextMap[currentContext].PrevContext = tmpContext;
+        // Добавляем в contextArray новый контекст и обновляем maxContext
+        contextArray.push_back(maxContext++);
     }
 
     void SymbolTable::ExitContext()
     {
+        // Заполняем offset для переменных этого контекста
         FillOffset();
+        // Снимаем номер текущего контекста со "стека"
         contextArray.pop_back();
     }
 
@@ -147,35 +149,32 @@ namespace miniCSemanticAnalyzer
 
     void SymbolTable::AddVarToContext(int var)
     {
+        // Добавляем переданный код
         contextMap[GetContext()].Vars.push_back(var);
+        // Обновляем количество переменных
         contextMap[GetContext()].Len += 1;
     }
 
     void SymbolTable::FillOffset()
     {
-        Context &codes = contextMap[GetContext()];
+        // Получем информацию о текущем контексте
+        Context &ctxInfo = contextMap[GetContext()];
 
-        for (size_t i = 0; i < codes.Len; i++)
+        for (size_t i = 0; i < ctxInfo.Len; i++)
         {
-            if (codes.Vars[i] == -2)
+            // -2 - это условный код (костыль), который используется
+            // для учета сдвига для кода возврата и возвращаемого значения
+            // На таблицу никак не влияет
+            if (ctxInfo.Vars[i] == -2)
             {
                 continue;
             }
-            SymbolData &tempSd = GetSymbolData(std::to_string(codes.Vars[i]));
-            tempSd.Offset = (codes.Len - i - 1) * 2;
+
+            // Получаем ссылку на информацию о переменной
+            SymbolData &tempSd = GetSymbolData(std::to_string(ctxInfo.Vars[i]));
+            // Заполняем сдвиг у переменной
+            tempSd.Offset = (ctxInfo.Len - i - 1) * 2;
         }
-    }
-
-    std::string fill(size_t len)
-    {
-        std::string output;
-
-        for (size_t i = 0; i < len; i++)
-        {
-            output += "─";
-        }
-
-        return output;
     }
 
     std::ostream &operator<<(std::ostream &os, const SymbolTable &symtable)
